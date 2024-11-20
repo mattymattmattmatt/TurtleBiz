@@ -137,6 +137,14 @@ nav a.active {
     animation: fadeIn 2s forwards;
 }
 
+/* Ensure images within the hero section are properly sized */
+.hero img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Hero Links Styles */
 .hero-link {
     color: inherit;
@@ -232,7 +240,7 @@ nav a.active {
     width: 100px;
 }
 
-/* Product Section Styles */
+/* Products Section Styles */
 .products {
     display: flex;
     flex-wrap: wrap;
@@ -289,6 +297,17 @@ nav a.active {
 .product button:hover {
     background-color: #d4ac0d;
     transform: scale(1.05);
+}
+
+/* Cart Link Styles */
+.cart-link {
+    position: relative;
+    color: var(--light-text);
+}
+
+.cart-link #cart-count {
+    font-weight: bold;
+    color: var(--accent-color);
 }
 
 /* Footer Styles */
@@ -458,4 +477,99 @@ footer a:hover img {
     .volume-control input[type="range"] {
         width: 100%;
     }
+}
+
+/* Cart Page Styles */
+/* Include these styles if you have a cart page (e.g., cart.html) */
+/* You can add these to styles.css if needed */
+.cart {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cart h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cart-items {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.cart-item {
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item img {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-details h3 {
+    margin-top: 0;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.quantity-control button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 0;
+    padding: 0;
+    margin: 0 5px;
+}
+
+.quantity-control span {
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.remove-item {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.cart-summary {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.cart-summary h2 {
+    margin-bottom: 20px;
+}
+
+#checkout-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#checkout-button:hover {
+    background-color: var(--secondary-color);
 }

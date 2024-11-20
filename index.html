@@ -41,6 +41,7 @@
                 <li><a href="shop.html">Shop</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
             </ul>
         </nav>
     </header>
@@ -86,30 +87,30 @@
             <div class="product">
                 <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
                 <h2>Turtle Scotch Whiskey</h2>
-                <p>$99.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Scotch Whiskey to Cart">Add to Cart</button>
+                <p class="price">$99.99</p>
+                <button class="add-to-cart" data-name="Turtle Scotch Whiskey" data-price="99.99" data-image="images/turtle-scotch.png">Add to Cart</button>
             </div>
 
             <!-- Repeat Product Items -->
             <div class="product">
                 <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
                 <h2>Turtle Glass Cup</h2>
-                <p>$12.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Glass Cup to Cart">Add to Cart</button>
+                <p class="price">$12.99</p>
+                <button class="add-to-cart" data-name="Turtle Glass Cup" data-price="12.99" data-image="images/turtle-mug.png">Add to Cart</button>
             </div>
 
             <div class="product">
                 <img src="images/turtle-hat.png" alt="Turtle Hat" loading="lazy">
                 <h2>Turtle Hat</h2>
-                <p>$24.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Hat to Cart">Add to Cart</button>
+                <p class="price">$24.99</p>
+                <button class="add-to-cart" data-name="Turtle Hat" data-price="24.99" data-image="images/turtle-hat.png">Add to Cart</button>
             </div>
 
             <div class="product">
                 <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
                 <h2>Turtle Plush Toy</h2>
-                <p>$19.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Plush Toy to Cart">Add to Cart</button>
+                <p class="price">$19.99</p>
+                <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
             </div>
 
             <!-- Add more products as needed -->
@@ -138,8 +139,9 @@
         </p>
     </footer>
 
-    <!-- External JavaScript File -->
+    <!-- External JavaScript Files -->
     <script src="scripts/audio-player.js"></script>
+    <script src="scripts/cart.js"></script>
 
 </body>
 </html>
