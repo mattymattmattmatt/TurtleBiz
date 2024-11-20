@@ -28,14 +28,7 @@
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Font Awesome for Icons (Updated to Version 5.15.4) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      integrity="sha512-dyZ9Y1w/HZ8R8f91WcMx1cZD1lC5e0vW9i8ZIjP6xDvbjn3KjNXevRweP6kB+6FjK5xZrM9oIx/5C3lCAdR6TA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <!-- Removed Font Awesome Link as it's no longer needed -->
 </head>
 <body>
 
@@ -66,8 +59,8 @@
             <!-- Audio Player Integration -->
             <div class="audio-player">
                 <button id="play-pause-btn" aria-label="Play/Pause TurtleBiz Track">
-                    <i class="fas fa-play" id="play-icon"></i>
-                    <i class="fas fa-pause" id="pause-icon" style="display: none;"></i>
+                    <img src="images/Play.png" alt="Play" id="play-icon">
+                    <img src="images/Pause.png" alt="Pause" id="pause-icon" style="display: none;">
                 </button>
                 <span id="track-name">Now Playing: TurtleBiz Theme</span>
                 <div class="progress-container">
@@ -75,7 +68,7 @@
                 </div>
                 <div class="volume-control">
                     <button id="mute-btn" aria-label="Mute/Unmute">
-                        <i class="fas fa-volume-up"></i>
+                        <img src="images/Volume.png" alt="Volume" id="volume-icon">
                     </button>
                     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume Control">
                 </div>
@@ -134,13 +127,13 @@
         <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
         <p>Follow us on:
             <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
-                <i class="fab fa-facebook-f"></i>
+                <img src="images/Facebook.png" alt="Facebook">
             </a>
             <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
-                <i class="fab fa-instagram"></i>
+                <img src="images/Instagram.png" alt="Instagram">
             </a>
             <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
-                <i class="fab fa-twitter"></i>
+                <img src="images/Twitter.png" alt="Twitter">
             </a>
         </p>
     </footer>
