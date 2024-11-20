@@ -7,15 +7,20 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="Discover the finest turtle-themed merchandise at Turtle Biz. From plush toys to stylish accessories, we have it all!">
+    <meta name="keywords" content="Turtle, Merchandise, Plush Toys, Accessories, Turtle Biz">
 
-    <!-- Open Graph Meta Tags -->
+    <!-- Open Graph Meta Tags for Social Media Sharing -->
     <meta property="og:title" content="Turtle Biz - Turtle Themed Merchandise">
     <meta property="og:description" content="Your one-stop shop for all things turtle!">
-    <meta property="og:image" content="URL_to_image.jpg">
+    <meta property="og:image" content="https://www.yourwebsite.com/images/turtle-hero.jpg">
     <meta property="og:url" content="https://www.turtlebiz.com">
+    <meta property="og:type" content="website">
 
     <!-- Favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Normalize CSS for Consistent Styling Across Browsers -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -25,97 +30,191 @@
 
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-dYqkXPLeP+YQVziHc7e1A+2nPIan1B3jLxXWnDQFFEl3tH4Z0uXID1hM+6IQ2hUFvXgPiyMwnkF3iFm3SlZQ0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Analytics (Optional) -->
+    <!-- Replace 'UA-XXXXXXX-X' with your Google Analytics tracking ID -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'UA-XXXXXXX-X');
+    </script>
+    -->
 </head>
 <body>
 
-<header>
-    <img src="TurtleBiz.png" alt="Turtle Biz Logo">
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Shop</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+    <!-- Header Section -->
+    <header>
+        <img src="TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<main>
-    <section class="hero">
-        <h1>Welcome to Turtle Biz</h1>
-        <p>Your one-stop shop for all things turtle!</p>
-        
-        <!-- Audio Player Integration -->
-        <div class="audio-player">
-            <button id="play-pause-btn" aria-label="Play/Pause">
-                <i class="fas fa-play"></i>
-            </button>
-            <span id="track-name">Now Playing: TurtleBiz</span>
-            <audio id="audio" src="TurtleBiz.mp3"></audio>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section with Audio Player -->
+        <section class="hero">
+            <h1>Welcome to Turtle Biz</h1>
+            <p>Your one-stop shop for all things turtle!</p>
+            
+            <!-- Audio Player Integration -->
+            <div class="audio-player">
+                <button id="play-pause-btn" aria-label="Play TurtleBiz Track">
+                    <i class="fas fa-play"></i>
+                </button>
+                <span id="track-name">Now Playing: TurtleBiz</span>
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="volume-control">
+                    <button id="mute-btn" aria-label="Mute/Unmute">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume Control">
+                </div>
+                <audio id="audio">
+                    <source src="TurtleBiz.mp3" type="audio/mpeg">
+                    <source src="TurtleBiz.ogg" type="audio/ogg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </section>
 
-    <section class="products">
-        <div class="product">
-            <img src="turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
-            <h2>Turtle Scotch Whiskey</h2>
-            <p>$99.99</p>
-            <button aria-label="Add Turtle Scotch Whiskey to Cart">Add to Cart</button>
-        </div>
-        <div class="product">
-            <img src="turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
-            <h2>Turtle Glass Cup</h2>
-            <p>$12.99</p>
-            <button aria-label="Add Turtle Glass Cup to Cart">Add to Cart</button>
-        </div>
-        <div class="product">
-            <img src="turtle-hat.png" alt="Turtle Hat" loading="lazy">
-            <h2>Turtle Hat</h2>
-            <p>$24.99</p>
-            <button aria-label="Add Turtle Hat to Cart">Add to Cart</button>
-        </div>
-        <!-- Add more products as needed -->
-    </section>
-</main>
+        <!-- Products Section -->
+        <section class="products">
+            <div class="product">
+                <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
+                <h2>Turtle Scotch Whiskey</h2>
+                <p>$99.99</p>
+                <button class="add-to-cart" aria-label="Add Turtle Scotch Whiskey to Cart">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
+                <h2>Turtle Glass Cup</h2>
+                <p>$12.99</p>
+                <button class="add-to-cart" aria-label="Add Turtle Glass Cup to Cart">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="images/turtle-hat.png" alt="Turtle Hat" loading="lazy">
+                <h2>Turtle Hat</h2>
+                <p>$24.99</p>
+                <button class="add-to-cart" aria-label="Add Turtle Hat to Cart">Add to Cart</button>
+            </div>
+            <!-- Add more products as needed -->
+        </section>
+    </main>
 
-<footer>
-    <nav>
-        <a href="#">Privacy Policy</a> |
-        <a href="#">Terms of Service</a> |
-        <a href="#">Help Center</a>
-    </nav>
-    <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
-    <p>Follow us on:
-        <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Facebook</a> |
-        <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Instagram</a> |
-        <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Twitter</a>
-    </p>
-</footer>
+    <!-- Footer Section -->
+    <footer>
+        <nav class="footer-nav">
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a> |
+            <a href="help.html">Help Center</a>
+        </nav>
+        <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
+        <p>Follow us on:
+            <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </p>
+    </footer>
 
-<!-- JavaScript for Audio Player -->
-<script>
-    const audio = document.getElementById('audio');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const playPauseIcon = playPauseBtn.querySelector('i');
+    <!-- JavaScript for Audio Player and Enhancements -->
+    <script>
+        // Audio Player Elements
+        const audio = document.getElementById('audio');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playPauseIcon = playPauseBtn.querySelector('i');
+        const progressBar = document.getElementById('progress-bar');
+        const muteBtn = document.getElementById('mute-btn');
+        const volumeSlider = document.getElementById('volume-slider');
 
-    playPauseBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            playPauseIcon.classList.remove('fa-play');
-            playPauseIcon.classList.add('fa-pause');
-        } else {
-            audio.pause();
+        // Play/Pause Toggle
+        playPauseBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+            }
+        });
+
+        // Update Play/Pause Icon on Audio End
+        audio.addEventListener('ended', () => {
             playPauseIcon.classList.remove('fa-pause');
             playPauseIcon.classList.add('fa-play');
-        }
-    });
+            progressBar.style.width = '0%';
+        });
 
-    // Update button icon when audio ends
-    audio.addEventListener('ended', () => {
-        playPauseIcon.classList.remove('fa-pause');
-        playPauseIcon.classList.add('fa-play');
-    });
-</script>
+        // Update Progress Bar as Audio Plays
+        audio.addEventListener('timeupdate', () => {
+            const progressPercent = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+        });
+
+        // Seek Audio on Progress Bar Click
+        const progressContainer = document.querySelector('.progress-container');
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+
+            audio.currentTime = (clickX / width) * duration;
+        });
+
+        // Mute/Unmute Toggle
+        muteBtn.addEventListener('click', () => {
+            audio.muted = !audio.muted;
+            if (audio.muted) {
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        });
+
+        // Volume Slider Control
+        volumeSlider.addEventListener('input', (e) => {
+            audio.volume = e.target.value;
+            if (audio.volume === 0) {
+                audio.muted = true;
+                muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            } else {
+                audio.muted = false;
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            }
+        });
+
+        // Keyboard Accessibility for Audio Controls
+        playPauseBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                playPauseBtn.click();
+            }
+        });
+
+        muteBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                muteBtn.click();
+            }
+        });
+    </script>
 
 </body>
 </html>
