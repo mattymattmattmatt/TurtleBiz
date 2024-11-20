@@ -1,14 +1,14 @@
 /* CSS Variables for Easy Theme Management */
 :root {
-    --primary-color: #2ecc71;
-    --secondary-color: #27ae60;
-    --accent-color: #f1c40f;
+    --primary-color: #2ecc71;          /* Green */
+    --secondary-color: #27ae60;        /* Darker Green */
+    --accent-color: #f1c40f;           /* Yellow */
     --font-primary: 'Pacifico', cursive;
     --font-secondary: 'Roboto', sans-serif;
-    --background-color: #ecf0f1;
-    --text-color: #2c3e50;
-    --light-text: #ffffff;
-    --muted-text: #7f8c8d;
+    --background-color: #ecf0f1;       /* Light Gray */
+    --text-color: #2c3e50;             /* Dark Gray */
+    --light-text: #ffffff;             /* White */
+    --muted-text: #7f8c8d;             /* Gray */
 }
 
 /* General Styles */

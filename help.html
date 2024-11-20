@@ -20,7 +20,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Normalize CSS for Consistent Styling Across Browsers -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -28,8 +28,7 @@
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-dYqkXPLeP+YQVziHc7e1A+2nPIan1B3jLxXWnDQFFEl3tH4Z0uXID1hM+6IQ2hUFvXgPiyMwnkF3iFm3SlZQ0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Removed Font Awesome Link as it's no longer needed -->
 </head>
 <body>
 
@@ -42,6 +41,7 @@
                 <li><a href="shop.html">Shop</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
             </ul>
         </nav>
     </header>
@@ -89,9 +89,9 @@
                 <h2>Need Further Assistance?</h2>
                 <p>If you didn't find the answer you're looking for, please don't hesitate to contact us. Our team is here to help!</p>
                 <p>
-                    <i class="fas fa-phone"></i> Phone: (123) 456-7890<br>
-                    <i class="fas fa-envelope"></i> Email: <a href="mailto:support@turtlebiz.com">support@turtlebiz.com</a><br>
-                    <i class="fas fa-comments"></i> Live Chat: Available Monday - Friday, 9 AM - 5 PM
+                    <img src="images/phone-icon.png" alt="Phone"> Phone: (123) 456-7890<br>
+                    <img src="images/email-icon.png" alt="Email"> Email: <a href="mailto:support@turtlebiz.com">support@turtlebiz.com</a><br>
+                    <img src="images/chat-icon.png" alt="Live Chat"> Live Chat: Available Monday - Friday, 9 AM - 5 PM
                 </p>
             </div>
         </section>
@@ -107,19 +107,19 @@
         <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
         <p>Follow us on:
             <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
-                <i class="fab fa-facebook-f"></i>
+                <img src="images/Facebook.png" alt="Facebook">
             </a>
             <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
-                <i class="fab fa-instagram"></i>
+                <img src="images/Instagram.png" alt="Instagram">
             </a>
             <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
-                <i class="fab fa-twitter"></i>
+                <img src="images/Twitter.png" alt="Twitter">
             </a>
         </p>
     </footer>
 
     <!-- External JavaScript Files -->
-    <!-- Include any necessary scripts here -->
+    <script src="scripts/cart.js"></script>
 
 </body>
 </html>
