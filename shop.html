@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Explore our wide range of turtle-themed merchandise. Find the perfect gift or treat yourself to our unique products.">
-    <meta name="keywords" content="Turtle Biz, Shop, Turtle Merchandise, Turtle Gifts, Products">
+    <meta name="description" content="Explore our wide range of turtle-themed products at Turtle Biz. Find the perfect gift or treat yourself!">
+    <meta name="keywords" content="Turtle, Shop, Merchandise, Gifts, Turtle Biz">
 
     <!-- Open Graph Meta Tags for Social Media Sharing -->
     <meta property="og:title" content="Shop - Turtle Biz">
-    <meta property="og:description" content="Discover the best turtle-themed products at Turtle Biz.">
-    <meta property="og:image" content="https://www.turtlebiz.com/images/shop-hero.jpg">
+    <meta property="og:description" content="Your one-stop shop for all things turtle!">
+    <meta property="og:image" content="https://www.turtlebiz.com/images/turtle-shop.jpg">
     <meta property="og:url" content="https://www.turtlebiz.com/shop.html">
     <meta property="og:type" content="website">
 
@@ -20,7 +20,7 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <!-- Normalize CSS for Consistent Styling Across Browsers -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -28,8 +28,7 @@
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-dYqkXPLeP+YQVziHc7e1A+2nPIan1B3jLxXWnDQFFEl3tH4Z0uXID1hM+6IQ2hUFvXgPiyMwnkF3iFm3SlZQ0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Remove Font Awesome Link as it's no longer needed -->
 </head>
 <body>
 
@@ -42,16 +41,17 @@
                 <li><a href="shop.html" class="active">Shop</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
-        <section class="hero shop-hero">
-            <h1>Our Products</h1>
-            <p>Explore our wide range of turtle-themed merchandise!</p>
+        <!-- Shop Header -->
+        <section class="shop-header">
+            <h1>Shop Our Turtle Collection</h1>
+            <p>Discover unique and high-quality turtle-themed products!</p>
         </section>
 
         <!-- Products Section -->
@@ -60,37 +60,30 @@
             <div class="product">
                 <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
                 <h2>Turtle Scotch Whiskey</h2>
-                <p>$99.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Scotch Whiskey to Cart">Add to Cart</button>
+                <p class="price">$99.99</p>
+                <button class="add-to-cart" data-name="Turtle Scotch Whiskey" data-price="99.99" data-image="images/turtle-scotch.png">Add to Cart</button>
             </div>
 
             <!-- Repeat Product Items -->
             <div class="product">
                 <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
                 <h2>Turtle Glass Cup</h2>
-                <p>$12.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Glass Cup to Cart">Add to Cart</button>
+                <p class="price">$12.99</p>
+                <button class="add-to-cart" data-name="Turtle Glass Cup" data-price="12.99" data-image="images/turtle-mug.png">Add to Cart</button>
             </div>
 
             <div class="product">
                 <img src="images/turtle-hat.png" alt="Turtle Hat" loading="lazy">
                 <h2>Turtle Hat</h2>
-                <p>$24.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Hat to Cart">Add to Cart</button>
+                <p class="price">$24.99</p>
+                <button class="add-to-cart" data-name="Turtle Hat" data-price="24.99" data-image="images/turtle-hat.png">Add to Cart</button>
             </div>
 
             <div class="product">
                 <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
                 <h2>Turtle Plush Toy</h2>
-                <p>$19.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Plush Toy to Cart">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/turtle-plate.png" alt="Turtle Plate" loading="lazy">
-                <h2>Turtle Plate</h2>
-                <p>$29.99</p>
-                <button class="add-to-cart" aria-label="Add Turtle Necklace to Cart">Add to Cart</button>
+                <p class="price">$19.99</p>
+                <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
             </div>
 
             <!-- Add more products as needed -->
@@ -102,24 +95,25 @@
         <nav class="footer-nav">
             <a href="privacy.html">Privacy Policy</a> |
             <a href="terms.html">Terms of Service</a> |
-            <a href="help.html">Help Center</a>
+            <a href="help.html">Help Center</a> |
+            <a href="about.html">Learn More</a>
         </nav>
         <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
         <p>Follow us on:
             <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
-                <i class="fab fa-facebook-f"></i>
+                <img src="images/Facebook.png" alt="Facebook">
             </a>
             <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
-                <i class="fab fa-instagram"></i>
+                <img src="images/Instagram.png" alt="Instagram">
             </a>
             <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
-                <i class="fab fa-twitter"></i>
+                <img src="images/Twitter.png" alt="Twitter">
             </a>
         </p>
     </footer>
 
     <!-- External JavaScript Files -->
-    <!-- Include any necessary scripts here, e.g., for cart functionality -->
+    <script src="scripts/cart.js"></script>
 
 </body>
 </html>
