@@ -47,8 +47,114 @@ function updateCartCount() {
     }
 }
 
-// Add event listeners to "Add to Cart" buttons
+// Function to display cart items
+function displayCartItems() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+
+    if (!cartItemsContainer || !cartTotalElement) {
+        return; // Exit if not on the cart page
+    }
+
+    cartItemsContainer.innerHTML = ''; // Clear existing items
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+
+        cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+                <h3>${item.name}</h3>
+                <p>Price: $${item.price.toFixed(2)}</p>
+                <div class="quantity-control">
+                    <button class="decrease-qty" data-index="${index}">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="increase-qty" data-index="${index}">+</button>
+                </div>
+                <p>Subtotal: $${itemTotal.toFixed(2)}</p>
+                <button class="remove-item" data-index="${index}">Remove</button>
+            </div>
+        `;
+
+        cartItemsContainer.appendChild(cartItem);
+    });
+
+    cartTotalElement.textContent = total.toFixed(2);
+
+    // Add event listeners for quantity controls and remove buttons
+    const decreaseButtons = document.querySelectorAll('.decrease-qty');
+    const increaseButtons = document.querySelectorAll('.increase-qty');
+    const removeButtons = document.querySelectorAll('.remove-item');
+
+    decreaseButtons.forEach(button => {
+        button.addEventListener('click', decreaseQuantity);
+    });
+
+    increaseButtons.forEach(button => {
+        button.addEventListener('click', increaseQuantity);
+    });
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', removeItem);
+    });
+}
+
+// Function to decrease item quantity
+function decreaseQuantity(event) {
+    const index = event.target.getAttribute('data-index');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart[index].quantity > 1) {
+        cart[index].quantity -= 1;
+    } else {
+        cart.splice(index, 1); // Remove item if quantity is 1
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    displayCartItems();
+}
+
+// Function to increase item quantity
+function increaseQuantity(event) {
+    const index = event.target.getAttribute('data-index');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    cart[index].quantity += 1;
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    displayCartItems();
+}
+
+// Function to remove item from cart
+function removeItem(event) {
+    const index = event.target.getAttribute('data-index');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    cart.splice(index, 1);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    displayCartItems();
+}
+
+// Function to handle checkout
+function proceedToCheckout() {
+    alert('Proceeding to checkout...');
+    // Implement checkout functionality or redirect to a payment page
+}
+
+// Add event listeners
 document.addEventListener('DOMContentLoaded', () => {
+    // Add event listeners to "Add to Cart" buttons
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
     addToCartButtons.forEach(button => {
@@ -57,4 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update cart count on page load
     updateCartCount();
+
+    // Display cart items if on cart page
+    displayCartItems();
+
+    // Add event listener for checkout button
+    const checkoutButton = document.getElementById('checkout-button');
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', proceedToCheckout);
+    }
 });

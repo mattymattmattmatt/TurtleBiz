@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart - Turtle Biz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Review your selected turtle-themed products in your Turtle Biz shopping cart.">
+    <meta name="keywords" content="Turtle, Shopping Cart, Merchandise, Turtle Biz">
+
+    <!-- Open Graph Meta Tags for Social Media Sharing -->
+    <meta property="og:title" content="Your Cart - Turtle Biz">
+    <meta property="og:description" content="Your selected turtle-themed products are waiting for you!">
+    <meta property="og:image" content="https://www.turtlebiz.com/images/turtle-cart.jpg">
+    <meta property="og:url" content="https://www.turtlebiz.com/cart.html">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Normalize CSS for Consistent Styling Across Browsers -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <img src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html" class="cart-link active">Cart (<span id="cart-count">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="cart">
+            <h1>Your Shopping Cart</h1>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            <div class="cart-summary">
+                <h2>Total: $<span id="cart-total">0.00</span></h2>
+                <button id="checkout-button">Proceed to Checkout</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <nav class="footer-nav">
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a> |
+            <a href="help.html">Help Center</a> |
+            <a href="about.html">Learn More</a>
+        </nav>
+        <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
+        <p>Follow us on:
+            <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
+                <img src="images/Facebook.png" alt="Facebook">
+            </a>
+            <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
+                <img src="images/Instagram.png" alt="Instagram">
+            </a>
+            <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
+                <img src="images/Twitter.png" alt="Twitter">
+            </a>
+        </p>
+    </footer>
+
+    <!-- External JavaScript Files -->
+    <script src="scripts/cart.js"></script>
+
+</body>
+</html>

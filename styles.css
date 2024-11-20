@@ -100,6 +100,17 @@ nav a.active {
     color: var(--accent-color);
 }
 
+/* Cart Link Styles */
+.cart-link {
+    position: relative;
+    color: var(--light-text);
+}
+
+.cart-link #cart-count {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
 /* Hero Section Styles */
 .hero {
     background-image: url('images/turtle-hero.jpg');
@@ -299,17 +310,6 @@ nav a.active {
     transform: scale(1.05);
 }
 
-/* Cart Link Styles */
-.cart-link {
-    position: relative;
-    color: var(--light-text);
-}
-
-.cart-link #cart-count {
-    font-weight: bold;
-    color: var(--accent-color);
-}
-
 /* Footer Styles */
 footer {
     background-color: var(--primary-color);
@@ -480,8 +480,6 @@ footer a:hover img {
 }
 
 /* Cart Page Styles */
-/* Include these styles if you have a cart page (e.g., cart.html) */
-/* You can add these to styles.css if needed */
 .cart {
     padding: 40px 20px;
     max-width: 800px;
@@ -572,4 +570,35 @@ footer a:hover img {
 
 #checkout-button:hover {
     background-color: var(--secondary-color);
+}
+
+/* Shop Header Styles */
+.shop-header {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    text-align: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.shop-header::after {
+    content: '';
+    background: url('images/turtle-pattern.png') repeat;
+    opacity: 0.1;
+    position: absolute;
+    top: 0; left: 0;
+    bottom: 0; right: 0;
+    z-index: -1;
+}
+
+.shop-header h1 {
+    font-size: 48px;
+    margin: 0;
+    font-family: var(--font-primary);
+}
+
+.shop-header p {
+    font-size: 24px;
+    margin-top: 10px;
 }
