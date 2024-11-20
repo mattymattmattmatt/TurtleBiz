@@ -28,11 +28,11 @@
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 
-    <!-- Font Awesome for Icons -->
+    <!-- Font Awesome for Icons (Updated to Version 5.15.4) -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      integrity="sha512-pVluQf8YHY8gJrW2VdDmN1K6H0X+FrYjY7lF93EzhfE4G9jn4FozTPSSq3i3bylg3yvg+gU6YkrBQlYcHl4r0g=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-dyZ9Y1w/HZ8R8f91WcMx1cZD1lC5e0vW9i8ZIjP6xDvbjn3KjNXevRweP6kB+6FjK5xZrM9oIx/5C3lCAdR6TA=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
@@ -54,15 +54,25 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section with Audio Player -->
+        <!-- Hero Section with Clickable Text and Audio Player -->
         <section class="hero">
-            <h1>Welcome to Turtle Biz</h1>
-            <p>Your one-stop shop for all things turtle!</p>
-            
+            <h1>
+                <a href="about.html" class="hero-link">Welcome to Turtle Biz</a>
+            </h1>
+            <p>
+                <a href="shop.html" class="hero-link">Your one-stop shop for all things turtle!</a>
+            </p>
+            <!-- Call-to-Action Buttons -->
+            <div class="hero-buttons">
+                <a href="shop.html" class="btn">Shop Now</a>
+                <a href="about.html" class="btn">Learn More</a>
+            </div>
+
             <!-- Audio Player Integration -->
             <div class="audio-player">
-                <button id="play-pause-btn" aria-label="Play TurtleBiz Track">
-                    <i class="fas fa-play"></i>
+                <button id="play-pause-btn" aria-label="Play/Pause TurtleBiz Track">
+                    <i class="fas fa-play" id="play-icon"></i>
+                    <i class="fas fa-pause" id="pause-icon" style="display: none;"></i>
                 </button>
                 <span id="track-name">Now Playing: TurtleBiz Theme</span>
                 <div class="progress-container">
@@ -109,7 +119,7 @@
 
             <div class="product">
                 <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
-                <h2>Turtle Plush Toy</h2>
+                <h2>Turtle Biz Plush Toy</h2>
                 <p>$19.99</p>
                 <button class="add-to-cart" aria-label="Add Turtle Plush Toy to Cart">Add to Cart</button>
             </div>

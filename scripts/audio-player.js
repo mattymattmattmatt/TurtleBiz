@@ -1,80 +1,128 @@
-// Audio Player Elements
-const audio = document.getElementById('audio');
-const playPauseBtn = document.getElementById('play-pause-btn');
-const playPauseIcon = playPauseBtn.querySelector('i');
-const progressBar = document.getElementById('progress-bar');
-const muteBtn = document.getElementById('mute-btn');
-const volumeSlider = document.getElementById('volume-slider');
+// audio-player.js
 
-// Play/Pause Toggle
-playPauseBtn.addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
+  const audio = document.getElementById('audio');
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const progressBar = document.getElementById('progress-bar');
+  const progressContainer = document.querySelector('.progress-container');
+  const volumeSlider = document.getElementById('volume-slider');
+  const muteBtn = document.getElementById('mute-btn');
+
+  // Play or pause the audio
+  playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
-        audio.play();
-        playPauseIcon.classList.remove('fa-play');
-        playPauseIcon.classList.add('fa-pause');
+      audio.play();// audio-player.js
+
+document.addEventListener('DOMContentLoaded', () => {
+  const audio = document.getElementById('audio');
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const progressBar = document.getElementById('progress-bar');
+  const progressContainer = document.querySelector('.progress-container');
+  const volumeSlider = document.getElementById('volume-slider');
+  const muteBtn = document.getElementById('mute-btn');
+
+  // Play or pause the audio
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'inline';
     } else {
-        audio.pause();
-        playPauseIcon.classList.remove('fa-pause');
-        playPauseIcon.classList.add('fa-play');
+      audio.pause();
+      playIcon.style.display = 'inline';
+      pauseIcon.style.display = 'none';
     }
-});
+  });
 
-// Update Play/Pause Icon on Audio End
-audio.addEventListener('ended', () => {
-    playPauseIcon.classList.remove('fa-pause');
-    playPauseIcon.classList.add('fa-play');
-    progressBar.style.width = '0%';
-});
-
-// Update Progress Bar as Audio Plays
-audio.addEventListener('timeupdate', () => {
+  // Update the progress bar as the audio plays
+  audio.addEventListener('timeupdate', () => {
     const progressPercent = (audio.currentTime / audio.duration) * 100;
     progressBar.style.width = `${progressPercent}%`;
-});
+  });
 
-// Seek Audio on Progress Bar Click
-const progressContainer = document.querySelector('.progress-container');
-progressContainer.addEventListener('click', (e) => {
+  // Seek when clicking on the progress bar
+  progressContainer.addEventListener('click', (e) => {
     const width = progressContainer.clientWidth;
     const clickX = e.offsetX;
     const duration = audio.duration;
 
     audio.currentTime = (clickX / width) * duration;
-});
+  });
 
-// Mute/Unmute Toggle
-muteBtn.addEventListener('click', () => {
+  // Volume control
+  volumeSlider.addEventListener('input', (e) => {
+    audio.volume = e.currentTarget.value;
+    updateVolumeIcon();
+  });
+
+  // Mute or unmute the audio
+  muteBtn.addEventListener('click', () => {
     audio.muted = !audio.muted;
-    if (audio.muted) {
-        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+    updateVolumeIcon();
+  });
+
+  // Update volume icon based on volume level
+  function updateVolumeIcon() {
+    const volumeIcon = muteBtn.querySelector('i');
+    if (audio.muted || audio.volume === 0) {
+      volumeIcon.classList.remove('fa-volume-up');
+      volumeIcon.classList.add('fa-volume-mute');
     } else {
-        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      volumeIcon.classList.remove('fa-volume-mute');
+      volumeIcon.classList.add('fa-volume-up');
     }
+  }
 });
 
-// Volume Slider Control
-volumeSlider.addEventListener('input', (e) => {
-    audio.volume = e.target.value;
-    if (audio.volume === 0) {
-        audio.muted = true;
-        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'inline';
     } else {
-        audio.muted = false;
-        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      audio.pause();
+      playIcon.style.display = 'inline';
+      pauseIcon.style.display = 'none';
     }
-});
+  });
 
-// Keyboard Accessibility for Audio Controls
-playPauseBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        playPauseBtn.click();
-    }
-});
+  // Update the progress bar as the audio plays
+  audio.addEventListener('timeupdate', () => {
+    const progressPercent = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = `${progressPercent}%`;
+  });
 
-muteBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        muteBtn.click();
+  // Seek when clicking on the progress bar
+  progressContainer.addEventListener('click', (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+
+    audio.currentTime = (clickX / width) * duration;
+  });
+
+  // Volume control
+  volumeSlider.addEventListener('input', (e) => {
+    audio.volume = e.currentTarget.value;
+    updateVolumeIcon();
+  });
+
+  // Mute or unmute the audio
+  muteBtn.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    updateVolumeIcon();
+  });
+
+  // Update volume icon based on volume level
+  function updateVolumeIcon() {
+    const volumeIcon = muteBtn.querySelector('i');
+    if (audio.muted || audio.volume === 0) {
+      volumeIcon.classList.remove('fa-volume-up');
+      volumeIcon.classList.add('fa-volume-mute');
+    } else {
+      volumeIcon.classList.remove('fa-volume-mute');
+      volumeIcon.classList.add('fa-volume-up');
     }
+  }
 });
