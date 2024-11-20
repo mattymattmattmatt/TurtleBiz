@@ -1,0 +1,273 @@
+/* CSS Variables for easy theme management */
+:root {
+    --primary-color: #2ecc71;
+    --secondary-color: #27ae60;
+    --accent-color: #f1c40f;
+    --font-primary: 'Pacifico', cursive;
+    --font-secondary: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-secondary);
+    background-color: #ecf0f1;
+}
+
+header {
+    background-color: var(--primary-color);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::after {
+    content: '';
+    background: url('turtle-pattern.png') repeat;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
+header img {
+    max-width: 150px;
+    animation: float 3s ease-in-out infinite;
+}
+
+nav {
+    margin-top: 15px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    display: block;
+    width: 0%;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+.hero {
+    background-image: url('turtle-hero.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 150px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0; left: 0;
+    bottom: 0; right: 0;
+}
+
+.hero h1 {
+    font-size: 60px;
+    margin: 0;
+    font-family: var(--font-primary);
+    position: relative;
+    z-index: 1;
+    animation: slideIn 1s forwards;
+}
+
+.hero p {
+    font-size: 24px;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 2s forwards;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 20px;
+    justify-content: center;
+}
+
+.product {
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    width: 250px;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.product:hover {
+    transform: translateY(-10px);
+}
+
+.product img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.product h2 {
+    font-size: 22px;
+    color: var(--secondary-color);
+    margin: 15px 0 10px;
+}
+
+.product p {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+.product button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.product button:hover {
+    background-color: #d4ac0d;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::after {
+    content: '';
+    background: url('turtle-pattern.png') repeat;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
+footer nav {
+    margin-bottom: 10px;
+}
+
+footer nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Audio Player Styles */
+.audio-player {
+    margin-top: 30px;
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(0,0,0,0.6);
+    padding: 15px 25px;
+    border-radius: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.audio-player button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-size: 30px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.audio-player #track-name {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.audio-player i {
+    transition: color 0.3s;
+}
+
+.audio-player button:hover i {
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 40px;
+    }
+    .hero p {
+        font-size: 20px;
+    }
+    .product {
+        width: 100%;
+        margin: 10px;
+    }
+    .audio-player {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .audio-player button {
+        margin: 0 0 10px 0;
+    }
+    .audio-player #track-name {
+        font-size: 18px;
+    }
+}

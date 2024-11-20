@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turtle Biz - Turtle Themed Merchandise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover the finest turtle-themed merchandise at Turtle Biz. From plush toys to stylish accessories, we have it all!">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Turtle Biz - Turtle Themed Merchandise">
+    <meta property="og:description" content="Your one-stop shop for all things turtle!">
+    <meta property="og:image" content="URL_to_image.jpg">
+    <meta property="og:url" content="https://www.turtlebiz.com">
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-dYqkXPLeP+YQVziHc7e1A+2nPIan1B3jLxXWnDQFFEl3tH4Z0uXID1hM+6IQ2hUFvXgPiyMwnkF3iFm3SlZQ0Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header>
+    <img src="TurtleBiz.png" alt="Turtle Biz Logo">
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Shop</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <h1>Welcome to Turtle Biz</h1>
+        <p>Your one-stop shop for all things turtle!</p>
+        
+        <!-- Audio Player Integration -->
+        <div class="audio-player">
+            <button id="play-pause-btn" aria-label="Play/Pause">
+                <i class="fas fa-play"></i>
+            </button>
+            <span id="track-name">Now Playing: TurtleBiz</span>
+            <audio id="audio" src="TurtleBiz.mp3"></audio>
+        </div>
+    </section>
+
+    <section class="products">
+        <div class="product">
+            <img src="turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
+            <h2>Turtle Scotch Whiskey</h2>
+            <p>$99.99</p>
+            <button aria-label="Add Turtle Scotch Whiskey to Cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
+            <h2>Turtle Glass Cup</h2>
+            <p>$12.99</p>
+            <button aria-label="Add Turtle Glass Cup to Cart">Add to Cart</button>
+        </div>
+        <div class="product">
+            <img src="turtle-hat.png" alt="Turtle Hat" loading="lazy">
+            <h2>Turtle Hat</h2>
+            <p>$24.99</p>
+            <button aria-label="Add Turtle Hat to Cart">Add to Cart</button>
+        </div>
+        <!-- Add more products as needed -->
+    </section>
+</main>
+
+<footer>
+    <nav>
+        <a href="#">Privacy Policy</a> |
+        <a href="#">Terms of Service</a> |
+        <a href="#">Help Center</a>
+    </nav>
+    <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
+    <p>Follow us on:
+        <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Facebook</a> |
+        <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Instagram</a> |
+        <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color); text-decoration: none;">Twitter</a>
+    </p>
+</footer>
+
+<!-- JavaScript for Audio Player -->
+<script>
+    const audio = document.getElementById('audio');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const playPauseIcon = playPauseBtn.querySelector('i');
+
+    playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            playPauseIcon.classList.remove('fa-play');
+            playPauseIcon.classList.add('fa-pause');
+        } else {
+            audio.pause();
+            playPauseIcon.classList.remove('fa-pause');
+            playPauseIcon.classList.add('fa-play');
+        }
+    });
+
+    // Update button icon when audio ends
+    audio.addEventListener('ended', () => {
+        playPauseIcon.classList.remove('fa-pause');
+        playPauseIcon.classList.add('fa-play');
+    });
+</script>
+
+</body>
+</html>
