@@ -624,6 +624,13 @@ footer a:hover img {
     border: 1px solid #ccc;
 }
 
+/* Sketchfab Embed Wrapper - Optional: Center the embed */
+.sketchfab-embed-wrapper {
+    max-width: 600px; /* Adjust this value as needed */
+    margin: 0 auto; /* Centers the embed horizontally */
+    padding: 10px; /* Optional: Adds padding around the embed */
+}
+
 /* Responsive iframe container */
 .responsive-iframe-container {
     position: relative;
@@ -641,3 +648,4 @@ footer a:hover img {
     height: 100%;
     border: 0;
 }
+
