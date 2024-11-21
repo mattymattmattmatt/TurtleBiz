@@ -624,17 +624,17 @@ footer a:hover img {
     border: 1px solid #ccc;
 }
 
-/* Sketchfab Embed Wrapper - Optional: Center the embed */
+/* Sketchfab Embed Wrapper - Centers the embed */
 .sketchfab-embed-wrapper {
-    max-width: 600px; /* Adjust this value as needed */
     margin: 0 auto; /* Centers the embed horizontally */
     padding: 10px; /* Optional: Adds padding around the embed */
+    max-width: 400px; /* Default max width for small screens */
 }
 
 /* Responsive iframe container */
 .responsive-iframe-container {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    padding-bottom: 75%; /* 4:3 Aspect Ratio */
     padding-top: 30px; /* Optional: Adjust as needed */
     height: 0;
     overflow: hidden;
@@ -649,3 +649,23 @@ footer a:hover img {
     border: 0;
 }
 
+/* Media Queries for Different Screen Sizes */
+@media (min-width: 768px) {
+    .sketchfab-embed-wrapper {
+        max-width: 600px; /* Larger size on tablets and above */
+    }
+
+    .responsive-iframe-container {
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    }
+}
+
+@media (min-width: 1024px) {
+    .sketchfab-embed-wrapper {
+        max-width: 800px; /* Larger size on desktops */
+    }
+
+    .responsive-iframe-container {
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    }
+}
