@@ -3,7 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('model-viewer');
 
-    // Validate container existence
     if (!container) {
         console.error('Model viewer container not found!');
         return;
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     container.appendChild(renderer.domElement);
 
     // Add ambient light
-    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.8);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
     // Add directional light
@@ -35,23 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     directionalLight.position.set(1, 1, 1).normalize();
     scene.add(directionalLight);
 
-    // Load the 3D model
-    const loader = new THREE.GLTFLoader();
-    loader.load(
-        'models/turtle_model.glb', // Path to your 3D model file
-        function (gltf) {
-            const model = gltf.scene;
-            scene.add(model);
-
-            // Optional: Adjust model position or scale
-            model.scale.set(1, 1, 1);
-            model.rotation.y = Math.PI; // Rotate model if necessary
-        },
-        undefined,
-        function (error) {
-            console.error('An error occurred while loading the model:', error);
-        }
-    );
+    // Add a simple cube to verify Three.js is working
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 
     // Handle window resize
     window.addEventListener('resize', () => {
@@ -65,15 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Enable orbit controls
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // Adds damping (inertia)
+    controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
     // Animation loop
     function animate() {
         requestAnimationFrame(animate);
 
-        controls.update(); // Required if controls.enableDamping = true
+        // Rotate the cube for testing
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
 
+        controls.update();
         renderer.render(scene, camera);
     }
 
