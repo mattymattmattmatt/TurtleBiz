@@ -3,8 +3,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('model-viewer');
 
-    // Create scene, camera, and renderer
+    // Validate container existence
+    if (!container) {
+        console.error('Model viewer container not found!');
+        return;
+    }
+
+    // Create scene
     const scene = new THREE.Scene();
+
+    // Create camera
     const camera = new THREE.PerspectiveCamera(
         75,
         container.clientWidth / container.clientHeight,
@@ -13,28 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     camera.position.z = 5;
 
+    // Create renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
-    // Add lights
+    // Add ambient light
     const ambientLight = new THREE.AmbientLight(0xcccccc, 0.8);
     scene.add(ambientLight);
 
+    // Add directional light
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-    directionalLight.position.set(1, 1, 0).normalize();
+    directionalLight.position.set(1, 1, 1).normalize();
     scene.add(directionalLight);
 
     // Load the 3D model
     const loader = new THREE.GLTFLoader();
     loader.load(
-        'models/turtle_model.glb', // Adjust the path to your model
+        'models/turtle_model.glb', // Path to your 3D model file
         function (gltf) {
             const model = gltf.scene;
             scene.add(model);
 
-            // Optionally adjust the model's position and rotation
-            model.rotation.y = Math.PI;
+            // Optional: Adjust model position or scale
+            model.scale.set(1, 1, 1);
+            model.rotation.y = Math.PI; // Rotate model if necessary
         },
         undefined,
         function (error) {
@@ -54,12 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Enable orbit controls
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
+    controls.enableDamping = true; // Adds damping (inertia)
+    controls.dampingFactor = 0.05;
 
     // Animation loop
     function animate() {
         requestAnimationFrame(animate);
-        controls.update();
+
+        controls.update(); // Required if controls.enableDamping = true
+
         renderer.render(scene, camera);
     }
 
