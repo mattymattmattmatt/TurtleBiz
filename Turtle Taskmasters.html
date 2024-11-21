@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turtle Taskmasters</title>
+    <style>
+        /* Reset default margins and paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container for the game and HUD */
+        .game-container {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        /* Canvas Styling */
+        #gameCanvas {
+            background-color: #2c2c2c;
+            border: 3px solid #00b894;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.7);
+        }
+
+        /* HUD Styling */
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 20px;
+            font-size: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        #hud .player-tally {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #hud .level-display, #hud .high-score-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Start, Countdown, and Game Over Screens */
+        #startScreen, #gameOverScreen, #countdownOverlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            border: 2px solid #00b894;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 184, 148, 0.9);
+            z-index: 10;
+            display: none; /* Hidden by default */
+        }
+
+        #startScreen.active, #countdownOverlay.active {
+            display: block;
+        }
+
+        #startScreen h1, #gameOverScreen h1, #countdownOverlay h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00b894;
+            text-shadow: 2px 2px #000;
+        }
+
+        #startScreen p, #gameOverScreen p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        #countdownOverlay h1 {
+            font-size: 100px;
+            color: #FFD700;
+            text-shadow: 3px 3px #000;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #00b894;
+            border: none;
+            color: #fff;
+            border-radius: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+        }
+
+        button:hover {
+            background-color: #019875;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #017d61;
+            transform: translateY(0);
+        }
+
+        /* Rules Section Styling */
+        #rules {
+            max-width: 800px;
+            width: 90%;
+            margin: 30px auto;
+            padding: 20px 30px;
+            background-color: #2c2c2c;
+            border: 2px solid #00b894;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.5);
+        }
+
+        #rules h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #00b894;
+            text-shadow: 1px 1px #000;
+        }
+
+        #rules ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        #rules ul ul {
+            list-style-type: circle;
+            padding-left: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 850px) {
+            #hud {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 18px;
+            }
+
+            button {
+                padding: 10px 25px;
+                font-size: 16px;
+            }
+
+            #rules {
+                padding: 15px 20px;
+            }
+
+            #rules h2 {
+                font-size: 24px;
+            }
+
+            #rules ul {
+                font-size: 16px;
+            }
+
+            #countdownOverlay h1 {
+                font-size: 60px;
+            }
+        }
+
+        /* Animation Classes */
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Game and HUD Container -->
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="hud">
+            <div class="player-tally" id="player1Tally">
+                <strong style="color:#00b894;">Player 1 (Left):</strong> <span id="player1Count">0</span>
+            </div>
+            <div class="level-display">
+                <strong>Level:</strong> <span id="level">1</span>
+            </div>
+            <div class="player-tally" id="player2Tally">
+                <strong style="color:#FF4081;">Player 2 (Right):</strong> <span id="player2Count">0</span>
+            </div>
+            <div class="high-score-display">
+                <strong>High Score:</strong> <span id="highScore">1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="startScreen" class="active">
+        <h1>Turtle Taskmasters</h1>
+        <p>Navigate your turtles through the office, complete tasks, and avoid obstacles to achieve the highest level possible!</p>
+        <button id="startButton">Start Game</button>
+    </div>
+
+    <!-- Countdown Overlay -->
+    <div id="countdownOverlay">
+        <h1 id="countdownNumber">3</h1>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen">
+        <h1>Game Over</h1>
+        <p>Level Reached: <span id="finalLevel">1</span></p>
+        <p>Player 1 (Left) Tasks Collected: <span id="finalPlayer1">0</span></p>
+        <p>Player 2 (Right) Tasks Collected: <span id="finalPlayer2">0</span></p>
+        <button id="restartButton">Play Again</button>
+    </div>
+
+    <!-- Game Rules Section -->
+    <div id="rules">
+        <h2>How to Play "Turtle Taskmasters"</h2>
+        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you take on the roles of diligent office turtles navigating through a bustling office environment. Your goal is to complete all tasks in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
+        <ul>
+            <li><strong>Controls:</strong>
+                <ul>
+                    <li><strong>Player 1 (Turtle 1 - Left):</strong> <code>W</code> (Up), <code>A</code> (Left), <code>S</code> (Down), <code>D</code> (Right) to apply thrust and move.</li>
+                    <li><strong>Player 2 (Turtle 2 - Right):</strong> <code>I</code> (Up), <code>J</code> (Left), <code>K</code> (Down), <code>L</code> (Right) to apply thrust and move.</li>
+                </ul>
+            </li>
+            <li><strong>Objectives:</strong>
+                <ul>
+                    <li>Collect <span style="color:#FFD700;">Tasks</span> (yellow circles) to complete the level.</li>
+                    <li>Avoid <span style="color:#FF5722;">Obstacles</span> (red circles) that can eliminate a turtle upon collision.</li>
+                </ul>
+            </li>
+            <li><strong>Game Flow:</strong>
+                <ul>
+                    <li>Start the game by clicking the "Start Game" button.</li>
+                    <li>A countdown will begin, giving players time to get ready.</li>
+                    <li>Each level starts with a fixed number of tasks and obstacles. Collect all tasks to advance to the next level.</li>
+                    <li>With each level cleared, the number of tasks and obstacles doubles, increasing the difficulty.</li>
+                    <li>If a turtle collides with an obstacle, it becomes hidden until the next level is reached.</li>
+                    <li>All remaining obstacles are cleared when advancing to the next level.</li>
+                    <li>The game ends when both turtles collide with obstacles.</li>
+                    <li>Restart the game by clicking the "Play Again" button on the Game Over screen.</li>
+                </ul>
+            </li>
+            <li><strong>Tips:</strong>
+                <ul>
+                    <li>Coordinate with your partner to cover more ground efficiently.</li>
+                    <li>Maintain momentum to navigate swiftly through obstacles.</li>
+                    <li>Plan your path to collect tasks without getting trapped by obstacles.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Audio Elements -->
+    <!-- Note: Replace the src URLs with actual audio file URLs or paths -->
+    <audio id="bgMusic" loop>
+        <source src="https://example.com/background-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="collectTaskSound">
+        <source src="https://example.com/collect-task.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="collisionSound">
+        <source src="https://example.com/collision.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="levelUpSound">
+        <source src="https://example.com/level-up.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Get Canvas and Context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // HUD Elements
+        const levelSpan = document.getElementById('level');
+        const player1CountElement = document.getElementById('player1Count');
+        const player2CountElement = document.getElementById('player2Count');
+        const highScoreElement = document.getElementById('highScore');
+
+        // Start, Countdown, and Game Over Screens
+        const startScreen = document.getElementById('startScreen');
+        const startButton = document.getElementById('startButton');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalLevel = document.getElementById('finalLevel');
+        const finalPlayer1 = document.getElementById('finalPlayer1');
+        const finalPlayer2 = document.getElementById('finalPlayer2');
+        const restartButton = document.getElementById('restartButton');
+
+        // Audio Elements
+        const bgMusic = document.getElementById('bgMusic');
+        const collectTaskSound = document.getElementById('collectTaskSound');
+        const collisionSound = document.getElementById('collisionSound');
+        const levelUpSound = document.getElementById('levelUpSound');
+
+        // Game Variables
+        let gameInterval;
+        let currentLevel = 1;
+        let tasksPerLevel = 2;
+        let obstaclesPerLevel = 2;
+        let keysPressed = {};
+
+        // Collision Buffer
+        const COLLISION_BUFFER = 5;
+
+        // High Score Management
+        let highScore = parseInt(localStorage.getItem('turtleTaskmastersHighScore')) || 1;
+        highScoreElement.textContent = highScore;
+
+        // Tally Variables
+        let player1Tasks = 0;
+        let player2Tasks = 0;
+
+        // Particle Management
+        let particles = [];
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 2;
+                this.color = color;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.life = 60; // Frames
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+                this.opacity = this.life / 60;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Turtle {
+            constructor(x, y, controls, playerNumber) {
+                this.x = x;
+                this.y = y;
+                this.size = 20; // Radius
+                this.baseSpeed = 0.2; // Acceleration per frame
+                this.friction = 0.98; // Friction to reduce velocity
+                this.vx = 0;
+                this.vy = 0;
+                this.color = controls.color;
+                this.altColor = controls.altColor;
+                this.controls = controls; // Object containing control keys
+                this.alive = true;
+                this.visible = true;
+                this.playerNumber = playerNumber; // 1 or 2
+            }
+
+            draw() {
+                if (!this.visible) return;
+
+                // Draw Turtle Body
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Turtle Eyes
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(this.x - 8, this.y - 8, 4, 0, Math.PI * 2);
+                ctx.arc(this.x + 8, this.y - 8, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw Pupils
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(this.x - 8, this.y - 8, 2, 0, Math.PI * 2);
+                ctx.arc(this.x + 8, this.y - 8, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Optional: Add a shadow for depth
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            }
+
+            move() {
+                if (!this.alive) return;
+
+                // Apply thrust based on keys pressed
+                if (keysPressed[this.controls.up]) {
+                    this.vy -= this.baseSpeed;
+                }
+                if (keysPressed[this.controls.down]) {
+                    this.vy += this.baseSpeed;
+                }
+                if (keysPressed[this.controls.left]) {
+                    this.vx -= this.baseSpeed;
+                }
+                if (keysPressed[this.controls.right]) {
+                    this.vx += this.baseSpeed;
+                }
+
+                // Apply friction
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+
+                // Update position
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Boundary checks
+                if (this.x + this.size > canvas.width) {
+                    this.x = canvas.width - this.size;
+                    this.vx *= -0.5; // Bounce back with damping
+                }
+                if (this.x - this.size < 0) {
+                    this.x = this.size;
+                    this.vx *= -0.5;
+                }
+                if (this.y + this.size > canvas.height) {
+                    this.y = canvas.height - this.size;
+                    this.vy *= -0.5;
+                }
+                if (this.y - this.size < 0) {
+                    this.y = this.size;
+                    this.vy *= -0.5;
+                }
+
+                // Animate Turtle (simple color change to simulate animation)
+                // Toggle between two colors for a simple animation effect
+                this.color = (Math.floor(this.x + this.y) % 2 === 0) ? this.controls.color : this.altColor;
+            }
+
+            die() {
+                this.alive = false;
+                this.visible = false;
+                collisionSound.currentTime = 0;
+                collisionSound.play();
+                spawnParticles(this.x, this.y, {r: 255, g: 87, b: 34}); // Red particles for collision
+            }
+
+            revive(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = 0;
+                this.vy = 0;
+                this.alive = true;
+                this.visible = true;
+            }
+        }
+
+        class Task {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = 15; // Radius
+                this.color = '#FFD700';
+                this.collectedBy = null; // 1 or 2
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Add a small icon or detail to represent a task (e.g., a paper)
+                ctx.fillStyle = '#fff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('📄', this.x, this.y + 4);
+            }
+        }
+
+        class Obstacle {
+            constructor(x, y, speed = 1) {
+                this.x = x;
+                this.y = y;
+                this.size = 20; // Radius
+                this.color = '#FF5722';
+                this.speed = speed;
+                this.direction = Math.random() * Math.PI * 2; // Random movement direction
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Add a small exclamation mark to indicate danger
+                ctx.fillStyle = '#fff';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('!', this.x, this.y + 5);
+            }
+
+            move() {
+                // Move obstacle in its current direction
+                this.x += Math.cos(this.direction) * this.speed;
+                this.y += Math.sin(this.direction) * this.speed;
+
+                // Bounce off the walls
+                if (this.x + this.size > canvas.width || this.x - this.size < 0) {
+                    this.direction = Math.PI - this.direction;
+                }
+                if (this.y + this.size > canvas.height || this.y - this.size < 0) {
+                    this.direction = -this.direction;
+                }
+            }
+        }
+
+        // Initialize Game Entities
+        let player1, player2;
+        let tasks = [];
+        let obstacles = [];
+
+        function initGame() {
+            // Define controls for both players
+            const controlsPlayer1 = {
+                up: 'w',
+                down: 's',
+                left: 'a',
+                right: 'd',
+                color: '#00b894',
+                altColor: '#00a78a'
+            };
+
+            const controlsPlayer2 = {
+                up: 'i',
+                down: 'k',
+                left: 'j',
+                right: 'l',
+                color: '#FF4081',
+                altColor: '#E91E63'
+            };
+
+            // Initialize players at different positions
+            player1 = new Turtle(canvas.width * 0.25, canvas.height / 2, controlsPlayer1, 1);
+            player2 = new Turtle(canvas.width * 0.75, canvas.height / 2, controlsPlayer2, 2);
+
+            tasks = [];
+            obstacles = [];
+            currentLevel = 1;
+            tasksPerLevel = 2;
+            obstaclesPerLevel = 2;
+            levelSpan.textContent = currentLevel;
+            player1Tasks = 0;
+            player2Tasks = 0;
+            player1CountElement.textContent = player1Tasks;
+            player2CountElement.textContent = player2Tasks;
+            highScoreElement.textContent = highScore;
+            spawnLevelEntities();
+        }
+
+        // Spawn Entities for Current Level
+        function spawnLevelEntities() {
+            // Spawn fixed number of tasks
+            for (let i = 0; i < tasksPerLevel; i++) {
+                spawnEntity('task');
+            }
+
+            // Spawn fixed number of obstacles
+            for (let i = 0; i < obstaclesPerLevel; i++) {
+                spawnEntity('obstacle');
+            }
+        }
+
+        // Spawn Entities without Overlapping
+        function spawnEntity(type) {
+            const maxAttempts = 100;
+            let attempts = 0;
+            let newEntity;
+            let overlapping;
+
+            do {
+                const x = Math.random() * (canvas.width - 80) + 40;
+                const y = Math.random() * (canvas.height - 80) + 40;
+
+                switch(type) {
+                    case 'task':
+                        newEntity = new Task(x, y);
+                        break;
+                    case 'obstacle':
+                        // Obstacles have random speeds based on level
+                        const speed = 1 + currentLevel * 0.2;
+                        newEntity = new Obstacle(x, y, speed);
+                        break;
+                }
+
+                overlapping = false;
+                // Check against all existing entities and players
+                const allEntities = [...tasks, ...obstacles, player1, player2];
+                for (let entity of allEntities) {
+                    if (entity && isColliding(newEntity, entity)) {
+                        overlapping = true;
+                        break;
+                    }
+                }
+
+                attempts++;
+                if (attempts > maxAttempts) {
+                    // Prevent infinite loop in case of high density
+                    break;
+                }
+            } while (overlapping && attempts <= maxAttempts);
+
+            // Add the new entity to the respective array
+            if (!overlapping && attempts <= maxAttempts) {
+                switch(type) {
+                    case 'task':
+                        tasks.push(newEntity);
+                        break;
+                    case 'obstacle':
+                        obstacles.push(newEntity);
+                        break;
+                }
+            }
+        }
+
+        // Collision Detection
+        function isColliding(entity1, entity2) {
+            const dx = entity1.x - entity2.x;
+            const dy = entity1.y - entity2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (entity1.size + entity2.size + COLLISION_BUFFER);
+        }
+
+        // Handle Collision Between Two Turtles
+        function handleTurtleCollision() {
+            const dx = player1.x - player2.x;
+            const dy = player1.y - player2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < (player1.size + player2.size + COLLISION_BUFFER)) {
+                // Simple elastic collision physics
+                const angle = Math.atan2(dy, dx);
+                const totalMass = 1 + 1; // Assuming equal mass
+
+                // Calculate new velocities
+                const newVx1 = ((player1.vx * (1 - 1)) + (player2.vx * 2)) / totalMass;
+                const newVy1 = ((player1.vy * (1 - 1)) + (player2.vy * 2)) / totalMass;
+                const newVx2 = ((player2.vx * (1 - 1)) + (player1.vx * 2)) / totalMass;
+                const newVy2 = ((player2.vy * (1 - 1)) + (player1.vy * 2)) / totalMass;
+
+                player1.vx = newVx1;
+                player1.vy = newVy1;
+                player2.vx = newVx2;
+                player2.vy = newVy2;
+
+                // Spawn particles at collision center
+                spawnParticles((player1.x + player2.x) / 2, (player1.y + player2.y) / 2, {r: 255, g: 255, b: 255});
+            }
+        }
+
+        // Particle Generation
+        function spawnParticles(x, y, color) {
+            for (let i = 0; i < 20; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        // Game Loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Move and Draw Players
+            player1.move();
+            player1.draw();
+
+            player2.move();
+            player2.draw();
+
+            // Handle Collision Between Turtles
+            handleTurtleCollision();
+
+            // Move and Draw Obstacles
+            obstacles.forEach(obstacle => {
+                obstacle.move();
+                obstacle.draw();
+            });
+
+            // Draw and check tasks
+            tasks.forEach((task, index) => {
+                task.draw();
+                // Check collision with Player 1
+                if (player1.alive && isColliding(player1, task)) {
+                    task.collectedBy = 1;
+                    tasks.splice(index, 1);
+                    try {
+                        collectTaskSound.currentTime = 0;
+                        collectTaskSound.play();
+                    } catch (e) {
+                        console.warn('collectTaskSound failed to play:', e);
+                    }
+                    player1Tasks++;
+                    player1CountElement.textContent = player1Tasks;
+                    spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0}); // Gold particles for task collection
+                    checkLevelCompletion();
+                }
+                // Check collision with Player 2
+                else if (player2.alive && isColliding(player2, task)) {
+                    task.collectedBy = 2;
+                    tasks.splice(index, 1);
+                    try {
+                        collectTaskSound.currentTime = 0;
+                        collectTaskSound.play();
+                    } catch (e) {
+                        console.warn('collectTaskSound failed to play:', e);
+                    }
+                    player2Tasks++;
+                    player2CountElement.textContent = player2Tasks;
+                    spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0});
+                    checkLevelCompletion();
+                }
+            });
+
+            // Draw and check obstacles
+            obstacles.forEach(obstacle => {
+                obstacle.draw();
+                // Check collision with Player 1
+                if (player1.alive && isColliding(player1, obstacle)) {
+                    player1.die();
+                    checkGameOver();
+                }
+                // Check collision with Player 2
+                if (player2.alive && isColliding(player2, obstacle)) {
+                    player2.die();
+                    checkGameOver();
+                }
+            });
+
+            // Update and Draw Particles
+            particles.forEach((particle, index) => {
+                particle.update();
+                if (particle.life <= 0) {
+                    particles.splice(index, 1);
+                } else {
+                    particle.draw();
+                }
+            });
+        }
+
+        // Check if all tasks are collected to advance to next level
+        function checkLevelCompletion() {
+            if (tasks.length === 0) {
+                advanceToNextLevel();
+            }
+        }
+
+        // Advance to Next Level
+        function advanceToNextLevel() {
+            clearInterval(gameInterval);
+            try {
+                bgMusic.pause();
+            } catch (e) {
+                console.warn('bgMusic failed to pause:', e);
+            }
+
+            currentLevel++;
+            levelSpan.textContent = currentLevel;
+            try {
+                levelUpSound.currentTime = 0;
+                levelUpSound.play();
+            } catch (e) {
+                console.warn('levelUpSound failed to play:', e);
+            }
+
+            // Double the number of tasks and obstacles
+            tasksPerLevel *= 2;
+            obstaclesPerLevel *= 2;
+
+            // Revive any dead players at starting positions
+            if (!player1.alive) {
+                player1.revive(canvas.width * 0.25, canvas.height / 2);
+            }
+            if (!player2.alive) {
+                player2.revive(canvas.width * 0.75, canvas.height / 2);
+            }
+
+            // Clear remaining obstacles
+            obstacles = [];
+
+            // Spawn new set of tasks and obstacles
+            spawnLevelEntities();
+
+            // Restart game loop
+            gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
+            try {
+                bgMusic.currentTime = 0;
+                bgMusic.play();
+            } catch (e) {
+                console.warn('bgMusic failed to play:', e);
+            }
+        }
+
+        // Check if game is over (both turtles are dead)
+        function checkGameOver() {
+            if (!player1.alive && !player2.alive) {
+                endGame();
+            }
+        }
+
+        // Start Game with Countdown
+        function startGameWithCountdown() {
+            startScreen.classList.remove('active');
+            countdownOverlay.classList.add('active');
+            let countdown = 3;
+            countdownNumber.textContent = countdown;
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    countdownNumber.textContent = countdown;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownOverlay.classList.remove('active');
+                    initGame();
+                    gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
+                    try {
+                        bgMusic.currentTime = 0;
+                        bgMusic.play();
+                    } catch (e) {
+                        console.warn('bgMusic failed to play:', e);
+                    }
+                }
+            }, 1000);
+        }
+
+        // End Game
+        function endGame() {
+            clearInterval(gameInterval);
+            try {
+                bgMusic.pause();
+            } catch (e) {
+                console.warn('bgMusic failed to pause:', e);
+            }
+            finalLevel.textContent = currentLevel;
+            finalPlayer1.textContent = player1Tasks;
+            finalPlayer2.textContent = player2Tasks;
+
+            // Update High Score
+            if (currentLevel > highScore) {
+                highScore = currentLevel;
+                highScoreElement.textContent = highScore;
+                localStorage.setItem('turtleTaskmastersHighScore', highScore);
+            }
+
+            gameOverScreen.classList.add('active');
+        }
+
+        // Event Listeners
+        document.addEventListener('keydown', (e) => {
+            keysPressed[e.key.toLowerCase()] = true; // Normalize keys to lowercase
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keysPressed[e.key.toLowerCase()] = false;
+        });
+
+        startButton.addEventListener('click', startGameWithCountdown);
+        restartButton.addEventListener('click', () => {
+            gameOverScreen.classList.remove('active');
+            startGameWithCountdown();
+        });
+
+        // Prevent Specific Keys from Scrolling the Page
+        window.addEventListener("keydown", function(e) {
+            if(["w","a","s","d","i","j","k","l"].includes(e.key.toLowerCase())) {
+                e.preventDefault();
+            }
+        }, false);
+    </script>
+</body>
+</html>

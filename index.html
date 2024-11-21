@@ -168,5 +168,29 @@
     <script src="scripts/audio-player.js"></script>
     <script src="scripts/cart.js"></script>
 
+<script>
+    // Triple-click detection on the logo
+    document.querySelector("header img").addEventListener("click", (() => {
+        let clickCount = 0;
+        let timer;
+
+        return () => {
+            clickCount++;
+            if (clickCount === 1) {
+                // Start a 3-second timer
+                timer = setTimeout(() => {
+                    clickCount = 0; // Reset the count after 3 seconds
+                }, 3000);
+            }
+
+            if (clickCount === 3) {
+                clearTimeout(timer); // Clear the timer
+                window.location.href = "Turtle Taskmasters.html"; // Redirect to the target page
+            }
+        };
+    })());
+</script>
+
+
 </body>
 </html>
