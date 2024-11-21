@@ -146,14 +146,16 @@
     </footer>
 
     <!-- External JavaScript Files -->
+
+    <!-- Include Three.js and Dependencies first -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="scripts/model-viewer.js"></script>
+
+    <!-- Then include other scripts -->
     <script src="scripts/audio-player.js"></script>
     <script src="scripts/cart.js"></script>
-
-    <!-- Include Three.js and Dependencies -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r142/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.142.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.142.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="scripts/model-viewer.js"></script>
 
 </body>
 </html>
