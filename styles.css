@@ -602,3 +602,24 @@ footer a:hover img {
     font-size: 24px;
     margin-top: 10px;
 }
+
+/* 3D Model Viewer Styles */
+#three-d-model {
+    text-align: center;
+    margin: 40px auto;
+}
+
+#three-d-model h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+#model-viewer {
+    width: 100%;
+    max-width: 800px;
+    height: 600px;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
