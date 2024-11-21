@@ -82,10 +82,33 @@
             </div>
         </section>
 
-        <!-- 3D Model Viewer Section -->
+        <!-- 3D Model Viewer Section with Sketchfab Embed -->
         <section id="three-d-model">
             <h2>Explore Our Turtle Model</h2>
-            <div id="model-viewer"></div>
+            <div class="sketchfab-embed-wrapper">
+                <div class="responsive-iframe-container">
+                    <iframe 
+                        title="turtle_model" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        mozallowfullscreen="true" 
+                        webkitallowfullscreen="true" 
+                        allow="autoplay; fullscreen; xr-spatial-tracking" 
+                        xr-spatial-tracking 
+                        execution-while-out-of-viewport 
+                        execution-while-not-rendered 
+                        web-share 
+                        src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
+                    </iframe>
+                </div>
+                <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+                    <a href="https://sketchfab.com/3d-models/turtle-model-0ba3427f952b48ad91415044d2fda93e?utm_medium=embed&utm_campaign=share-popup&utm_content=0ba3427f952b48ad91415044d2fda93e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">turtle_model</a> 
+                    by 
+                    <a href="https://sketchfab.com/matt_matt_mattmatt?utm_medium=embed&utm_campaign=share-popup&utm_content=0ba3427f952b48ad91415044d2fda93e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">matt_matt_mattmatt</a> 
+                    on 
+                    <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=0ba3427f952b48ad91415044d2fda93e" target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+                </p>
+            </div>
         </section>
 
         <!-- Products Section -->
@@ -148,11 +171,7 @@
 
     <!-- External JavaScript Files -->
 
-    <!-- Include Three.js and Dependencies first -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="scripts/model-viewer.js"></script>
+    <!-- Removed Three.js and Related Scripts -->
 
     <!-- Then include other scripts -->
     <script src="scripts/audio-player.js"></script>
