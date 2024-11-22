@@ -59,7 +59,7 @@
             gap: 10px;
         }
 
-        #hud .level-display, #hud .high-score-display {
+        #hud .level-display {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -229,9 +229,6 @@
             <div class="player-tally" id="player2Tally">
                 <strong style="color:#FF4081;">Player 2 (Right):</strong> <span id="player2Count">0</span>
             </div>
-            <div class="high-score-display">
-                <strong>High Score:</strong> <span id="highScore">1</span>
-            </div>
         </div>
     </div>
 
@@ -323,7 +320,6 @@
         const levelSpan = document.getElementById('level');
         const player1CountElement = document.getElementById('player1Count');
         const player2CountElement = document.getElementById('player2Count');
-        const highScoreElement = document.getElementById('highScore');
 
         // Start, Countdown, and Game Over Screens
         const startScreen = document.getElementById('startScreen');
@@ -352,16 +348,18 @@
         // Collision Buffer
         const COLLISION_BUFFER = 5;
 
-        // High Score Management
-        let highScore = parseInt(localStorage.getItem('turtleTaskmastersHighScore')) || 1;
-        highScoreElement.textContent = highScore;
-
         // Tally Variables
         let player1Tasks = 0;
         let player2Tasks = 0;
 
         // Particle Management
         let particles = [];
+
+        // Respawn Flags
+        let respawnTimeouts = {
+            player1: null,
+            player2: null
+        };
 
         class Particle {
             constructor(x, y, color) {
@@ -492,11 +490,26 @@
             }
 
             die() {
+                if (!this.alive) return; // Prevent multiple deaths
                 this.alive = false;
                 this.visible = false;
-                collisionSound.currentTime = 0;
-                collisionSound.play();
+                try {
+                    collisionSound.currentTime = 0;
+                    collisionSound.play();
+                } catch (e) {
+                    console.warn('collisionSound failed to play:', e);
+                }
                 spawnParticles(this.x, this.y, {r: 255, g: 87, b: 34}); // Red particles for collision
+
+                // Start respawn timer
+                respawnTimeouts[`player${this.playerNumber}`] = setTimeout(() => {
+                    this.revive(this.playerNumber === 1 ? canvas.width * 0.25 : canvas.width * 0.75, canvas.height / 2);
+                    try {
+                        bgMusic.play();
+                    } catch (e) {
+                        console.warn('bgMusic failed to play:', e);
+                    }
+                }, 3000);
             }
 
             revive(x, y) {
@@ -609,7 +622,6 @@
             player2Tasks = 0;
             player1CountElement.textContent = player1Tasks;
             player2CountElement.textContent = player2Tasks;
-            highScoreElement.textContent = highScore;
             spawnLevelEntities();
         }
 
@@ -780,12 +792,18 @@
                 // Check collision with Player 1
                 if (player1.alive && isColliding(player1, obstacle)) {
                     player1.die();
-                    checkGameOver();
+                    // Check if the other turtle is already dead or in respawn
+                    if (!player2.alive && !respawnTimeouts.player2) {
+                        checkGameOver();
+                    }
                 }
                 // Check collision with Player 2
                 if (player2.alive && isColliding(player2, obstacle)) {
                     player2.die();
-                    checkGameOver();
+                    // Check if the other turtle is already dead or in respawn
+                    if (!player1.alive && !respawnTimeouts.player1) {
+                        checkGameOver();
+                    }
                 }
             });
 
@@ -831,9 +849,13 @@
 
             // Revive any dead players at starting positions
             if (!player1.alive) {
+                clearTimeout(respawnTimeouts.player1);
+                respawnTimeouts.player1 = null;
                 player1.revive(canvas.width * 0.25, canvas.height / 2);
             }
             if (!player2.alive) {
+                clearTimeout(respawnTimeouts.player2);
+                respawnTimeouts.player2 = null;
                 player2.revive(canvas.width * 0.75, canvas.height / 2);
             }
 
@@ -853,11 +875,28 @@
             }
         }
 
-        // Check if game is over (both turtles are dead)
+        // Check if game is over (both turtles are dead and not respawning)
         function checkGameOver() {
-            if (!player1.alive && !player2.alive) {
+            // Ensure both turtles are not alive and not in the process of respawning
+            if (!player1.alive && !player2.alive && !respawnTimeouts.player1 && !respawnTimeouts.player2) {
                 endGame();
             }
+        }
+
+        // End Game
+        function endGame() {
+            clearInterval(gameInterval);
+            try {
+                bgMusic.pause();
+            } catch (e) {
+                console.warn('bgMusic failed to pause:', e);
+            }
+            finalLevel.textContent = currentLevel;
+            finalPlayer1.textContent = player1Tasks;
+            finalPlayer2.textContent = player2Tasks;
+
+            // Show Game Over screen
+            gameOverScreen.classList.add('active');
         }
 
         // Start Game with Countdown
@@ -886,28 +925,6 @@
             }, 1000);
         }
 
-        // End Game
-        function endGame() {
-            clearInterval(gameInterval);
-            try {
-                bgMusic.pause();
-            } catch (e) {
-                console.warn('bgMusic failed to pause:', e);
-            }
-            finalLevel.textContent = currentLevel;
-            finalPlayer1.textContent = player1Tasks;
-            finalPlayer2.textContent = player2Tasks;
-
-            // Update High Score
-            if (currentLevel > highScore) {
-                highScore = currentLevel;
-                highScoreElement.textContent = highScore;
-                localStorage.setItem('turtleTaskmastersHighScore', highScore);
-            }
-
-            gameOverScreen.classList.add('active');
-        }
-
         // Event Listeners
         document.addEventListener('keydown', (e) => {
             keysPressed[e.key.toLowerCase()] = true; // Normalize keys to lowercase
@@ -920,6 +937,11 @@
         startButton.addEventListener('click', startGameWithCountdown);
         restartButton.addEventListener('click', () => {
             gameOverScreen.classList.remove('active');
+            // Clear any pending respawn timers
+            clearTimeout(respawnTimeouts.player1);
+            clearTimeout(respawnTimeouts.player2);
+            respawnTimeouts.player1 = null;
+            respawnTimeouts.player2 = null;
             startGameWithCountdown();
         });
 
