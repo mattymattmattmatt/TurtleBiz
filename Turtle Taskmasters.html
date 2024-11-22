@@ -595,18 +595,38 @@
             }
         }
 
+        // Particle Class
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 2;
+                this.color = color;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.life = 60; // Frames
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+                this.opacity = this.life / 60;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
         // Initialize Game Entities
         let player1, player2;
         let tasks = [];
         let obstacles = [];
-
-        // Assign Random Names to Players
-        function assignPlayerNames() {
-            const shuffledNames = shuffle([...nameList]);
-            const player1Name = shuffledNames.pop();
-            const player2Name = shuffledNames.pop();
-            return { player1Name, player2Name };
-        }
 
         function initGame() {
             // Define controls for both players
@@ -650,15 +670,6 @@
             player1CountElement.textContent = player1Tasks;
             player2CountElement.textContent = player2Tasks;
             spawnLevelEntities();
-        }
-
-        // Shuffle Function to Randomize Names
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
         }
 
         // Spawn Entities for Current Level
@@ -767,34 +778,6 @@
             }
         }
 
-        // Particle Class
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 2;
-                this.color = color;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = 60; // Frames
-                this.opacity = 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life--;
-                this.opacity = this.life / 60;
-            }
-
-            draw() {
-                ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
         // Game Loop
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -816,12 +799,15 @@
             });
 
             // Draw and check tasks
-            tasks.forEach((task, index) => {
+            // Iterate in reverse to safely remove tasks while iterating
+            for (let i = tasks.length - 1; i >= 0; i--) {
+                const task = tasks[i];
                 task.draw();
+
                 // Check collision with Player 1
                 if (player1.alive && isColliding(player1, task)) {
                     task.collectedBy = 1;
-                    tasks.splice(index, 1);
+                    tasks.splice(i, 1); // Remove task
                     try {
                         collectTaskSound.currentTime = 0;
                         collectTaskSound.play();
@@ -832,11 +818,13 @@
                     player1CountElement.textContent = player1Tasks;
                     spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0}); // Gold particles for task collection
                     checkLevelCompletion();
+                    continue; // Skip checking collision with Player 2
                 }
+
                 // Check collision with Player 2
-                else if (player2.alive && isColliding(player2, task)) {
+                if (player2.alive && isColliding(player2, task)) {
                     task.collectedBy = 2;
-                    tasks.splice(index, 1);
+                    tasks.splice(i, 1); // Remove task
                     try {
                         collectTaskSound.currentTime = 0;
                         collectTaskSound.play();
@@ -848,7 +836,7 @@
                     spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0});
                     checkLevelCompletion();
                 }
-            });
+            }
 
             // Draw and check obstacles
             obstacles.forEach(obstacle => {
@@ -872,14 +860,15 @@
             });
 
             // Update and Draw Particles
-            particles.forEach((particle, index) => {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const particle = particles[i];
                 particle.update();
                 if (particle.life <= 0) {
-                    particles.splice(index, 1);
+                    particles.splice(i, 1);
                 } else {
                     particle.draw();
                 }
-            });
+            }
         }
 
         // Check if all tasks are collected to advance to next level or end game
