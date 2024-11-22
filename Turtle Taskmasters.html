@@ -221,13 +221,13 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <div id="hud">
             <div class="player-tally" id="player1Tally">
-                <strong id="player1Name" style="color:#00b894;">Player 1:</strong> <span id="player1Count">0</span>
+                <strong id="player1Name" style="color:#00b894;"></strong> <span id="player1Count">0</span>
             </div>
             <div class="level-display">
                 <strong>Level:</strong> <span id="level">1</span>
             </div>
             <div class="player-tally" id="player2Tally">
-                <strong id="player2Name" style="color:#FF4081;">Player 2:</strong> <span id="player2Count">0</span>
+                <strong id="player2Name" style="color:#FF4081;"></strong> <span id="player2Count">0</span>
             </div>
         </div>
     </div>
@@ -247,8 +247,8 @@
     <!-- Game Over Screen -->
     <div id="gameOverScreen">
         <h1>Game Over</h1>
-        <p><strong id="gameOverPlayer1">Player 1</strong> Tasks Collected: <span id="finalPlayer1">0</span></p>
-        <p><strong id="gameOverPlayer2">Player 2</strong> Tasks Collected: <span id="finalPlayer2">0</span></p>
+        <p><strong id="gameOverPlayer1"></strong> Tasks Collected: <span id="finalPlayer1">0</span></p>
+        <p><strong id="gameOverPlayer2"></strong> Tasks Collected: <span id="finalPlayer2">0</span></p>
         <button id="restartButton">Play Again</button>
     </div>
 
@@ -387,6 +387,14 @@
                 [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
+        }
+
+        // Assign Random Names to Players
+        function assignPlayerNames() {
+            const shuffledNames = shuffle([...nameList]);
+            const player1Name = shuffledNames.pop();
+            const player2Name = shuffledNames.pop();
+            return { player1Name, player2Name };
         }
 
         // Turtle Class
@@ -592,15 +600,6 @@
         let tasks = [];
         let obstacles = [];
 
-        // Shuffle Function to Randomize Names
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
         // Assign Random Names to Players
         function assignPlayerNames() {
             const shuffledNames = shuffle([...nameList]);
@@ -651,6 +650,15 @@
             player1CountElement.textContent = player1Tasks;
             player2CountElement.textContent = player2Tasks;
             spawnLevelEntities();
+        }
+
+        // Shuffle Function to Randomize Names
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
 
         // Spawn Entities for Current Level
@@ -756,6 +764,34 @@
         function spawnParticles(x, y, color) {
             for (let i = 0; i < 20; i++) {
                 particles.push(new Particle(x, y, color));
+            }
+        }
+
+        // Particle Class
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 3 + 2;
+                this.color = color;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.life = 60; // Frames
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+                this.opacity = this.life / 60;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
