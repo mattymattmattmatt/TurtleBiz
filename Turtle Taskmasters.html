@@ -77,11 +77,15 @@
             border: 2px solid #00b894;
             border-radius: 12px;
             box-shadow: 0 0 30px rgba(0, 184, 148, 0.9);
-            z-index: 10;
+            z-index: 100; /* Increased z-index to ensure it overlays the game board */
             display: none; /* Hidden by default */
         }
 
         #startScreen.active, #countdownOverlay.active {
+            display: block;
+        }
+
+        #gameOverScreen.active {
             display: block;
         }
 
@@ -276,7 +280,7 @@
                     <li>Each level starts with a fixed number of tasks and obstacles. Collect all tasks to advance to the next level.</li>
                     <li>With each level cleared, the number of tasks and obstacles doubles, increasing the difficulty.</li>
                     <li>If a turtle collides with an obstacle, it becomes hidden and will respawn after 3 seconds unless the other turtle dies in the meantime.</li>
-                    <li>The game ends when both turtles collide with obstacles or after completing level 5.</li>
+                    <li>The game ends after completing level 5.</li>
                     <li>Restart the game by clicking the "Play Again" button on the Game Over screen.</li>
                 </ul>
             </li>
@@ -561,7 +565,7 @@
             constructor(x, y, speed = 1) {
                 this.x = x;
                 this.y = y;
-                this.size = 20; // Radius
+                this.size = 17; // Reduced size by 15% (from 20 to 17)
                 this.color = '#FF5722';
                 this.speed = speed;
                 this.direction = Math.random() * Math.PI * 2; // Random movement direction
@@ -844,18 +848,12 @@
                 // Check collision with Player 1
                 if (player1.alive && isColliding(player1, obstacle)) {
                     player1.die();
-                    // Check if the other turtle is already dead or in respawn
-                    if (!player2.alive && !respawnTimeouts.player2) {
-                        checkGameOver();
-                    }
+                    // Removed Game Over condition when both turtles die
                 }
                 // Check collision with Player 2
                 if (player2.alive && isColliding(player2, obstacle)) {
                     player2.die();
-                    // Check if the other turtle is already dead or in respawn
-                    if (!player1.alive && !respawnTimeouts.player1) {
-                        checkGameOver();
-                    }
+                    // Removed Game Over condition when both turtles die
                 }
             });
 
@@ -951,15 +949,7 @@
             gameOverScreen.classList.add('active');
         }
 
-        // Check if game is over (both turtles are dead and not respawning)
-        function checkGameOver() {
-            // Ensure both turtles are not alive and not in the process of respawning
-            if (!player1.alive && !player2.alive && !respawnTimeouts.player1 && !respawnTimeouts.player2) {
-                endGame();
-            }
-        }
-
-        // End Game Immediately
+        // End Game Immediately (Not used since Game Over when both turtles die is removed)
         function endGame() {
             clearInterval(gameInterval);
             try {
