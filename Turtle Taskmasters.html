@@ -221,13 +221,13 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <div id="hud">
             <div class="player-tally" id="player1Tally">
-                <strong style="color:#00b894;">Player 1 (Left):</strong> <span id="player1Count">0</span>
+                <strong id="player1Name" style="color:#00b894;">Player 1:</strong> <span id="player1Count">0</span>
             </div>
             <div class="level-display">
                 <strong>Level:</strong> <span id="level">1</span>
             </div>
             <div class="player-tally" id="player2Tally">
-                <strong style="color:#FF4081;">Player 2 (Right):</strong> <span id="player2Count">0</span>
+                <strong id="player2Name" style="color:#FF4081;">Player 2:</strong> <span id="player2Count">0</span>
             </div>
         </div>
     </div>
@@ -235,7 +235,7 @@
     <!-- Start Screen -->
     <div id="startScreen" class="active">
         <h1>Turtle Taskmasters</h1>
-        <p>Navigate your turtles through the office, complete tasks, and avoid obstacles to achieve the highest level possible!</p>
+        <p>Navigate your turtles through the office, collect tasks, and avoid obstacles to be the top Taskmaster!</p>
         <button id="startButton">Start Game</button>
     </div>
 
@@ -247,26 +247,25 @@
     <!-- Game Over Screen -->
     <div id="gameOverScreen">
         <h1>Game Over</h1>
-        <p>Level Reached: <span id="finalLevel">1</span></p>
-        <p>Player 1 (Left) Tasks Collected: <span id="finalPlayer1">0</span></p>
-        <p>Player 2 (Right) Tasks Collected: <span id="finalPlayer2">0</span></p>
+        <p><strong id="gameOverPlayer1">Player 1</strong> Tasks Collected: <span id="finalPlayer1">0</span></p>
+        <p><strong id="gameOverPlayer2">Player 2</strong> Tasks Collected: <span id="finalPlayer2">0</span></p>
         <button id="restartButton">Play Again</button>
     </div>
 
     <!-- Game Rules Section -->
     <div id="rules">
         <h2>How to Play "Turtle Taskmasters"</h2>
-        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you take on the roles of diligent office turtles navigating through a bustling office environment. Your goal is to complete all tasks in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
+        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you and your partner take on the roles of diligent office turtles navigating through a bustling office environment. Your goal is to collect as many tasks as possible in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
         <ul>
             <li><strong>Controls:</strong>
                 <ul>
-                    <li><strong>Player 1 (Turtle 1 - Left):</strong> <code>W</code> (Up), <code>A</code> (Left), <code>S</code> (Down), <code>D</code> (Right) to apply thrust and move.</li>
-                    <li><strong>Player 2 (Turtle 2 - Right):</strong> <code>I</code> (Up), <code>J</code> (Left), <code>K</code> (Down), <code>L</code> (Right) to apply thrust and move.</li>
+                    <li><strong>Player 1:</strong> <code>W</code> (Up), <code>A</code> (Left), <code>S</code> (Down), <code>D</code> (Right) to apply thrust and move.</li>
+                    <li><strong>Player 2:</strong> <code>I</code> (Up), <code>J</code> (Left), <code>K</code> (Down), <code>L</code> (Right) to apply thrust and move.</li>
                 </ul>
             </li>
             <li><strong>Objectives:</strong>
                 <ul>
-                    <li>Collect <span style="color:#FFD700;">Tasks</span> (yellow circles) to complete the level.</li>
+                    <li>Collect <span style="color:#FFD700;">Tasks</span> (yellow circles) to score points.</li>
                     <li>Avoid <span style="color:#FF5722;">Obstacles</span> (red circles) that can eliminate a turtle upon collision.</li>
                 </ul>
             </li>
@@ -276,9 +275,8 @@
                     <li>A countdown will begin, giving players time to get ready.</li>
                     <li>Each level starts with a fixed number of tasks and obstacles. Collect all tasks to advance to the next level.</li>
                     <li>With each level cleared, the number of tasks and obstacles doubles, increasing the difficulty.</li>
-                    <li>If a turtle collides with an obstacle, it becomes hidden until the next level is reached.</li>
-                    <li>All remaining obstacles are cleared when advancing to the next level.</li>
-                    <li>The game ends when both turtles collide with obstacles.</li>
+                    <li>If a turtle collides with an obstacle, it becomes hidden and will respawn after 3 seconds unless the other turtle dies in the meantime.</li>
+                    <li>The game ends when both turtles collide with obstacles or after completing level 5.</li>
                     <li>Restart the game by clicking the "Play Again" button on the Game Over screen.</li>
                 </ul>
             </li>
@@ -320,6 +318,10 @@
         const levelSpan = document.getElementById('level');
         const player1CountElement = document.getElementById('player1Count');
         const player2CountElement = document.getElementById('player2Count');
+        const player1NameElement = document.getElementById('player1Name');
+        const player2NameElement = document.getElementById('player2Name');
+        const gameOverPlayer1 = document.getElementById('gameOverPlayer1');
+        const gameOverPlayer2 = document.getElementById('gameOverPlayer2');
 
         // Start, Countdown, and Game Over Screens
         const startScreen = document.getElementById('startScreen');
@@ -327,7 +329,6 @@
         const countdownOverlay = document.getElementById('countdownOverlay');
         const countdownNumber = document.getElementById('countdownNumber');
         const gameOverScreen = document.getElementById('gameOverScreen');
-        const finalLevel = document.getElementById('finalLevel');
         const finalPlayer1 = document.getElementById('finalPlayer1');
         const finalPlayer2 = document.getElementById('finalPlayer2');
         const restartButton = document.getElementById('restartButton');
@@ -341,6 +342,7 @@
         // Game Variables
         let gameInterval;
         let currentLevel = 1;
+        const maxLevel = 5;
         let tasksPerLevel = 2;
         let obstaclesPerLevel = 2;
         let keysPressed = {};
@@ -361,35 +363,35 @@
             player2: null
         };
 
-        class Particle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 3 + 2;
-                this.color = color;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = 60; // Frames
-                this.opacity = 1;
-            }
+        // List of 100 Unique Names
+        const nameList = [
+            "Aiden", "Bella", "Caleb", "Daisy", "Ethan", "Fiona", "Gavin", "Hannah",
+            "Isaac", "Jasmine", "Kai", "Lily", "Mason", "Nora", "Oliver", "Penelope",
+            "Quentin", "Ruby", "Sebastian", "Tessa", "Ulysses", "Violet", "Wyatt",
+            "Xander", "Yara", "Zane", "Amelia", "Benjamin", "Chloe", "Daniel",
+            "Ella", "Felix", "Grace", "Henry", "Isla", "Jack", "Katherine", "Leo",
+            "Mia", "Noah", "Olivia", "Parker", "Quinn", "Riley", "Samuel", "Sophia",
+            "Thomas", "Uma", "Victoria", "William", "Ximena", "Yosef", "Zara",
+            "Aaron", "Bianca", "Charles", "Delilah", "Elijah", "Freya", "George",
+            "Hazel", "Ian", "Juliana", "Kevin", "Layla", "Matthew", "Natalie",
+            "Owen", "Paisley", "Quincy", "Rowan", "Sienna", "Tristan", "Ursula",
+            "Vincent", "Willow", "Xenia", "Yvonne", "Zachary", "Ada", "Brandon",
+            "Clara", "Dominic", "Emilia", "Finn", "Georgia", "Hudson", "Ivy",
+            "Jasper", "Kylie", "Lucas", "Madeline"
+        ];
 
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.life--;
-                this.opacity = this.life / 60;
+        // Shuffle Function to Randomize Names
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-
-            draw() {
-                ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+            return array;
         }
 
+        // Turtle Class
         class Turtle {
-            constructor(x, y, controls, playerNumber) {
+            constructor(x, y, controls, playerNumber, name) {
                 this.x = x;
                 this.y = y;
                 this.size = 20; // Radius
@@ -403,6 +405,7 @@
                 this.alive = true;
                 this.visible = true;
                 this.playerNumber = playerNumber; // 1 or 2
+                this.name = name;
             }
 
             draw() {
@@ -509,6 +512,7 @@
                     } catch (e) {
                         console.warn('bgMusic failed to play:', e);
                     }
+                    respawnTimeouts[`player${this.playerNumber}`] = null; // Clear the timeout reference
                 }, 3000);
             }
 
@@ -588,6 +592,23 @@
         let tasks = [];
         let obstacles = [];
 
+        // Shuffle Function to Randomize Names
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Assign Random Names to Players
+        function assignPlayerNames() {
+            const shuffledNames = shuffle([...nameList]);
+            const player1Name = shuffledNames.pop();
+            const player2Name = shuffledNames.pop();
+            return { player1Name, player2Name };
+        }
+
         function initGame() {
             // Define controls for both players
             const controlsPlayer1 = {
@@ -608,9 +629,16 @@
                 altColor: '#E91E63'
             };
 
+            // Assign random names
+            const { player1Name, player2Name } = assignPlayerNames();
+
+            // Update HUD with player names
+            player1NameElement.textContent = player1Name + ':';
+            player2NameElement.textContent = player2Name + ':';
+
             // Initialize players at different positions
-            player1 = new Turtle(canvas.width * 0.25, canvas.height / 2, controlsPlayer1, 1);
-            player2 = new Turtle(canvas.width * 0.75, canvas.height / 2, controlsPlayer2, 2);
+            player1 = new Turtle(canvas.width * 0.25, canvas.height / 2, controlsPlayer1, 1, player1Name);
+            player2 = new Turtle(canvas.width * 0.75, canvas.height / 2, controlsPlayer2, 2, player2Name);
 
             tasks = [];
             obstacles = [];
@@ -818,10 +846,14 @@
             });
         }
 
-        // Check if all tasks are collected to advance to next level
+        // Check if all tasks are collected to advance to next level or end game
         function checkLevelCompletion() {
             if (tasks.length === 0) {
-                advanceToNextLevel();
+                if (currentLevel >= maxLevel) {
+                    endGameAfterLevel();
+                } else {
+                    advanceToNextLevel();
+                }
             }
         }
 
@@ -875,6 +907,25 @@
             }
         }
 
+        // End Game After Level 5
+        function endGameAfterLevel() {
+            clearInterval(gameInterval);
+            try {
+                bgMusic.pause();
+            } catch (e) {
+                console.warn('bgMusic failed to pause:', e);
+            }
+            finalPlayer1.textContent = player1Tasks;
+            finalPlayer2.textContent = player2Tasks;
+
+            // Update Game Over screen with player names
+            gameOverPlayer1.textContent = player1.name;
+            gameOverPlayer2.textContent = player2.name;
+
+            // Show Game Over screen
+            gameOverScreen.classList.add('active');
+        }
+
         // Check if game is over (both turtles are dead and not respawning)
         function checkGameOver() {
             // Ensure both turtles are not alive and not in the process of respawning
@@ -883,7 +934,7 @@
             }
         }
 
-        // End Game
+        // End Game Immediately
         function endGame() {
             clearInterval(gameInterval);
             try {
@@ -891,9 +942,12 @@
             } catch (e) {
                 console.warn('bgMusic failed to pause:', e);
             }
-            finalLevel.textContent = currentLevel;
             finalPlayer1.textContent = player1Tasks;
             finalPlayer2.textContent = player2Tasks;
+
+            // Update Game Over screen with player names
+            gameOverPlayer1.textContent = player1.name;
+            gameOverPlayer2.textContent = player2.name;
 
             // Show Game Over screen
             gameOverScreen.classList.add('active');
