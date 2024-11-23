@@ -65,6 +65,35 @@
             gap: 10px;
         }
 
+        /* Audio Controls Styling */
+        #audioControls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #audioControls button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #34495e;
+            border: none;
+            color: #ecf0f1;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #audioControls button:hover {
+            background-color: #2c3e50;
+            transform: translateY(-2px);
+        }
+
+        #audioControls button:active {
+            background-color: #1a252f;
+            transform: translateY(0);
+        }
+
         /* Start, Countdown, and Game Over Screens */
         #startScreen, #gameOverScreen, #countdownOverlay {
             position: fixed;
@@ -77,7 +106,7 @@
             border: 2px solid #00b894;
             border-radius: 12px;
             box-shadow: 0 0 30px rgba(0, 184, 148, 0.9);
-            z-index: 100; /* Increased z-index to ensure it overlays the game board */
+            z-index: 100; /* Ensures overlaying */
             display: none; /* Hidden by default */
         }
 
@@ -233,14 +262,19 @@
             <div class="player-tally" id="player2Tally">
                 <strong id="player2Name" style="color:#FF4081;"></strong> <span id="player2Count">0</span>
             </div>
+            <!-- Audio Controls -->
+            <div id="audioControls">
+                <button id="toggleMusic">Music: On</button>
+                <button id="toggleSFX">SFX: On</button>
+            </div>
         </div>
     </div>
 
     <!-- Start Screen -->
     <div id="startScreen" class="active">
         <h1>Turtle Taskmasters</h1>
-        <p>Navigate your turtles through the office, collect tasks, and avoid obstacles to be the top Taskmaster!</p>
-        <button id="startButton">Start Game</button>
+        <p>Navigate your turtles through the ocean, collect coins, and avoid Tiger Sharks to be the top Taskmaster!</p>
+        <button id="startButton" disabled>Start Game</button> <!-- Initially disabled until images load -->
     </div>
 
     <!-- Countdown Overlay -->
@@ -251,15 +285,15 @@
     <!-- Game Over Screen -->
     <div id="gameOverScreen">
         <h1>Game Over</h1>
-        <p><strong id="gameOverPlayer1"></strong> Tasks Collected: <span id="finalPlayer1">0</span></p>
-        <p><strong id="gameOverPlayer2"></strong> Tasks Collected: <span id="finalPlayer2">0</span></p>
+        <p><strong id="gameOverPlayer1"></strong> Coins Collected: <span id="finalPlayer1">0</span></p>
+        <p><strong id="gameOverPlayer2"></strong> Coins Collected: <span id="finalPlayer2">0</span></p>
         <button id="restartButton">Play Again</button>
     </div>
 
     <!-- Game Rules Section -->
     <div id="rules">
         <h2>How to Play "Turtle Taskmasters"</h2>
-        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you and your partner take on the roles of diligent office turtles navigating through a bustling office environment. Your goal is to collect as many tasks as possible in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
+        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you and your partner take on the roles of diligent office turtles navigating through a hazardous ocean environment. Your goal is to collect as many treasure as possible in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
         <ul>
             <li><strong>Controls:</strong>
                 <ul>
@@ -269,47 +303,38 @@
             </li>
             <li><strong>Objectives:</strong>
                 <ul>
-                    <li>Collect <span style="color:#FFD700;">Tasks</span> (yellow circles) to score points.</li>
-                    <li>Avoid <span style="color:#FF5722;">Obstacles</span> (red circles) that can eliminate a turtle upon collision.</li>
+                    <li>Collect <span style="color:#FFD700;">Coins</span> to score points.</li>
+                    <li>Avoid <span style="color:#FF5722;">Tiger Sharks</span> that can eliminate a turtle upon collision.</li>
                 </ul>
             </li>
             <li><strong>Game Flow:</strong>
                 <ul>
-                    <li>Start the game by clicking the "Start Game" button.</li>
-                    <li>A countdown will begin, giving players time to get ready.</li>
-                    <li>Each level starts with a fixed number of tasks and obstacles. Collect all tasks to advance to the next level.</li>
+                    <li>Each level starts with a fixed number of coins and Tiger Sharks. Collect all the coins to advance to the next level.</li>
                     <li>With each level cleared, the number of tasks and obstacles doubles, increasing the difficulty.</li>
-                    <li>If a turtle collides with an obstacle, it becomes hidden and will respawn after 3 seconds unless the other turtle dies in the meantime.</li>
+                    <li>If a turtle gets eaten by a Tiger Shark, it becomes hidden and will respawn after 2 seconds.</li>
                     <li>The game ends after completing level 5.</li>
                     <li>Restart the game by clicking the "Play Again" button on the Game Over screen.</li>
-                </ul>
-            </li>
-            <li><strong>Tips:</strong>
-                <ul>
-                    <li>Coordinate with your partner to cover more ground efficiently.</li>
-                    <li>Maintain momentum to navigate swiftly through obstacles.</li>
-                    <li>Plan your path to collect tasks without getting trapped by obstacles.</li>
                 </ul>
             </li>
         </ul>
     </div>
 
     <!-- Audio Elements -->
-    <!-- Note: Replace the src URLs with actual audio file URLs or paths -->
+    <!-- Updated src paths to point to the 'audio' folder -->
     <audio id="bgMusic" loop>
-        <source src="https://example.com/background-music.mp3" type="audio/mpeg">
+        <source src="audio/background-music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <audio id="collectTaskSound">
-        <source src="https://example.com/collect-task.mp3" type="audio/mpeg">
+    <audio id="collectCoinSound">
+        <source src="audio/collect-task.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <audio id="collisionSound">
-        <source src="https://example.com/collision.mp3" type="audio/mpeg">
+        <source src="audio/collision.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     <audio id="levelUpSound">
-        <source src="https://example.com/level-up.mp3" type="audio/mpeg">
+        <source src="audio/level-up.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -339,33 +364,42 @@
 
         // Audio Elements
         const bgMusic = document.getElementById('bgMusic');
-        const collectTaskSound = document.getElementById('collectTaskSound');
+        const collectCoinSound = document.getElementById('collectCoinSound');
         const collisionSound = document.getElementById('collisionSound');
         const levelUpSound = document.getElementById('levelUpSound');
+
+        // Audio Control Buttons
+        const toggleMusicButton = document.getElementById('toggleMusic');
+        const toggleSFXButton = document.getElementById('toggleSFX');
 
         // Game Variables
         let gameInterval;
         let currentLevel = 1;
         const maxLevel = 5;
-        let tasksPerLevel = 2;
-        let obstaclesPerLevel = 2;
+        let coinsPerLevel = 2;
+        let sharksPerLevel = 2;
         let keysPressed = {};
 
         // Collision Buffer
         const COLLISION_BUFFER = 5;
 
         // Tally Variables
-        let player1Tasks = 0;
-        let player2Tasks = 0;
+        let player1Coins = 0;
+        let player2Coins = 0;
 
         // Particle Management
         let particles = [];
+        let thrustBubbles = []; // Array for thrust bubbles
 
         // Respawn Flags
         let respawnTimeouts = {
             player1: null,
             player2: null
         };
+
+        // Audio Control States
+        let musicMuted = false;
+        let sfxMuted = false;
 
         // List of 100 Unique Names
         const nameList = [
@@ -401,9 +435,62 @@
             return { player1Name, player2Name };
         }
 
+        // Load Images
+        const backgroundImage = new Image();
+        backgroundImage.src = 'images/turtle-gamebg.png';
+
+        const sharkImage = new Image();
+        sharkImage.src = 'images/shark.png';
+
+        const coinImage = new Image();
+        coinImage.src = 'images/gamecoin.png';
+
+        // Load Turtle Images
+        const player1Image = new Image();
+        player1Image.src = 'images/p1-turtle.png';
+
+        const player2Image = new Image();
+        player2Image.src = 'images/p2-turtle.png';
+
+        // Disable Start Button until all images are loaded
+        startButton.disabled = true;
+
+        let imagesLoaded = 0;
+        const totalImages = 5; // background, shark, coin, p1, p2
+
+        function imageLoadedHandler() {
+            imagesLoaded++;
+            if (imagesLoaded === totalImages) {
+                // All images loaded, enable the start button
+                startButton.disabled = false;
+                console.log("All images loaded successfully.");
+            }
+        }
+
+        function imageErrorHandler(e) {
+            console.error("Error loading image:", e.target.src);
+            alert("Error loading image: " + e.target.src);
+        }
+
+        // Attach onload and onerror handlers for images
+        backgroundImage.onload = imageLoadedHandler;
+        backgroundImage.onerror = imageErrorHandler;
+
+        sharkImage.onload = imageLoadedHandler;
+        sharkImage.onerror = imageErrorHandler;
+
+        coinImage.onload = imageLoadedHandler;
+        coinImage.onerror = imageErrorHandler;
+
+        player1Image.onload = imageLoadedHandler;
+        player1Image.onerror = imageErrorHandler;
+
+        player2Image.onload = imageLoadedHandler;
+        player2Image.onerror = imageErrorHandler;
+
         // Turtle Class
         class Turtle {
-            constructor(x, y, controls, playerNumber, name) {
+            constructor(x, y, controls, playerNumber, name, image) {
                 this.x = x;
                 this.y = y;
                 this.size = 20; // Radius
@@ -411,66 +498,60 @@
                 this.friction = 0.98; // Friction to reduce velocity
                 this.vx = 0;
                 this.vy = 0;
-                this.color = controls.color;
-                this.altColor = controls.altColor;
                 this.controls = controls; // Object containing control keys
                 this.alive = true;
                 this.visible = true;
                 this.playerNumber = playerNumber; // 1 or 2
                 this.name = name;
+                this.image = image; // Image object
             }
 
             draw() {
                 if (!this.visible) return;
 
-                // Draw Turtle Body
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.save(); // Save the current canvas state
+                ctx.translate(this.x, this.y); // Translate to the turtle's position
 
-                // Draw Turtle Eyes
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.arc(this.x - 8, this.y - 8, 4, 0, Math.PI * 2);
-                ctx.arc(this.x + 8, this.y - 8, 4, 0, Math.PI * 2);
-                ctx.fill();
+                // Calculate the angle based on velocity
+                let angle = 0;
+                if (this.vx !== 0 || this.vy !== 0) {
+                    angle = Math.atan2(this.vy, this.vx) + Math.PI / 2; // Adjust for head at top
+                }
 
-                // Draw Pupils
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.arc(this.x - 8, this.y - 8, 2, 0, Math.PI * 2);
-                ctx.arc(this.x + 8, this.y - 8, 2, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.rotate(angle); // Rotate the canvas
 
-                // Optional: Add a shadow for depth
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-                ctx.shadowBlur = 10;
-                ctx.shadowOffsetX = 2;
-                ctx.shadowOffsetY = 2;
+                // Draw the image, centered
+                ctx.drawImage(this.image, -this.size, -this.size, this.size * 2, this.size * 2);
 
-                // Reset shadow
-                ctx.shadowColor = 'transparent';
-                ctx.shadowBlur = 0;
-                ctx.shadowOffsetX = 0;
-                ctx.shadowOffsetY = 0;
+                ctx.restore(); // Restore the canvas state
             }
 
             move() {
                 if (!this.alive) return;
 
+                let isThrusting = false; // Flag to check if the turtle is applying thrust
+
                 // Apply thrust based on keys pressed
                 if (keysPressed[this.controls.up]) {
                     this.vy -= this.baseSpeed;
+                    isThrusting = true;
                 }
                 if (keysPressed[this.controls.down]) {
                     this.vy += this.baseSpeed;
+                    isThrusting = true;
                 }
                 if (keysPressed[this.controls.left]) {
                     this.vx -= this.baseSpeed;
+                    isThrusting = true;
                 }
                 if (keysPressed[this.controls.right]) {
                     this.vx += this.baseSpeed;
+                    isThrusting = true;
+                }
+
+                // Generate thrust bubbles if thrusting
+                if (isThrusting) {
+                    this.generateThrustBubbles();
                 }
 
                 // Apply friction
@@ -498,10 +579,26 @@
                     this.y = this.size;
                     this.vy *= -0.5;
                 }
+            }
 
-                // Animate Turtle (simple color change to simulate animation)
-                // Toggle between two colors for a simple animation effect
-                this.color = (Math.floor(this.x + this.y) % 2 === 0) ? this.controls.color : this.altColor;
+            generateThrustBubbles() {
+                // Number of bubbles per thrust
+                const bubblesPerThrust = 3;
+
+                for (let i = 0; i < bubblesPerThrust; i++) {
+                    // Calculate the opposite direction of movement for bubble emission
+                    const angle = Math.atan2(this.vy, this.vx) + Math.PI;
+                    const offsetDistance = this.size; // Position bubbles at the edge of the turtle
+                    const offsetX = this.x + Math.cos(angle) * offsetDistance;
+                    const offsetY = this.y + Math.sin(angle) * offsetDistance;
+
+                    // Randomize bubble properties slightly
+                    const bubbleVx = Math.cos(angle) * (Math.random() * 0.5 - 0.25); // Slight random horizontal velocity
+                    const bubbleVy = Math.sin(angle) * (Math.random() * 0.5 - 0.25); // Slight random vertical velocity
+
+                    // Create a new thrust bubble particle
+                    thrustBubbles.push(new Particle(offsetX, offsetY, {r: 255, g: 255, b: 255}, bubbleVx, bubbleVy, 30, 2));
+                }
             }
 
             die() {
@@ -510,22 +607,17 @@
                 this.visible = false;
                 try {
                     collisionSound.currentTime = 0;
-                    collisionSound.play();
+                    if (!sfxMuted) collisionSound.play();
                 } catch (e) {
                     console.warn('collisionSound failed to play:', e);
                 }
                 spawnParticles(this.x, this.y, {r: 255, g: 87, b: 34}); // Red particles for collision
 
-                // Start respawn timer
+                // Start respawn timer (changed from 3000ms to 2000ms)
                 respawnTimeouts[`player${this.playerNumber}`] = setTimeout(() => {
                     this.revive(this.playerNumber === 1 ? canvas.width * 0.25 : canvas.width * 0.75, canvas.height / 2);
-                    try {
-                        bgMusic.play();
-                    } catch (e) {
-                        console.warn('bgMusic failed to play:', e);
-                    }
                     respawnTimeouts[`player${this.playerNumber}`] = null; // Clear the timeout reference
-                }, 3000);
+                }, 2000); // 2 seconds respawn time
             }
 
             revive(x, y) {
@@ -538,58 +630,56 @@
             }
         }
 
-        class Task {
+        class Coin {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
                 this.size = 15; // Radius
-                this.color = '#FFD700';
+                this.image = coinImage;
                 this.collectedBy = null; // 1 or 2
             }
 
             draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                if (!this.image.complete) return; // Ensure image is loaded
 
-                // Add a small icon or detail to represent a task (e.g., a paper)
-                ctx.fillStyle = '#fff';
-                ctx.font = '12px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('📄', this.x, this.y + 4);
+                // Draw the collectible image centered
+                ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
             }
         }
 
-        class Obstacle {
+        class TigerShark {
             constructor(x, y, speed = 1) {
                 this.x = x;
                 this.y = y;
                 this.size = 17; // Reduced size by 15% (from 20 to 17)
-                this.color = '#FF5722';
                 this.speed = speed;
                 this.direction = Math.random() * Math.PI * 2; // Random movement direction
+                this.image = sharkImage;
             }
 
             draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                if (!this.image.complete) return; // Ensure image is loaded
 
-                // Add a small exclamation mark to indicate danger
-                ctx.fillStyle = '#fff';
-                ctx.font = '16px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('!', this.x, this.y + 5);
+                ctx.save(); // Save the current canvas state
+                ctx.translate(this.x, this.y); // Translate to the shark's position
+
+                // Rotate to face movement direction
+                let angle = this.direction + Math.PI / 2; // Adjust for head at top
+
+                ctx.rotate(angle);
+
+                // Draw the shark image, centered
+                ctx.drawImage(this.image, -this.size, -this.size, this.size * 2, this.size * 2);
+
+                ctx.restore(); // Restore the canvas state
             }
 
             move() {
-                // Move obstacle in its current direction
+                // Move shark in its current direction
                 this.x += Math.cos(this.direction) * this.speed;
                 this.y += Math.sin(this.direction) * this.speed;
 
-                // Bounce off the walls
+                // Bounce off the walls and adjust direction
                 if (this.x + this.size > canvas.width || this.x - this.size < 0) {
                     this.direction = Math.PI - this.direction;
                 }
@@ -601,14 +691,14 @@
 
         // Particle Class
         class Particle {
-            constructor(x, y, color) {
+            constructor(x, y, color, vx = 0, vy = 0, life = 60, size = 4) {
                 this.x = x;
                 this.y = y;
-                this.size = Math.random() * 3 + 2;
+                this.size = size;
                 this.color = color;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-                this.life = 60; // Frames
+                this.vx = vx;
+                this.vy = vy;
+                this.life = life; // Frames
                 this.opacity = 1;
             }
 
@@ -629,8 +719,8 @@
 
         // Initialize Game Entities
         let player1, player2;
-        let tasks = [];
-        let obstacles = [];
+        let coins = [];
+        let sharks = [];
 
         function initGame() {
             // Define controls for both players
@@ -659,33 +749,47 @@
             player1NameElement.textContent = player1Name + ':';
             player2NameElement.textContent = player2Name + ':';
 
-            // Initialize players at different positions
-            player1 = new Turtle(canvas.width * 0.25, canvas.height / 2, controlsPlayer1, 1, player1Name);
-            player2 = new Turtle(canvas.width * 0.75, canvas.height / 2, controlsPlayer2, 2, player2Name);
+            // Initialize players at different positions with their respective images
+            player1 = new Turtle(
+                canvas.width * 0.25,
+                canvas.height / 2,
+                controlsPlayer1,
+                1,
+                player1Name,
+                player1Image
+            );
+            player2 = new Turtle(
+                canvas.width * 0.75,
+                canvas.height / 2,
+                controlsPlayer2,
+                2,
+                player2Name,
+                player2Image
+            );
 
-            tasks = [];
-            obstacles = [];
+            coins = [];
+            sharks = [];
             currentLevel = 1;
-            tasksPerLevel = 2;
-            obstaclesPerLevel = 2;
+            coinsPerLevel = 2;
+            sharksPerLevel = 2;
             levelSpan.textContent = currentLevel;
-            player1Tasks = 0;
-            player2Tasks = 0;
-            player1CountElement.textContent = player1Tasks;
-            player2CountElement.textContent = player2Tasks;
+            player1Coins = 0;
+            player2Coins = 0;
+            player1CountElement.textContent = player1Coins;
+            player2CountElement.textContent = player2Coins;
             spawnLevelEntities();
         }
 
         // Spawn Entities for Current Level
         function spawnLevelEntities() {
-            // Spawn fixed number of tasks
-            for (let i = 0; i < tasksPerLevel; i++) {
-                spawnEntity('task');
+            // Spawn fixed number of coins
+            for (let i = 0; i < coinsPerLevel; i++) {
+                spawnEntity('coin');
             }
 
-            // Spawn fixed number of obstacles
-            for (let i = 0; i < obstaclesPerLevel; i++) {
-                spawnEntity('obstacle');
+            // Spawn fixed number of Tiger Sharks
+            for (let i = 0; i < sharksPerLevel; i++) {
+                spawnEntity('shark');
             }
         }
 
@@ -701,19 +805,19 @@
                 const y = Math.random() * (canvas.height - 80) + 40;
 
                 switch(type) {
-                    case 'task':
-                        newEntity = new Task(x, y);
+                    case 'coin':
+                        newEntity = new Coin(x, y);
                         break;
-                    case 'obstacle':
-                        // Obstacles have random speeds based on level
+                    case 'shark':
+                        // Sharks have random speeds based on level
                         const speed = 1 + currentLevel * 0.2;
-                        newEntity = new Obstacle(x, y, speed);
+                        newEntity = new TigerShark(x, y, speed);
                         break;
                 }
 
                 overlapping = false;
                 // Check against all existing entities and players
-                const allEntities = [...tasks, ...obstacles, player1, player2];
+                const allEntities = [...coins, ...sharks, player1, player2];
                 for (let entity of allEntities) {
                     if (entity && isColliding(newEntity, entity)) {
                         overlapping = true;
@@ -724,6 +828,7 @@
                 attempts++;
                 if (attempts > maxAttempts) {
                     // Prevent infinite loop in case of high density
+                    console.warn(`Could not place a ${type} after ${maxAttempts} attempts.`);
                     break;
                 }
             } while (overlapping && attempts <= maxAttempts);
@@ -731,11 +836,11 @@
             // Add the new entity to the respective array
             if (!overlapping && attempts <= maxAttempts) {
                 switch(type) {
-                    case 'task':
-                        tasks.push(newEntity);
+                    case 'coin':
+                        coins.push(newEntity);
                         break;
-                    case 'obstacle':
-                        obstacles.push(newEntity);
+                    case 'shark':
+                        sharks.push(newEntity);
                         break;
                 }
             }
@@ -786,6 +891,22 @@
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Draw Background
+            if (backgroundImage.complete) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+
+            // Update and Draw Thrust Bubbles
+            for (let i = thrustBubbles.length - 1; i >= 0; i--) {
+                const bubble = thrustBubbles[i];
+                bubble.update();
+                if (bubble.life <= 0) {
+                    thrustBubbles.splice(i, 1);
+                } else {
+                    bubble.draw();
+                }
+            }
+
             // Move and Draw Players
             player1.move();
             player1.draw();
@@ -796,68 +917,72 @@
             // Handle Collision Between Turtles
             handleTurtleCollision();
 
-            // Move and Draw Obstacles
-            obstacles.forEach(obstacle => {
-                obstacle.move();
-                obstacle.draw();
+            // Move and Draw Sharks
+            sharks.forEach(shark => {
+                shark.move();
+                shark.draw();
             });
 
-            // Draw and check tasks
-            // Iterate in reverse to safely remove tasks while iterating
-            for (let i = tasks.length - 1; i >= 0; i--) {
-                const task = tasks[i];
-                task.draw();
+            // Draw and check coins
+            // Iterate in reverse to safely remove coins while iterating
+            for (let i = coins.length - 1; i >= 0; i--) {
+                const coin = coins[i];
+                coin.draw();
 
                 // Check collision with Player 1
-                if (player1.alive && isColliding(player1, task)) {
-                    task.collectedBy = 1;
-                    tasks.splice(i, 1); // Remove task
+                if (player1.alive && isColliding(player1, coin)) {
+                    coin.collectedBy = 1;
+                    coins.splice(i, 1); // Remove coin
                     try {
-                        collectTaskSound.currentTime = 0;
-                        collectTaskSound.play();
+                        if (!sfxMuted) {
+                            collectCoinSound.currentTime = 0;
+                            collectCoinSound.play();
+                        }
                     } catch (e) {
-                        console.warn('collectTaskSound failed to play:', e);
+                        console.warn('collectCoinSound failed to play:', e);
                     }
-                    player1Tasks++;
-                    player1CountElement.textContent = player1Tasks;
-                    spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0}); // Gold particles for task collection
+                    player1Coins++;
+                    player1CountElement.textContent = player1Coins;
+                    spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0}); // Gold particles for coin collection
                     checkLevelCompletion();
                     continue; // Skip checking collision with Player 2
                 }
 
                 // Check collision with Player 2
-                if (player2.alive && isColliding(player2, task)) {
-                    task.collectedBy = 2;
-                    tasks.splice(i, 1); // Remove task
+                if (player2.alive && isColliding(player2, coin)) {
+                    coin.collectedBy = 2;
+                    coins.splice(i, 1); // Remove coin
                     try {
-                        collectTaskSound.currentTime = 0;
-                        collectTaskSound.play();
+                        if (!sfxMuted) {
+                            collectCoinSound.currentTime = 0;
+                            collectCoinSound.play();
+                        }
                     } catch (e) {
-                        console.warn('collectTaskSound failed to play:', e);
+                        console.warn('collectCoinSound failed to play:', e);
                     }
-                    player2Tasks++;
-                    player2CountElement.textContent = player2Tasks;
-                    spawnParticles(task.x, task.y, {r: 255, g: 215, b: 0});
+                    player2Coins++;
+                    player2CountElement.textContent = player2Coins;
+                    spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0});
                     checkLevelCompletion();
                 }
             }
 
-            // Draw and check obstacles
-            obstacles.forEach(obstacle => {
-                obstacle.draw();
+            // Draw and check sharks
+            sharks.forEach(shark => {
+                shark.draw();
                 // Check collision with Player 1
-                if (player1.alive && isColliding(player1, obstacle)) {
+                if (player1.alive && isColliding(player1, shark)) {
                     player1.die();
                     // Removed Game Over condition when both turtles die
                 }
                 // Check collision with Player 2
-                if (player2.alive && isColliding(player2, obstacle)) {
+                if (player2.alive && isColliding(player2, shark)) {
                     player2.die();
                     // Removed Game Over condition when both turtles die
                 }
             });
 
-            // Update and Draw Particles
+            // Update and Draw Regular Particles
             for (let i = particles.length - 1; i >= 0; i--) {
                 const particle = particles[i];
                 particle.update();
@@ -869,9 +994,9 @@
             }
         }
 
-        // Check if all tasks are collected to advance to next level or end game
+        // Check if all coins are collected to advance to next level or end game
         function checkLevelCompletion() {
-            if (tasks.length === 0) {
+            if (coins.length === 0) {
                 if (currentLevel >= maxLevel) {
                     endGameAfterLevel();
                 } else {
@@ -883,24 +1008,22 @@
         // Advance to Next Level
         function advanceToNextLevel() {
             clearInterval(gameInterval);
-            try {
-                bgMusic.pause();
-            } catch (e) {
-                console.warn('bgMusic failed to pause:', e);
-            }
+            // Removed bgMusic.pause(); to ensure continuous music playback
 
             currentLevel++;
             levelSpan.textContent = currentLevel;
             try {
-                levelUpSound.currentTime = 0;
-                levelUpSound.play();
+                if (!sfxMuted) {
+                    levelUpSound.currentTime = 0;
+                    levelUpSound.play();
+                }
             } catch (e) {
                 console.warn('levelUpSound failed to play:', e);
             }
 
-            // Double the number of tasks and obstacles
-            tasksPerLevel *= 2;
-            obstaclesPerLevel *= 2;
+            // Double the number of coins and sharks
+            coinsPerLevel *= 2;
+            sharksPerLevel *= 2;
 
             // Revive any dead players at starting positions
             if (!player1.alive) {
@@ -914,20 +1037,15 @@
                 player2.revive(canvas.width * 0.75, canvas.height / 2);
             }
 
-            // Clear remaining obstacles
-            obstacles = [];
+            // Clear remaining sharks
+            sharks = [];
 
-            // Spawn new set of tasks and obstacles
+            // Spawn new set of coins and sharks
             spawnLevelEntities();
 
             // Restart game loop
             gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
-            try {
-                bgMusic.currentTime = 0;
-                bgMusic.play();
-            } catch (e) {
-                console.warn('bgMusic failed to play:', e);
-            }
+            // Note: Do not manipulate bgMusic here to prevent restarting music
         }
 
         // End Game After Level 5
@@ -938,8 +1056,8 @@
             } catch (e) {
                 console.warn('bgMusic failed to pause:', e);
             }
-            finalPlayer1.textContent = player1Tasks;
-            finalPlayer2.textContent = player2Tasks;
+            finalPlayer1.textContent = player1Coins;
+            finalPlayer2.textContent = player2Coins;
 
             // Update Game Over screen with player names
             gameOverPlayer1.textContent = player1.name;
@@ -957,8 +1075,8 @@
             } catch (e) {
                 console.warn('bgMusic failed to pause:', e);
             }
-            finalPlayer1.textContent = player1Tasks;
-            finalPlayer2.textContent = player2Tasks;
+            finalPlayer1.textContent = player1Coins;
+            finalPlayer2.textContent = player2Coins;
 
             // Update Game Over screen with player names
             gameOverPlayer1.textContent = player1.name;
@@ -985,13 +1103,46 @@
                     initGame();
                     gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
                     try {
-                        bgMusic.currentTime = 0;
-                        bgMusic.play();
+                        if (!musicMuted) {
+                            bgMusic.currentTime = 0;
+                            bgMusic.play();
+                        }
                     } catch (e) {
                         console.warn('bgMusic failed to play:', e);
                     }
                 }
             }, 1000);
+        }
+
+        // Toggle Music Function
+        function toggleMusic() {
+            if (musicMuted) {
+                // Unmute and play music
+                bgMusic.muted = false;
+                bgMusic.play().catch(e => {
+                    console.warn('bgMusic failed to play:', e);
+                });
+                toggleMusicButton.textContent = 'Music: On';
+                musicMuted = false;
+            } else {
+                // Mute music
+                bgMusic.muted = true;
+                toggleMusicButton.textContent = 'Music: Off';
+                musicMuted = true;
+            }
+        }
+
+        // Toggle Sound Effects Function
+        function toggleSFX() {
+            if (sfxMuted) {
+                // Unmute sound effects
+                toggleSFXButton.textContent = 'SFX: On';
+                sfxMuted = false;
+            } else {
+                // Mute sound effects
+                toggleSFXButton.textContent = 'SFX: Off';
+                sfxMuted = true;
+            }
         }
 
         // Event Listeners
@@ -1014,12 +1165,21 @@
             startGameWithCountdown();
         });
 
+        // Audio Control Button Event Listeners
+        toggleMusicButton.addEventListener('click', toggleMusic);
+        toggleSFXButton.addEventListener('click', toggleSFX);
+
         // Prevent Specific Keys from Scrolling the Page
         window.addEventListener("keydown", function(e) {
             if(["w","a","s","d","i","j","k","l"].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         }, false);
+
+        // Set initial music volume to 40% once the music is loaded
+        bgMusic.addEventListener('canplaythrough', () => {
+            bgMusic.volume = 0.4; // 40% volume
+        });
     </script>
 </body>
 </html>
