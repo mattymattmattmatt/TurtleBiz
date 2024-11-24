@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Turtle Taskmasters</title>
+    <title>Turtle Blitz</title>
     <style>
         /* Reset default margins and paddings */
         * {
@@ -37,29 +37,21 @@
 
         /* HUD Styling */
         #hud {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 50px;
             width: 100%;
             max-width: 800px;
-            padding: 0 20px;
             font-size: 20px;
             background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
         }
 
-        #hud .player-tally {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #hud .level-display {
+        #hud .player-tally, #hud .timer-display {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -69,7 +61,8 @@
         #audioControls {
             display: flex;
             gap: 10px;
-            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
         }
 
         #audioControls button {
@@ -246,6 +239,24 @@
             90% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
+
+        /* Highlight Winner Styles */
+        .winner {
+            color: #FFD700;
+            font-weight: bold;
+            text-shadow: 2px 2px #000;
+        }
+
+        /* Timer Pulsing Effect */
+        .pulse-red {
+            animation: pulseRed 1s infinite;
+        }
+
+        @keyframes pulseRed {
+            0% { color: #fff; }
+            50% { color: #FF4136; }
+            100% { color: #fff; }
+        }
     </style>
 </head>
 <body>
@@ -256,24 +267,25 @@
             <div class="player-tally" id="player1Tally">
                 <strong id="player1Name" style="color:#00b894;"></strong> <span id="player1Count">0</span>
             </div>
-            <div class="level-display">
-                <strong>Level:</strong> <span id="level">1</span>
+            <div class="timer-display">
+                <strong>Time Left:</strong> <span id="timer">60</span>s
             </div>
             <div class="player-tally" id="player2Tally">
                 <strong id="player2Name" style="color:#FF4081;"></strong> <span id="player2Count">0</span>
             </div>
-            <!-- Audio Controls -->
-            <div id="audioControls">
-                <button id="toggleMusic">Music: On</button>
-                <button id="toggleSFX">SFX: On</button>
-            </div>
         </div>
+    </div>
+
+    <!-- Audio Controls -->
+    <div id="audioControls">
+        <button id="toggleMusic">Music: On</button>
+        <button id="toggleSFX">SFX: On</button>
     </div>
 
     <!-- Start Screen -->
     <div id="startScreen" class="active">
-        <h1>Turtle Taskmasters</h1>
-        <p>Navigate your turtles through the ocean, collect coins, and avoid Tiger Sharks to be the top Taskmaster!</p>
+        <h1>Turtle Blitz</h1>
+        <p>Navigate your turtles through the ocean, collect coins, and avoid Tiger Sharks to score as many coins as possible within 1 minute!</p>
         <button id="startButton" disabled>Start Game</button> <!-- Initially disabled until images load -->
     </div>
 
@@ -292,8 +304,8 @@
 
     <!-- Game Rules Section -->
     <div id="rules">
-        <h2>How to Play "Turtle Taskmasters"</h2>
-        <p>Welcome to "Turtle Taskmasters"! In this retro-inspired arcade game, you and your partner take on the roles of diligent office turtles navigating through a hazardous ocean environment. Your goal is to collect as many treasure as possible in each level while avoiding obstacles. As you progress, the number of tasks and obstacles increases, enhancing the challenge. Here's how to get started:</p>
+        <h2>How to Play "Turtle Blitz"</h2>
+        <p>Welcome to "Turtle Blitz"! In this retro-inspired arcade game, you and your partner take on the roles of diligent office turtles navigating through a hazardous ocean environment. Your goal is to collect as many treasure as possible within 1 minute while avoiding obstacles. Here's how to get started:</p>
         <ul>
             <li><strong>Controls:</strong>
                 <ul>
@@ -309,10 +321,11 @@
             </li>
             <li><strong>Game Flow:</strong>
                 <ul>
-                    <li>Each level starts with a fixed number of coins and Tiger Sharks. Collect all the coins to advance to the next level.</li>
-                    <li>With each level cleared, the number of tasks and obstacles doubles, increasing the difficulty.</li>
+                    <li>You have 1 minute to collect as many coins as possible.</li>
+                    <li>There is always 1 coin on the field. Collecting a coin spawns another at a random position.</li>
+                    <li>The game starts with 1 Tiger Shark, and every 3 seconds, another shark enters the playfield from a random position within the game bounds.</li>
                     <li>If a turtle gets eaten by a Tiger Shark, it becomes hidden and will respawn after 2 seconds.</li>
-                    <li>The game ends after completing level 5.</li>
+                    <li>End the game after 1 minute and see who collected the most coins.</li>
                     <li>Restart the game by clicking the "Play Again" button on the Game Over screen.</li>
                 </ul>
             </li>
@@ -333,10 +346,7 @@
         <source src="audio/collision.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <audio id="levelUpSound">
-        <source src="audio/level-up.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- Removed levelUpSound as levels are no longer present -->
 
     <script>
         // Get Canvas and Context
@@ -344,7 +354,7 @@
         const ctx = canvas.getContext('2d');
 
         // HUD Elements
-        const levelSpan = document.getElementById('level');
+        const timerSpan = document.getElementById('timer');
         const player1CountElement = document.getElementById('player1Count');
         const player2CountElement = document.getElementById('player2Count');
         const player1NameElement = document.getElementById('player1Name');
@@ -366,7 +376,7 @@
         const bgMusic = document.getElementById('bgMusic');
         const collectCoinSound = document.getElementById('collectCoinSound');
         const collisionSound = document.getElementById('collisionSound');
-        const levelUpSound = document.getElementById('levelUpSound');
+        // Removed levelUpSound as levels are no longer present
 
         // Audio Control Buttons
         const toggleMusicButton = document.getElementById('toggleMusic');
@@ -374,10 +384,9 @@
 
         // Game Variables
         let gameInterval;
-        let currentLevel = 1;
-        const maxLevel = 5;
-        let coinsPerLevel = 2;
-        let sharksPerLevel = 2;
+        let gameTimerInterval;
+        let sharkSpawnInterval;
+        let gameTime = 60; // 60 seconds
         let keysPressed = {};
 
         // Collision Buffer
@@ -403,16 +412,16 @@
 
         // List of 100 Unique Names
         const nameList = [
-            "Aiden", "Bella", "Caleb", "Daisy", "Ethan", "Fiona", "Gavin", "Hannah",
-            "Isaac", "Jasmine", "Kai", "Lily", "Mason", "Nora", "Oliver", "Penelope",
-            "Quentin", "Ruby", "Sebastian", "Tessa", "Ulysses", "Violet", "Wyatt",
-            "Xander", "Yara", "Zane", "Amelia", "Benjamin", "Chloe", "Daniel",
+            "Matt", "Seth", "Caleb", "Gavan", "Tina-Marie", "Steven", "Neil", "Craig",
+            "George", "Johan", "Heino", "Simon", "Tanja", "Marion", "Logan", "Geoff",
+            "Guihlem", "Ben", "Liam", "Mel", "Julie", "Chantal", "Katie",
+            "Andrew", "Devon", "Luca", "Simon", "David", "Surge", "Dan",
             "Ella", "Felix", "Grace", "Henry", "Isla", "Jack", "Katherine", "Leo",
             "Mia", "Noah", "Olivia", "Parker", "Quinn", "Riley", "Samuel", "Sophia",
             "Thomas", "Uma", "Victoria", "William", "Ximena", "Yosef", "Zara",
-            "Aaron", "Bianca", "Charles", "Delilah", "Elijah", "Freya", "George",
-            "Hazel", "Ian", "Juliana", "Kevin", "Layla", "Matthew", "Natalie",
-            "Owen", "Paisley", "Quincy", "Rowan", "Sienna", "Tristan", "Ursula",
+            "Aaron", "Bianca", "Charles", "Delilah", "Elijah", "Freya", "James",
+            "Hazel", "Ian", "Scott", "Paulo", "Chris", "Brian", "Natalie",
+            "Owen", "Paisley", "Quincy", "Rowan", "Turtle Biz", "Tristan", "Ursula",
             "Vincent", "Willow", "Xenia", "Yvonne", "Zachary", "Ada", "Brandon",
             "Clara", "Dominic", "Emilia", "Finn", "Georgia", "Hudson", "Ivy",
             "Jasper", "Kylie", "Lucas", "Madeline"
@@ -758,9 +767,11 @@
                 // Bounce off the walls and adjust direction
                 if (this.x + this.size > canvas.width || this.x - this.size < 0) {
                     this.direction = Math.PI - this.direction;
+                    this.x += Math.cos(this.direction) * this.speed; // Adjust position after bounce
                 }
                 if (this.y + this.size > canvas.height || this.y - this.size < 0) {
                     this.direction = -this.direction;
+                    this.y += Math.sin(this.direction) * this.speed; // Adjust position after bounce
                 }
             }
         }
@@ -847,28 +858,21 @@
 
             coins = [];
             sharks = [];
-            currentLevel = 1;
-            coinsPerLevel = 2;
-            sharksPerLevel = 2;
-            levelSpan.textContent = currentLevel;
+            gameTime = 60; // Reset game time
+            timerSpan.textContent = gameTime;
             player1Coins = 0;
             player2Coins = 0;
             player1CountElement.textContent = player1Coins;
             player2CountElement.textContent = player2Coins;
-            spawnLevelEntities();
+            spawnInitialCoin();
+            spawnInitialSharks();
+            startSharkSpawner();
+            startTimer();
         }
 
-        // Spawn Entities for Current Level
-        function spawnLevelEntities() {
-            // Spawn fixed number of coins
-            for (let i = 0; i < coinsPerLevel; i++) {
-                spawnEntity('coin');
-            }
-
-            // Spawn fixed number of Tiger Sharks
-            for (let i = 0; i < sharksPerLevel; i++) {
-                spawnEntity('shark');
-            }
+        // Spawn Initial 1 Coin
+        function spawnInitialCoin() {
+            spawnEntity('coin');
         }
 
         // Spawn Entities without Overlapping
@@ -887,8 +891,8 @@
                         newEntity = new Coin(x, y);
                         break;
                     case 'shark':
-                        // Sharks have random speeds based on level
-                        const speed = 1 + currentLevel * 0.2;
+                        // Sharks have random speeds
+                        const speed = 1 + Math.random() * 1; // Speed between 1 and 2
                         newEntity = new TigerShark(x, y, speed, sharkImage1, sharkImage2);
                         break;
                 }
@@ -965,6 +969,83 @@
             }
         }
 
+        // Spawn Initial Sharks (Start with 1 Shark)
+        function spawnInitialSharks() {
+            spawnEntity('shark');
+        }
+
+        // Spawn a New Shark from Within Game Bounds
+        function spawnSharkInsideBounds() {
+            const maxAttempts = 100;
+            let attempts = 0;
+            let newShark;
+            let overlapping;
+
+            do {
+                const x = Math.random() * (canvas.width - 40) + 20;
+                const y = Math.random() * (canvas.height - 40) + 20;
+                const speed = 1 + Math.random(); // Speed between 1 and 2
+
+                newShark = new TigerShark(x, y, speed, sharkImage1, sharkImage2);
+
+                overlapping = false;
+                // Check against all existing entities and players
+                const allEntities = [...sharks, player1, player2];
+                for (let entity of allEntities) {
+                    if (entity && isColliding(newShark, entity)) {
+                        overlapping = true;
+                        break;
+                    }
+                }
+
+                attempts++;
+                if (attempts > maxAttempts) {
+                    console.warn(`Could not place a shark inside bounds after ${maxAttempts} attempts.`);
+                    break;
+                }
+            } while (overlapping && attempts <= maxAttempts);
+
+            // Add the new shark if no overlapping
+            if (!overlapping && attempts <= maxAttempts) {
+                sharks.push(newShark);
+                console.log(`Spawned new shark at (${newShark.x.toFixed(2)}, ${newShark.y.toFixed(2)})`);
+            }
+        }
+
+        // Start Spawning Sharks Every 3 Seconds
+        function startSharkSpawner() {
+            sharkSpawnInterval = setInterval(() => {
+                spawnSharkInsideBounds();
+            }, 3000); // 3 seconds
+            console.log("Shark spawner started.");
+        }
+
+        // Stop Shark Spawner
+        function stopSharkSpawner() {
+            clearInterval(sharkSpawnInterval);
+            console.log("Shark spawner stopped.");
+        }
+
+        // Start Game Timer
+        function startTimer() {
+            gameTimerInterval = setInterval(() => {
+                gameTime--;
+                timerSpan.textContent = gameTime;
+
+                // Add pulsing effect for last 5 seconds
+                if (gameTime <= 5 && gameTime > 0) {
+                    timerSpan.classList.add('pulse-red');
+                } else {
+                    timerSpan.classList.remove('pulse-red');
+                }
+
+                if (gameTime <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            console.log("Game timer started.");
+        }
+
         // Game Loop
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1022,7 +1103,7 @@
                     player1Coins++;
                     player1CountElement.textContent = player1Coins;
                     spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0}); // Gold particles for coin collection
-                    checkLevelCompletion();
+                    spawnEntity('coin'); // Spawn a new coin
                     continue; // Skip checking collision with Player 2
                 }
 
@@ -1041,7 +1122,7 @@
                     player2Coins++;
                     player2CountElement.textContent = player2Coins;
                     spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0});
-                    checkLevelCompletion();
+                    spawnEntity('coin'); // Spawn a new coin
                 }
             }
 
@@ -1051,12 +1132,10 @@
                 // Check collision with Player 1
                 if (player1.alive && isColliding(player1, shark)) {
                     player1.die();
-                    // Removed Game Over condition when both turtles die
                 }
                 // Check collision with Player 2
                 if (player2.alive && isColliding(player2, shark)) {
                     player2.die();
-                    // Removed Game Over condition when both turtles die
                 }
             });
 
@@ -1072,82 +1151,11 @@
             }
         }
 
-        // Check if all coins are collected to advance to next level or end game
-        function checkLevelCompletion() {
-            if (coins.length === 0) {
-                if (currentLevel >= maxLevel) {
-                    endGameAfterLevel();
-                } else {
-                    advanceToNextLevel();
-                }
-            }
-        }
-
-        // Advance to Next Level
-        function advanceToNextLevel() {
-            clearInterval(gameInterval);
-            // Removed bgMusic.pause(); to ensure continuous music playback
-
-            currentLevel++;
-            levelSpan.textContent = currentLevel;
-            try {
-                if (!sfxMuted) {
-                    levelUpSound.currentTime = 0;
-                    levelUpSound.play();
-                }
-            } catch (e) {
-                console.warn('levelUpSound failed to play:', e);
-            }
-
-            // Double the number of coins and sharks
-            coinsPerLevel *= 2;
-            sharksPerLevel *= 2;
-
-            // Revive any dead players at starting positions
-            if (!player1.alive) {
-                clearTimeout(respawnTimeouts.player1);
-                respawnTimeouts.player1 = null;
-                player1.revive(canvas.width * 0.25, canvas.height / 2);
-            }
-            if (!player2.alive) {
-                clearTimeout(respawnTimeouts.player2);
-                respawnTimeouts.player2 = null;
-                player2.revive(canvas.width * 0.75, canvas.height / 2);
-            }
-
-            // Clear remaining sharks
-            sharks = [];
-
-            // Spawn new set of coins and sharks
-            spawnLevelEntities();
-
-            // Restart game loop
-            gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
-            // Note: Do not manipulate bgMusic here to prevent restarting music
-        }
-
-        // End Game After Level 5
-        function endGameAfterLevel() {
-            clearInterval(gameInterval);
-            try {
-                bgMusic.pause();
-            } catch (e) {
-                console.warn('bgMusic failed to pause:', e);
-            }
-            finalPlayer1.textContent = player1Coins;
-            finalPlayer2.textContent = player2Coins;
-
-            // Update Game Over screen with player names
-            gameOverPlayer1.textContent = player1.name;
-            gameOverPlayer2.textContent = player2.name;
-
-            // Show Game Over screen
-            gameOverScreen.classList.add('active');
-        }
-
-        // End Game Immediately (Not used since Game Over when both turtles die is removed)
+        // End Game After Timer Runs Out
         function endGame() {
             clearInterval(gameInterval);
+            clearInterval(gameTimerInterval);
+            stopSharkSpawner();
             try {
                 bgMusic.pause();
             } catch (e) {
@@ -1156,12 +1164,26 @@
             finalPlayer1.textContent = player1Coins;
             finalPlayer2.textContent = player2Coins;
 
+            // Determine and highlight the winner
+            if (player1Coins > player2Coins) {
+                gameOverPlayer1.classList.add('winner');
+                gameOverPlayer2.classList.remove('winner');
+            } else if (player2Coins > player1Coins) {
+                gameOverPlayer2.classList.add('winner');
+                gameOverPlayer1.classList.remove('winner');
+            } else {
+                // Tie: Highlight both
+                gameOverPlayer1.classList.add('winner');
+                gameOverPlayer2.classList.add('winner');
+            }
+
             // Update Game Over screen with player names
             gameOverPlayer1.textContent = player1.name;
             gameOverPlayer2.textContent = player2.name;
 
             // Show Game Over screen
             gameOverScreen.classList.add('active');
+            console.log("Game Over.");
         }
 
         // Start Game with Countdown
@@ -1188,6 +1210,7 @@
                     } catch (e) {
                         console.warn('bgMusic failed to play:', e);
                     }
+                    console.log("Game started.");
                 }
             }, 1000);
         }
@@ -1235,12 +1258,16 @@
         startButton.addEventListener('click', startGameWithCountdown);
         restartButton.addEventListener('click', () => {
             gameOverScreen.classList.remove('active');
+            // Remove winner highlight
+            gameOverPlayer1.classList.remove('winner');
+            gameOverPlayer2.classList.remove('winner');
             // Clear any pending respawn timers
             clearTimeout(respawnTimeouts.player1);
             clearTimeout(respawnTimeouts.player2);
             respawnTimeouts.player1 = null;
             respawnTimeouts.player2 = null;
             startGameWithCountdown();
+            console.log("Game restarted.");
         });
 
         // Audio Control Button Event Listeners
