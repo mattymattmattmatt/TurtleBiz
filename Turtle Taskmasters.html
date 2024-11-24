@@ -439,24 +439,33 @@
         const backgroundImage = new Image();
         backgroundImage.src = 'images/turtle-gamebg.png';
 
-        const sharkImage = new Image();
-        sharkImage.src = 'images/shark.png';
+        const sharkImage1 = new Image();
+        sharkImage1.src = 'images/shark.png';
+
+        const sharkImage2 = new Image();
+        sharkImage2.src = 'images/shark2.png';
 
         const coinImage = new Image();
         coinImage.src = 'images/gamecoin.png';
 
         // Load Turtle Images
-        const player1Image = new Image();
-        player1Image.src = 'images/p1-turtle.png';
+        const player1Image1 = new Image();
+        player1Image1.src = 'images/p1-turtle.png';
 
-        const player2Image = new Image();
-        player2Image.src = 'images/p2-turtle.png';
+        const player1Image2 = new Image();
+        player1Image2.src = 'images/p1-turtle2.png';
+
+        const player2Image1 = new Image();
+        player2Image1.src = 'images/p2-turtle.png';
+
+        const player2Image2 = new Image();
+        player2Image2.src = 'images/p2-turtle2.png';
 
         // Disable Start Button until all images are loaded
         startButton.disabled = true;
 
         let imagesLoaded = 0;
-        const totalImages = 5; // background, shark, coin, p1, p2
+        const totalImages = 8; // background, shark1, shark2, coin, p1-turtle, p1-turtle2, p2-turtle, p2-turtle2
 
         function imageLoadedHandler() {
             imagesLoaded++;
@@ -476,21 +485,30 @@
         backgroundImage.onload = imageLoadedHandler;
         backgroundImage.onerror = imageErrorHandler;
 
-        sharkImage.onload = imageLoadedHandler;
-        sharkImage.onerror = imageErrorHandler;
+        sharkImage1.onload = imageLoadedHandler;
+        sharkImage1.onerror = imageErrorHandler;
+
+        sharkImage2.onload = imageLoadedHandler;
+        sharkImage2.onerror = imageErrorHandler;
 
         coinImage.onload = imageLoadedHandler;
         coinImage.onerror = imageErrorHandler;
 
-        player1Image.onload = imageLoadedHandler;
-        player1Image.onerror = imageErrorHandler;
+        player1Image1.onload = imageLoadedHandler;
+        player1Image1.onerror = imageErrorHandler;
 
-        player2Image.onload = imageLoadedHandler;
-        player2Image.onerror = imageErrorHandler;
+        player1Image2.onload = imageLoadedHandler;
+        player1Image2.onerror = imageErrorHandler;
+
+        player2Image1.onload = imageLoadedHandler;
+        player2Image1.onerror = imageErrorHandler;
+
+        player2Image2.onload = imageLoadedHandler;
+        player2Image2.onerror = imageErrorHandler;
 
         // Turtle Class
         class Turtle {
-            constructor(x, y, controls, playerNumber, name, image) {
+            constructor(x, y, controls, playerNumber, name, image1, image2) {
                 this.x = x;
                 this.y = y;
                 this.size = 20; // Radius
@@ -503,11 +521,41 @@
                 this.visible = true;
                 this.playerNumber = playerNumber; // 1 or 2
                 this.name = name;
-                this.image = image; // Image object
+                this.image1 = image1; // First image
+                this.image2 = image2; // Second image
+                this.currentImageIndex = 0; // 0 or 1
+                this.swapCounter = 0;
+                this.swapInterval = 30; // Initial swap interval (frames)
             }
 
             draw() {
                 if (!this.visible) return;
+
+                // Calculate speed
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                const maxSpeed = 5; // Define maximum speed for animation scaling
+                const minSwapInterval = 5; // Minimum frames between swaps
+                const maxSwapInterval = 30; // Maximum frames between swaps
+                const speedThreshold = 0.1; // Threshold to consider movement
+
+                if (speed > speedThreshold) {
+                    const clampedSpeed = Math.min(speed, maxSpeed);
+                    // Inversely proportional swap interval: faster speed => shorter interval
+                    this.swapInterval = maxSwapInterval - (clampedSpeed / maxSpeed) * (maxSwapInterval - minSwapInterval);
+
+                    this.swapCounter++;
+
+                    if (this.swapCounter >= this.swapInterval) {
+                        this.currentImageIndex = (this.currentImageIndex + 1) % 2;
+                        this.swapCounter = 0;
+                    }
+                } else {
+                    // If not moving, reset to first image
+                    this.currentImageIndex = 0;
+                    this.swapCounter = 0;
+                }
+
+                const currentImage = this.currentImageIndex === 0 ? this.image1 : this.image2;
 
                 ctx.save(); // Save the current canvas state
                 ctx.translate(this.x, this.y); // Translate to the turtle's position
@@ -520,8 +568,8 @@
 
                 ctx.rotate(angle); // Rotate the canvas
 
-                // Draw the image, centered
-                ctx.drawImage(this.image, -this.size, -this.size, this.size * 2, this.size * 2);
+                // Draw the current image, centered
+                ctx.drawImage(currentImage, -this.size, -this.size, this.size * 2, this.size * 2);
 
                 ctx.restore(); // Restore the canvas state
             }
@@ -648,17 +696,45 @@
         }
 
         class TigerShark {
-            constructor(x, y, speed = 1) {
+            constructor(x, y, speed = 1, image1, image2) {
                 this.x = x;
                 this.y = y;
                 this.size = 17; // Reduced size by 15% (from 20 to 17)
                 this.speed = speed;
                 this.direction = Math.random() * Math.PI * 2; // Random movement direction
-                this.image = sharkImage;
+                this.image1 = image1; // First image
+                this.image2 = image2; // Second image
+                this.currentImageIndex = 0; // 0 or 1
+                this.swapCounter = 0;
+                this.swapInterval = 30; // Initial swap interval (frames)
             }
 
             draw() {
-                if (!this.image.complete) return; // Ensure image is loaded
+                // Calculate speed
+                const speed = this.speed;
+                const maxSpeed = 5; // Define maximum speed for animation scaling
+                const minSwapInterval = 5; // Minimum frames between swaps
+                const maxSwapInterval = 30; // Maximum frames between swaps
+                const speedThreshold = 0.1; // Threshold to consider movement
+
+                if (speed > speedThreshold) {
+                    const clampedSpeed = Math.min(speed, maxSpeed);
+                    // Inversely proportional swap interval: faster speed => shorter interval
+                    this.swapInterval = maxSwapInterval - (clampedSpeed / maxSpeed) * (maxSwapInterval - minSwapInterval);
+
+                    this.swapCounter++;
+
+                    if (this.swapCounter >= this.swapInterval) {
+                        this.currentImageIndex = (this.currentImageIndex + 1) % 2;
+                        this.swapCounter = 0;
+                    }
+                } else {
+                    // If not moving, reset to first image
+                    this.currentImageIndex = 0;
+                    this.swapCounter = 0;
+                }
+
+                const currentImage = this.currentImageIndex === 0 ? this.image1 : this.image2;
 
                 ctx.save(); // Save the current canvas state
                 ctx.translate(this.x, this.y); // Translate to the shark's position
@@ -668,8 +744,8 @@
 
                 ctx.rotate(angle);
 
-                // Draw the shark image, centered
-                ctx.drawImage(this.image, -this.size, -this.size, this.size * 2, this.size * 2);
+                // Draw the current image, centered
+                ctx.drawImage(currentImage, -this.size, -this.size, this.size * 2, this.size * 2);
 
                 ctx.restore(); // Restore the canvas state
             }
@@ -756,7 +832,8 @@
                 controlsPlayer1,
                 1,
                 player1Name,
-                player1Image
+                player1Image1, // First image
+                player1Image2  // Second image
             );
             player2 = new Turtle(
                 canvas.width * 0.75,
@@ -764,7 +841,8 @@
                 controlsPlayer2,
                 2,
                 player2Name,
-                player2Image
+                player2Image1, // First image
+                player2Image2  // Second image
             );
 
             coins = [];
@@ -811,7 +889,7 @@
                     case 'shark':
                         // Sharks have random speeds based on level
                         const speed = 1 + currentLevel * 0.2;
-                        newEntity = new TigerShark(x, y, speed);
+                        newEntity = new TigerShark(x, y, speed, sharkImage1, sharkImage2);
                         break;
                 }
 
