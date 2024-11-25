@@ -348,6 +348,20 @@
     </audio>
     <!-- Removed levelUpSound as levels are no longer present -->
 
+    <!-- Voice Lines Audio Elements -->
+    <div id="voiceLines" style="display: none;">
+        <!-- Preload 40 voice lines -->
+        <script>
+            const voiceLines = [];
+            const totalVoiceLines = 40;
+            for (let i = 1; i <= totalVoiceLines; i++) {
+                const audio = new Audio(`audio/${i.toString().padStart(2, '0')}.mp3`);
+                audio.preload = 'auto';
+                voiceLines.push(audio);
+            }
+        </script>
+    </div>
+
     <script>
         // Get Canvas and Context
         const canvas = document.getElementById('gameCanvas');
@@ -410,12 +424,12 @@
         let musicMuted = false;
         let sfxMuted = false;
 
-        // List of 100 Unique Names
+        // List of 100 Unique Names (Updated)
         const nameList = [
             "Matt", "Seth", "Caleb", "Gavan", "Tina-Marie", "Steven", "Neil", "Craig",
             "George", "Johan", "Heino", "Simon", "Tanja", "Marion", "Logan", "Geoff",
             "Guihlem", "Ben", "Liam", "Mel", "Julie", "Chantal", "Katie",
-            "Andrew", "Devon", "Luca", "Simon", "David", "Surge", "Dan",
+            "Andrew", "Devon", "Luca", "David", "Surge", "Dan",
             "Ella", "Felix", "Grace", "Henry", "Isla", "Jack", "Katherine", "Leo",
             "Mia", "Noah", "Olivia", "Parker", "Quinn", "Riley", "Samuel", "Sophia",
             "Thomas", "Uma", "Victoria", "William", "Ximena", "Yosef", "Zara",
@@ -424,7 +438,7 @@
             "Owen", "Paisley", "Quincy", "Rowan", "Turtle Biz", "Tristan", "Ursula",
             "Vincent", "Willow", "Xenia", "Yvonne", "Zachary", "Ada", "Brandon",
             "Clara", "Dominic", "Emilia", "Finn", "Georgia", "Hudson", "Ivy",
-            "Jasper", "Kylie", "Lucas", "Madeline"
+            "Jasper", "Kylie", "Lucas", "Madeline", "Jerome" // Added "Jerome" and removed duplicate "Simon"
         ];
 
         // Shuffle Function to Randomize Names
@@ -936,29 +950,45 @@
             return distance < (entity1.size + entity2.size + COLLISION_BUFFER);
         }
 
-        // Handle Collision Between Two Turtles
+        // Handle Collision Between Two Turtles (Updated to Play Voice Lines)
         function handleTurtleCollision() {
             const dx = player1.x - player2.x;
             const dy = player1.y - player2.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (player1.size + player2.size + COLLISION_BUFFER)) {
-                // Simple elastic collision physics
-                const angle = Math.atan2(dy, dx);
-                const totalMass = 1 + 1; // Assuming equal mass
+                // Normalize the collision vector
+                const nx = dx / distance;
+                const ny = dy / distance;
 
-                // Calculate new velocities
-                const newVx1 = ((player1.vx * (1 - 1)) + (player2.vx * 2)) / totalMass;
-                const newVy1 = ((player1.vy * (1 - 1)) + (player2.vy * 2)) / totalMass;
-                const newVx2 = ((player2.vx * (1 - 1)) + (player1.vx * 2)) / totalMass;
-                const newVy2 = ((player2.vy * (1 - 1)) + (player1.vy * 2)) / totalMass;
+                // Calculate relative velocity
+                const dvx = player1.vx - player2.vx;
+                const dvy = player1.vy - player2.vy;
 
-                player1.vx = newVx1;
-                player1.vy = newVy1;
-                player2.vx = newVx2;
-                player2.vy = newVy2;
+                // Calculate relative velocity in terms of the normal direction
+                const relVel = dvx * nx + dvy * ny;
+
+                // Do not resolve if velocities are separating
+                if (relVel > 0) return;
+
+                // Collision response (assuming equal mass and perfectly elastic)
+                const impulse = 2 * relVel / (1 + 1);
+                player1.vx -= impulse * nx;
+                player1.vy -= impulse * ny;
+                player2.vx += impulse * nx;
+                player2.vy += impulse * ny;
 
                 // Spawn particles at collision center
                 spawnParticles((player1.x + player2.x) / 2, (player1.y + player2.y) / 2, {r: 255, g: 255, b: 255});
+
+                // **Play a Random Voice Line**
+                if (!sfxMuted && voiceLines.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * voiceLines.length);
+                    const selectedVoiceLine = voiceLines[randomIndex];
+                    selectedVoiceLine.currentTime = 0; // Reset to start
+                    selectedVoiceLine.play().catch(e => {
+                        console.warn('Voice line failed to play:', e);
+                    });
+                }
             }
         }
 
