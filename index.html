@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="styles.css">
 
     <!-- Removed Font Awesome Link as it's no longer needed -->
+
+    <!-- Firebase Initialization Module -->
+    <script type="module" src="scripts/firebase.js"></script>
 </head>
 <body>
 
@@ -100,7 +103,9 @@
                         web-share 
                         src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
                     </iframe>
-                      </section>
+                </div>
+            </div>
+        </section>
 
         <!-- Products Section -->
         <section class="products">
@@ -160,6 +165,55 @@
         </p>
     </footer>
 
+    <!-- Hidden Popup for Page Visit Count -->
+    <div id="secret-popup" class="hidden-popup" aria-hidden="true">
+        <div class="popup-content">
+            <span id="close-popup" class="close-button" aria-label="Close">&times;</span>
+            <h2>Page Visit Count</h2>
+            <p>Total Visits: <span id="visit-count">Loading...</span></p>
+        </div>
+    </div>
+
+    <!-- Styles for the Hidden Popup -->
+    <style>
+        .hidden-popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 400px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+
     <!-- External JavaScript Files -->
 
     <!-- Removed Three.js and Related Scripts -->
@@ -168,29 +222,89 @@
     <script src="scripts/audio-player.js"></script>
     <script src="scripts/cart.js"></script>
 
-<script>
-    // Triple-click detection on the logo
-    document.querySelector("header img").addEventListener("click", (() => {
-        let clickCount = 0;
-        let timer;
+    <!-- Page Visit Counter and Hidden Popup Scripts -->
+    <script type="module">
+        import { db, doc, runTransaction, getDoc, setDoc, updateDoc } from './scripts/firebase.js';
 
-        return () => {
-            clickCount++;
-            if (clickCount === 1) {
-                // Start a 3-second timer
-                timer = setTimeout(() => {
-                    clickCount = 0; // Reset the count after 3 seconds
-                }, 3000);
+        // Function to increment page visit count
+        async function incrementPageVisit() {
+            const counterRef = doc(db, 'counters', 'pageVisits');
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const docSnap = await getDoc(counterRef);
+                    if (!docSnap.exists()) {
+                        // If the document doesn't exist, create it with count = 1
+                        transaction.set(counterRef, { count: 1 });
+                    } else {
+                        const newCount = docSnap.data().count + 1;
+                        transaction.update(counterRef, { count: newCount });
+                    }
+                });
+            } catch (error) {
+                console.error("Error incrementing page visit count: ", error);
+            }
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('DOMContentLoaded', incrementPageVisit);
+
+        // Function to fetch and display the visit count
+        async function showVisitCount() {
+            const counterRef = doc(db, 'counters', 'pageVisits');
+            try {
+                const docSnap = await getDoc(counterRef);
+                if (docSnap.exists()) {
+                    const count = docSnap.data().count;
+                    document.getElementById('visit-count').textContent = count;
+                } else {
+                    document.getElementById('visit-count').textContent = '0';
+                }
+            } catch (error) {
+                console.error("Error fetching page visit count: ", error);
+                document.getElementById('visit-count').textContent = 'Error';
             }
 
-            if (clickCount === 3) {
-                clearTimeout(timer); // Clear the timer
-                window.location.href = "Turtle Blitz.html"; // Redirect to the target page
-            }
-        };
-    })());
-</script>
+            // Show the popup
+            const popup = document.getElementById('secret-popup');
+            popup.style.display = 'block';
+            popup.setAttribute('aria-hidden', 'false');
+        }
 
+        // Function to hide the popup
+        function hidePopup() {
+            const popup = document.getElementById('secret-popup');
+            popup.style.display = 'none';
+            popup.setAttribute('aria-hidden', 'true');
+        }
+
+        // Add event listener to close button
+        document.getElementById('close-popup').addEventListener('click', hidePopup);
+
+        // Key sequence detection for "howsthebiz"
+        (function() {
+            const secretCode = "howsthebiz";
+            let input = "";
+
+            document.addEventListener('keydown', (e) => {
+                // Only consider character keys
+                if (e.key.length === 1) {
+                    input += e.key.toLowerCase();
+
+                    // Keep the input length within the secret code length
+                    if (input.length > secretCode.length) {
+                        input = input.substring(input.length - secretCode.length);
+                    }
+
+                    // Check if input matches the secret code
+                    if (input === secretCode) {
+                        showVisitCount();
+                        input = ""; // Reset input after triggering
+                    }
+                }
+            });
+        })();
+    </script>
 
 </body>
 </html>
