@@ -35,7 +35,7 @@
 
     <!-- Header Section -->
     <header>
-        <img src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
+        <img id="logo" src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
         <nav>
             <ul>
                 <li><a href="index.html" class="active">Home</a></li>
@@ -296,6 +296,31 @@
                 }
             });
         })();
+    </script>
+
+    <!-- Triple-Click Easter Egg Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const logo = document.getElementById("logo");
+            let clickCount = 0;
+            let clickTimer;
+
+            logo.addEventListener("click", function() {
+                clickCount++;
+                
+                if (clickCount === 1) {
+                    // Start a 3-second timer
+                    clickTimer = setTimeout(function() {
+                        clickCount = 0; // Reset after 3 seconds
+                    }, 3000);
+                }
+
+                if (clickCount === 3) {
+                    clearTimeout(clickTimer); // Clear the timer
+                    window.location.href = "Turtle Blitz.html"; // Redirect to the secret page
+                }
+            });
+        });
     </script>
 
 </body>
