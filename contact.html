@@ -27,8 +27,6 @@
 
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Removed Font Awesome Link as it's no longer needed -->
 </head>
 <body>
 
@@ -59,18 +57,24 @@
             <div class="container">
                 <div class="contact-form">
                     <h2>Send Us a Message</h2>
-                    <form action="#" method="post">
+                    <form action="https://formspree.io/f/yourformid" method="POST">
                         <label for="name">Name<span>*</span></label>
                         <input type="text" id="name" name="name" required>
 
                         <label for="email">Email<span>*</span></label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="_replyto" required>
 
                         <label for="subject">Subject<span>*</span></label>
                         <input type="text" id="subject" name="subject" required>
 
                         <label for="message">Message<span>*</span></label>
                         <textarea id="message" name="message" rows="6" required></textarea>
+
+                        <!-- Honeypot Field (Optional for Spam Prevention) -->
+                        <input type="text" name="_gotcha" style="display:none">
+
+                        <!-- Redirect URL (Optional) -->
+                        <!-- <input type="hidden" name="_next" value="https://www.turtlebiz.com/thankyou.html"> -->
 
                         <button type="submit">Submit</button>
                     </form>
