@@ -669,3 +669,31 @@ footer a:hover img {
         padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     }
 }
+
+/* New styles for the scrolling banner */
+.scrolling-banner {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+    background-color: #000; /* Black background for scoreboard feel */
+}
+
+.scrolling-text {
+    display: inline-block;
+    color: #0f0; /* Bright green text for a scoreboard look */
+    font-family: 'Courier New', Courier, monospace; /* Monospace font for scoreboard style */
+    font-size: 16px;
+    white-space: nowrap;
+    padding-left: 100%; /* Start from the right edge */
+    animation: scroll-text 15s linear infinite;
+}
+
+@keyframes scroll-text {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
