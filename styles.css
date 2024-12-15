@@ -700,3 +700,106 @@ footer a:hover img {
         transform: translateX(-100%);
     }
 }
+
+/* About Page Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* About Hero Section */
+.about-hero {
+    background: url('images/about-hero.jpg') center/cover no-repeat;
+    position: relative;
+    color: #fff;
+}
+
+.about-hero::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1;
+}
+
+.about-hero .container {
+    text-align: center;
+    padding: 80px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.about-hero h1 {
+    font-size: 48px;
+    margin: 0;
+    font-family: var(--font-primary);
+    color: var(--light-text);
+}
+
+/* About Content */
+.about-content {
+    background-color: #fff;
+}
+
+.about-content h2 {
+    font-size: 32px;
+    margin-top: 40px;
+    color: var(--secondary-color);
+}
+
+.about-content p,
+.about-content ul {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-top: 20px;
+}
+
+.about-content ul {
+    list-style-type: disc;
+    padding-left: 40px;
+}
+
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.team-member {
+    flex: 1 1 250px;
+    text-align: center;
+}
+
+.team-member img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.team-member h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.team-member p {
+    font-size: 16px;
+    color: var(--muted-text);
+}
+
+/* Responsive Adjustments for About Page */
+@media (max-width: 768px) {
+    .team-members {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-hero h1 {
+        font-size: 36px;
+    }
+}
