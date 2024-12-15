@@ -333,7 +333,6 @@
     </div>
 
     <!-- Audio Elements -->
-    <!-- Updated src paths to point to the 'audio' folder -->
     <audio id="bgMusic" loop>
         <source src="audio/background-music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -346,11 +345,9 @@
         <source src="audio/collision.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <!-- Removed levelUpSound as levels are no longer present -->
 
     <!-- Voice Lines Audio Elements -->
     <div id="voiceLines" style="display: none;">
-        <!-- Preload 40 voice lines -->
         <script>
             const voiceLines = [];
             const totalVoiceLines = 40;
@@ -390,7 +387,6 @@
         const bgMusic = document.getElementById('bgMusic');
         const collectCoinSound = document.getElementById('collectCoinSound');
         const collisionSound = document.getElementById('collisionSound');
-        // Removed levelUpSound as levels are no longer present
 
         // Audio Control Buttons
         const toggleMusicButton = document.getElementById('toggleMusic');
@@ -424,7 +420,7 @@
         let musicMuted = false;
         let sfxMuted = false;
 
-        // List of 100 Unique Names (Updated)
+        // List of 100 Unique Names
         const nameList = [
             "Matt", "Seth", "Caleb", "Gavan", "Tina-Marie", "Steven", "Neil", "Craig",
             "George", "Johan", "Heino", "Simon", "Tanja", "Marion", "Logan", "Geoff",
@@ -438,7 +434,7 @@
             "Owen", "Paisley", "Quincy", "Rowan", "Turtle Biz", "Tristan", "Ursula",
             "Vincent", "Willow", "Xenia", "Yvonne", "Zachary", "Ada", "Brandon",
             "Clara", "Dominic", "Emilia", "Finn", "Georgia", "Hudson", "Ivy",
-            "Jasper", "Kylie", "Lucas", "Madeline", "Jerome" // Added "Jerome" and removed duplicate "Simon"
+            "Jasper", "Kylie", "Lucas", "Madeline", "Jerome"
         ];
 
         // Shuffle Function to Randomize Names
@@ -549,10 +545,24 @@
                 this.currentImageIndex = 0; // 0 or 1
                 this.swapCounter = 0;
                 this.swapInterval = 30; // Initial swap interval (frames)
+                this.invulnerableUntil = 0; // Timestamp until which turtle is invulnerable
+            }
+
+            isInvulnerable() {
+                return Date.now() < this.invulnerableUntil;
             }
 
             draw() {
                 if (!this.visible) return;
+
+                // Handle flashing when invulnerable
+                if (this.isInvulnerable()) {
+                    // Make the turtle flash by toggling transparency
+                    // Every frame, switch between 50% and 100% opacity
+                    ctx.save();
+                    const flashing = Math.floor(Date.now() / 100) % 2 === 0;
+                    ctx.globalAlpha = flashing ? 0.5 : 1.0;
+                }
 
                 // Calculate speed
                 const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
@@ -595,6 +605,10 @@
                 ctx.drawImage(currentImage, -this.size, -this.size, this.size * 2, this.size * 2);
 
                 ctx.restore(); // Restore the canvas state
+
+                if (this.isInvulnerable()) {
+                    ctx.restore(); // Restore globalAlpha if we changed it
+                }
             }
 
             move() {
@@ -664,8 +678,8 @@
                     const offsetY = this.y + Math.sin(angle) * offsetDistance;
 
                     // Randomize bubble properties slightly
-                    const bubbleVx = Math.cos(angle) * (Math.random() * 0.5 - 0.25); // Slight random horizontal velocity
-                    const bubbleVy = Math.sin(angle) * (Math.random() * 0.5 - 0.25); // Slight random vertical velocity
+                    const bubbleVx = Math.cos(angle) * (Math.random() * 0.5 - 0.25);
+                    const bubbleVy = Math.sin(angle) * (Math.random() * 0.5 - 0.25);
 
                     // Create a new thrust bubble particle
                     thrustBubbles.push(new Particle(offsetX, offsetY, {r: 255, g: 255, b: 255}, bubbleVx, bubbleVy, 30, 2));
@@ -684,11 +698,11 @@
                 }
                 spawnParticles(this.x, this.y, {r: 255, g: 87, b: 34}); // Red particles for collision
 
-                // Start respawn timer (changed from 3000ms to 2000ms)
+                // Start respawn timer (2 seconds)
                 respawnTimeouts[`player${this.playerNumber}`] = setTimeout(() => {
                     this.revive(this.playerNumber === 1 ? canvas.width * 0.25 : canvas.width * 0.75, canvas.height / 2);
                     respawnTimeouts[`player${this.playerNumber}`] = null; // Clear the timeout reference
-                }, 2000); // 2 seconds respawn time
+                }, 2000);
             }
 
             revive(x, y) {
@@ -698,6 +712,8 @@
                 this.vy = 0;
                 this.alive = true;
                 this.visible = true;
+                // Set 1 second of invulnerability
+                this.invulnerableUntil = Date.now() + 1000;
             }
         }
 
@@ -712,8 +728,6 @@
 
             draw() {
                 if (!this.image.complete) return; // Ensure image is loaded
-
-                // Draw the collectible image centered
                 ctx.drawImage(this.image, this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
             }
         }
@@ -722,27 +736,25 @@
             constructor(x, y, speed = 1, image1, image2) {
                 this.x = x;
                 this.y = y;
-                this.size = 17; // Reduced size by 15% (from 20 to 17)
+                this.size = 17;
                 this.speed = speed;
-                this.direction = Math.random() * Math.PI * 2; // Random movement direction
-                this.image1 = image1; // First image
-                this.image2 = image2; // Second image
-                this.currentImageIndex = 0; // 0 or 1
+                this.direction = Math.random() * Math.PI * 2;
+                this.image1 = image1;
+                this.image2 = image2;
+                this.currentImageIndex = 0;
                 this.swapCounter = 0;
-                this.swapInterval = 30; // Initial swap interval (frames)
+                this.swapInterval = 30;
             }
 
             draw() {
-                // Calculate speed
                 const speed = this.speed;
-                const maxSpeed = 5; // Define maximum speed for animation scaling
-                const minSwapInterval = 5; // Minimum frames between swaps
-                const maxSwapInterval = 30; // Maximum frames between swaps
-                const speedThreshold = 0.1; // Threshold to consider movement
+                const maxSpeed = 5;
+                const minSwapInterval = 5;
+                const maxSwapInterval = 30;
+                const speedThreshold = 0.1;
 
                 if (speed > speedThreshold) {
                     const clampedSpeed = Math.min(speed, maxSpeed);
-                    // Inversely proportional swap interval: faster speed => shorter interval
                     this.swapInterval = maxSwapInterval - (clampedSpeed / maxSpeed) * (maxSwapInterval - minSwapInterval);
 
                     this.swapCounter++;
@@ -752,40 +764,33 @@
                         this.swapCounter = 0;
                     }
                 } else {
-                    // If not moving, reset to first image
                     this.currentImageIndex = 0;
                     this.swapCounter = 0;
                 }
 
                 const currentImage = this.currentImageIndex === 0 ? this.image1 : this.image2;
 
-                ctx.save(); // Save the current canvas state
-                ctx.translate(this.x, this.y); // Translate to the shark's position
+                ctx.save();
+                ctx.translate(this.x, this.y);
 
-                // Rotate to face movement direction
-                let angle = this.direction + Math.PI / 2; // Adjust for head at top
-
+                let angle = this.direction + Math.PI / 2;
                 ctx.rotate(angle);
 
-                // Draw the current image, centered
                 ctx.drawImage(currentImage, -this.size, -this.size, this.size * 2, this.size * 2);
-
-                ctx.restore(); // Restore the canvas state
+                ctx.restore();
             }
 
             move() {
-                // Move shark in its current direction
                 this.x += Math.cos(this.direction) * this.speed;
                 this.y += Math.sin(this.direction) * this.speed;
 
-                // Bounce off the walls and adjust direction
                 if (this.x + this.size > canvas.width || this.x - this.size < 0) {
                     this.direction = Math.PI - this.direction;
-                    this.x += Math.cos(this.direction) * this.speed; // Adjust position after bounce
+                    this.x += Math.cos(this.direction) * this.speed;
                 }
                 if (this.y + this.size > canvas.height || this.y - this.size < 0) {
                     this.direction = -this.direction;
-                    this.y += Math.sin(this.direction) * this.speed; // Adjust position after bounce
+                    this.y += Math.sin(this.direction) * this.speed;
                 }
             }
         }
@@ -799,7 +804,7 @@
                 this.color = color;
                 this.vx = vx;
                 this.vy = vy;
-                this.life = life; // Frames
+                this.life = life;
                 this.opacity = 1;
             }
 
@@ -824,7 +829,6 @@
         let sharks = [];
 
         function initGame() {
-            // Define controls for both players
             const controlsPlayer1 = {
                 up: 'w',
                 down: 's',
@@ -843,22 +847,18 @@
                 altColor: '#E91E63'
             };
 
-            // Assign random names
             const { player1Name, player2Name } = assignPlayerNames();
-
-            // Update HUD with player names
             player1NameElement.textContent = player1Name + ':';
             player2NameElement.textContent = player2Name + ':';
 
-            // Initialize players at different positions with their respective images
             player1 = new Turtle(
                 canvas.width * 0.25,
                 canvas.height / 2,
                 controlsPlayer1,
                 1,
                 player1Name,
-                player1Image1, // First image
-                player1Image2  // Second image
+                player1Image1,
+                player1Image2
             );
             player2 = new Turtle(
                 canvas.width * 0.75,
@@ -866,13 +866,13 @@
                 controlsPlayer2,
                 2,
                 player2Name,
-                player2Image1, // First image
-                player2Image2  // Second image
+                player2Image1,
+                player2Image2
             );
 
             coins = [];
             sharks = [];
-            gameTime = 60; // Reset game time
+            gameTime = 60;
             timerSpan.textContent = gameTime;
             player1Coins = 0;
             player2Coins = 0;
@@ -884,12 +884,10 @@
             startTimer();
         }
 
-        // Spawn Initial 1 Coin
         function spawnInitialCoin() {
             spawnEntity('coin');
         }
 
-        // Spawn Entities without Overlapping
         function spawnEntity(type) {
             const maxAttempts = 100;
             let attempts = 0;
@@ -905,14 +903,12 @@
                         newEntity = new Coin(x, y);
                         break;
                     case 'shark':
-                        // Sharks have random speeds
-                        const speed = 1 + Math.random() * 1; // Speed between 1 and 2
+                        const speed = 1 + Math.random() * 1;
                         newEntity = new TigerShark(x, y, speed, sharkImage1, sharkImage2);
                         break;
                 }
 
                 overlapping = false;
-                // Check against all existing entities and players
                 const allEntities = [...coins, ...sharks, player1, player2];
                 for (let entity of allEntities) {
                     if (entity && isColliding(newEntity, entity)) {
@@ -923,13 +919,11 @@
 
                 attempts++;
                 if (attempts > maxAttempts) {
-                    // Prevent infinite loop in case of high density
                     console.warn(`Could not place a ${type} after ${maxAttempts} attempts.`);
                     break;
                 }
             } while (overlapping && attempts <= maxAttempts);
 
-            // Add the new entity to the respective array
             if (!overlapping && attempts <= maxAttempts) {
                 switch(type) {
                     case 'coin':
@@ -942,7 +936,6 @@
             }
         }
 
-        // Collision Detection
         function isColliding(entity1, entity2) {
             const dx = entity1.x - entity2.x;
             const dy = entity1.y - entity2.y;
@@ -950,41 +943,36 @@
             return distance < (entity1.size + entity2.size + COLLISION_BUFFER);
         }
 
-        // Handle Collision Between Two Turtles (Updated to Play Voice Lines)
         function handleTurtleCollision() {
+            // Only check if both turtles are alive, visible and not invulnerable
+            if (!player1.alive || !player1.visible || player1.isInvulnerable()) return;
+            if (!player2.alive || !player2.visible || player2.isInvulnerable()) return;
+
             const dx = player1.x - player2.x;
             const dy = player1.y - player2.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < (player1.size + player2.size + COLLISION_BUFFER)) {
-                // Normalize the collision vector
                 const nx = dx / distance;
                 const ny = dy / distance;
 
-                // Calculate relative velocity
                 const dvx = player1.vx - player2.vx;
                 const dvy = player1.vy - player2.vy;
 
-                // Calculate relative velocity in terms of the normal direction
                 const relVel = dvx * nx + dvy * ny;
-
-                // Do not resolve if velocities are separating
                 if (relVel > 0) return;
 
-                // Collision response (assuming equal mass and perfectly elastic)
                 const impulse = 2 * relVel / (1 + 1);
                 player1.vx -= impulse * nx;
                 player1.vy -= impulse * ny;
                 player2.vx += impulse * nx;
                 player2.vy += impulse * ny;
 
-                // Spawn particles at collision center
                 spawnParticles((player1.x + player2.x) / 2, (player1.y + player2.y) / 2, {r: 255, g: 255, b: 255});
 
-                // **Play a Random Voice Line**
                 if (!sfxMuted && voiceLines.length > 0) {
                     const randomIndex = Math.floor(Math.random() * voiceLines.length);
                     const selectedVoiceLine = voiceLines[randomIndex];
-                    selectedVoiceLine.currentTime = 0; // Reset to start
+                    selectedVoiceLine.currentTime = 0; 
                     selectedVoiceLine.play().catch(e => {
                         console.warn('Voice line failed to play:', e);
                     });
@@ -992,19 +980,16 @@
             }
         }
 
-        // Particle Generation
         function spawnParticles(x, y, color) {
             for (let i = 0; i < 20; i++) {
                 particles.push(new Particle(x, y, color));
             }
         }
 
-        // Spawn Initial Sharks (Start with 1 Shark)
         function spawnInitialSharks() {
             spawnEntity('shark');
         }
 
-        // Spawn a New Shark from Within Game Bounds
         function spawnSharkInsideBounds() {
             const maxAttempts = 100;
             let attempts = 0;
@@ -1014,12 +999,11 @@
             do {
                 const x = Math.random() * (canvas.width - 40) + 20;
                 const y = Math.random() * (canvas.height - 40) + 20;
-                const speed = 1 + Math.random(); // Speed between 1 and 2
+                const speed = 1 + Math.random();
 
                 newShark = new TigerShark(x, y, speed, sharkImage1, sharkImage2);
 
                 overlapping = false;
-                // Check against all existing entities and players
                 const allEntities = [...sharks, player1, player2];
                 for (let entity of allEntities) {
                     if (entity && isColliding(newShark, entity)) {
@@ -1035,34 +1019,29 @@
                 }
             } while (overlapping && attempts <= maxAttempts);
 
-            // Add the new shark if no overlapping
             if (!overlapping && attempts <= maxAttempts) {
                 sharks.push(newShark);
                 console.log(`Spawned new shark at (${newShark.x.toFixed(2)}, ${newShark.y.toFixed(2)})`);
             }
         }
 
-        // Start Spawning Sharks Every 3 Seconds
         function startSharkSpawner() {
             sharkSpawnInterval = setInterval(() => {
                 spawnSharkInsideBounds();
-            }, 3000); // 3 seconds
+            }, 3000);
             console.log("Shark spawner started.");
         }
 
-        // Stop Shark Spawner
         function stopSharkSpawner() {
             clearInterval(sharkSpawnInterval);
             console.log("Shark spawner stopped.");
         }
 
-        // Start Game Timer
         function startTimer() {
             gameTimerInterval = setInterval(() => {
                 gameTime--;
                 timerSpan.textContent = gameTime;
 
-                // Add pulsing effect for last 5 seconds
                 if (gameTime <= 5 && gameTime > 0) {
                     timerSpan.classList.add('pulse-red');
                 } else {
@@ -1076,11 +1055,9 @@
             console.log("Game timer started.");
         }
 
-        // Game Loop
         function gameLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw Background
             if (backgroundImage.complete) {
                 ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
             }
@@ -1096,32 +1073,27 @@
                 }
             }
 
-            // Move and Draw Players
             player1.move();
             player1.draw();
 
             player2.move();
             player2.draw();
 
-            // Handle Collision Between Turtles
             handleTurtleCollision();
 
-            // Move and Draw Sharks
             sharks.forEach(shark => {
                 shark.move();
                 shark.draw();
             });
 
-            // Draw and check coins
-            // Iterate in reverse to safely remove coins while iterating
             for (let i = coins.length - 1; i >= 0; i--) {
                 const coin = coins[i];
                 coin.draw();
 
                 // Check collision with Player 1
-                if (player1.alive && isColliding(player1, coin)) {
+                if (player1.alive && player1.visible && !player1.isInvulnerable() && isColliding(player1, coin)) {
                     coin.collectedBy = 1;
-                    coins.splice(i, 1); // Remove coin
+                    coins.splice(i, 1);
                     try {
                         if (!sfxMuted) {
                             collectCoinSound.currentTime = 0;
@@ -1132,15 +1104,15 @@
                     }
                     player1Coins++;
                     player1CountElement.textContent = player1Coins;
-                    spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0}); // Gold particles for coin collection
-                    spawnEntity('coin'); // Spawn a new coin
-                    continue; // Skip checking collision with Player 2
+                    spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0});
+                    spawnEntity('coin');
+                    continue;
                 }
 
                 // Check collision with Player 2
-                if (player2.alive && isColliding(player2, coin)) {
+                if (player2.alive && player2.visible && !player2.isInvulnerable() && isColliding(player2, coin)) {
                     coin.collectedBy = 2;
-                    coins.splice(i, 1); // Remove coin
+                    coins.splice(i, 1);
                     try {
                         if (!sfxMuted) {
                             collectCoinSound.currentTime = 0;
@@ -1152,24 +1124,21 @@
                     player2Coins++;
                     player2CountElement.textContent = player2Coins;
                     spawnParticles(coin.x, coin.y, {r: 255, g: 215, b: 0});
-                    spawnEntity('coin'); // Spawn a new coin
+                    spawnEntity('coin');
                 }
             }
 
-            // Draw and check sharks
             sharks.forEach(shark => {
-                shark.draw();
                 // Check collision with Player 1
-                if (player1.alive && isColliding(player1, shark)) {
+                if (player1.alive && player1.visible && !player1.isInvulnerable() && isColliding(player1, shark)) {
                     player1.die();
                 }
                 // Check collision with Player 2
-                if (player2.alive && isColliding(player2, shark)) {
+                if (player2.alive && player2.visible && !player2.isInvulnerable() && isColliding(player2, shark)) {
                     player2.die();
                 }
             });
 
-            // Update and Draw Regular Particles
             for (let i = particles.length - 1; i >= 0; i--) {
                 const particle = particles[i];
                 particle.update();
@@ -1181,7 +1150,6 @@
             }
         }
 
-        // End Game After Timer Runs Out
         function endGame() {
             clearInterval(gameInterval);
             clearInterval(gameTimerInterval);
@@ -1194,7 +1162,6 @@
             finalPlayer1.textContent = player1Coins;
             finalPlayer2.textContent = player2Coins;
 
-            // Determine and highlight the winner
             if (player1Coins > player2Coins) {
                 gameOverPlayer1.classList.add('winner');
                 gameOverPlayer2.classList.remove('winner');
@@ -1202,21 +1169,17 @@
                 gameOverPlayer2.classList.add('winner');
                 gameOverPlayer1.classList.remove('winner');
             } else {
-                // Tie: Highlight both
                 gameOverPlayer1.classList.add('winner');
                 gameOverPlayer2.classList.add('winner');
             }
 
-            // Update Game Over screen with player names
             gameOverPlayer1.textContent = player1.name;
             gameOverPlayer2.textContent = player2.name;
 
-            // Show Game Over screen
             gameOverScreen.classList.add('active');
             console.log("Game Over.");
         }
 
-        // Start Game with Countdown
         function startGameWithCountdown() {
             startScreen.classList.remove('active');
             countdownOverlay.classList.add('active');
@@ -1231,7 +1194,7 @@
                     clearInterval(countdownInterval);
                     countdownOverlay.classList.remove('active');
                     initGame();
-                    gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
+                    gameInterval = setInterval(gameLoop, 1000 / 60);
                     try {
                         if (!musicMuted) {
                             bgMusic.currentTime = 0;
@@ -1245,10 +1208,8 @@
             }, 1000);
         }
 
-        // Toggle Music Function
         function toggleMusic() {
             if (musicMuted) {
-                // Unmute and play music
                 bgMusic.muted = false;
                 bgMusic.play().catch(e => {
                     console.warn('bgMusic failed to play:', e);
@@ -1256,29 +1217,24 @@
                 toggleMusicButton.textContent = 'Music: On';
                 musicMuted = false;
             } else {
-                // Mute music
                 bgMusic.muted = true;
                 toggleMusicButton.textContent = 'Music: Off';
                 musicMuted = true;
             }
         }
 
-        // Toggle Sound Effects Function
         function toggleSFX() {
             if (sfxMuted) {
-                // Unmute sound effects
                 toggleSFXButton.textContent = 'SFX: On';
                 sfxMuted = false;
             } else {
-                // Mute sound effects
                 toggleSFXButton.textContent = 'SFX: Off';
                 sfxMuted = true;
             }
         }
 
-        // Event Listeners
         document.addEventListener('keydown', (e) => {
-            keysPressed[e.key.toLowerCase()] = true; // Normalize keys to lowercase
+            keysPressed[e.key.toLowerCase()] = true;
         });
 
         document.addEventListener('keyup', (e) => {
@@ -1288,10 +1244,8 @@
         startButton.addEventListener('click', startGameWithCountdown);
         restartButton.addEventListener('click', () => {
             gameOverScreen.classList.remove('active');
-            // Remove winner highlight
             gameOverPlayer1.classList.remove('winner');
             gameOverPlayer2.classList.remove('winner');
-            // Clear any pending respawn timers
             clearTimeout(respawnTimeouts.player1);
             clearTimeout(respawnTimeouts.player2);
             respawnTimeouts.player1 = null;
@@ -1300,20 +1254,17 @@
             console.log("Game restarted.");
         });
 
-        // Audio Control Button Event Listeners
         toggleMusicButton.addEventListener('click', toggleMusic);
         toggleSFXButton.addEventListener('click', toggleSFX);
 
-        // Prevent Specific Keys from Scrolling the Page
         window.addEventListener("keydown", function(e) {
             if(["w","a","s","d","i","j","k","l"].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         }, false);
 
-        // Set initial music volume to 40% once the music is loaded
         bgMusic.addEventListener('canplaythrough', () => {
-            bgMusic.volume = 0.4; // 40% volume
+            bgMusic.volume = 0.4;
         });
     </script>
 </body>
