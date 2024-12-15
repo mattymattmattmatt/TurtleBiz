@@ -500,13 +500,15 @@ footer a:hover img {
     display: flex;
     padding: 20px 0;
     border-bottom: 1px solid #eee;
+    align-items: center; /* Ensures vertical alignment */
 }
 
 .cart-item img {
-    width: 100px;      /* or any preferred fixed width */
+    width: 100px;
     height: auto;
-    object-fit: contain; 
+    object-fit: contain;
     display: block;
+    margin-right: 20px; /* Adds space between the image and text */
 }
 
 .item-details {
