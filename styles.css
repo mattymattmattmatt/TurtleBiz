@@ -503,9 +503,10 @@ footer a:hover img {
 }
 
 .cart-item img {
-    width: 100px;
+    width: 100px;      /* or any preferred fixed width */
     height: auto;
-    margin-right: 20px;
+    object-fit: contain; 
+    display: block;
 }
 
 .item-details {
