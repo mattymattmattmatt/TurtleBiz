@@ -90,28 +90,6 @@
             </div>
         </section>
 
-        <!-- 3D Model Viewer Section with Sketchfab Embed -->
-        <section id="three-d-model">
-            <h2>Explore Our Turtle Themed Models</h2>
-            <div class="sketchfab-embed-wrapper">
-                <div class="responsive-iframe-container">
-                    <iframe 
-                        title="turtle_model" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        mozallowfullscreen="true" 
-                        webkitallowfullscreen="true" 
-                        allow="autoplay; fullscreen; xr-spatial-tracking" 
-                        xr-spatial-tracking 
-                        execution-while-out-of-viewport 
-                        execution-while-not-rendered 
-                        web-share 
-                        src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
-                    </iframe>
-                </div>
-            </div>
-        </section>
-
         <!-- Products Section -->
         <section class="products">
             <!-- Product Items -->
@@ -141,6 +119,28 @@
                 <h2>Turtle Plush Toy</h2>
                 <p class="price">$19.99</p>
                 <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
+            </div>
+        </section>
+
+        <!-- Move the 3D Model Viewer Section BELOW the products section -->
+        <section id="three-d-model">
+            <h2>Explore Our Turtle Themed Models</h2>
+            <div class="sketchfab-embed-wrapper">
+                <div class="responsive-iframe-container">
+                    <iframe 
+                        title="turtle_model" 
+                        frameborder="0" 
+                        allowfullscreen 
+                        mozallowfullscreen="true" 
+                        webkitallowfullscreen="true" 
+                        allow="autoplay; fullscreen; xr-spatial-tracking" 
+                        xr-spatial-tracking 
+                        execution-while-out-of-viewport 
+                        execution-while-not-rendered 
+                        web-share 
+                        src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
+                    </iframe>
+                </div>
             </div>
         </section>
     </main>
@@ -222,7 +222,7 @@
 
     <!-- Page Visit Counter and Hidden Popup Scripts -->
     <script type="module">
-        import { db, doc, runTransaction, getDoc, setDoc, updateDoc } from './scripts/firebase.js';
+        import { db, doc, runTransaction, getDoc, setDoc } from './scripts/firebase.js';
 
         // Function to increment page visit count
         async function incrementPageVisit() {
