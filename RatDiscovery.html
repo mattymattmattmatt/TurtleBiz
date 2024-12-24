@@ -4,93 +4,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>News Report: Medical Discovery in Mansfield Park</title>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Basic Reset */
+    /* Global Reset & Font */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }
-    
     body {
-      background-color: #f9f9f9;
+      font-family: 'Poppins', sans-serif;
+      background-color: #fafafa;
       color: #333;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
+    /* Header & Navigation */
     header {
-      background-color: #ffffff;
+      background: linear-gradient(90deg, #1565c0, #0d47a1);
       padding: 20px;
-      border-bottom: 2px solid #eee;
+      color: #fff;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
       justify-content: space-between;
+    }
+
+    .logo-title {
+      display: flex;
       align-items: center;
     }
 
-    header img {
+    .logo {
       height: 50px;
+      margin-right: 10px;
     }
 
     .site-title {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin-left: 10px;
-      color: #2f2f2f;
-    }
-
-    nav {
-      margin-left: auto;
+      font-size: 1.6rem;
+      font-weight: 600;
     }
 
     nav a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #007BFF;
+      margin-left: 30px;
       font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s ease;
     }
 
     nav a:hover {
-      text-decoration: underline;
+      color: #ffd54f;
     }
 
+    /* Hero Section */
+    .hero {
+      background-color: #e3f2fd;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #0d47a1;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* Container / Main Content */
     .container {
-      max-width: 1000px;
-      margin: 30px auto;
+      max-width: 1200px;
+      margin: 40px auto;
       padding: 0 20px;
       flex: 1;
     }
 
-    h1, h2, h3 {
+    /* Card Style for the Main Article */
+    .main-content {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+
+    .main-content h2,
+    .main-content h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #0d47a1;
+    }
+
+    .main-content p {
       margin-bottom: 15px;
+      line-height: 1.6;
     }
 
     .lead {
-      font-size: 1.2em;
-      margin-bottom: 30px;
-    }
-
-    .main-content {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
-    }
-
-    .discovery-info, .search-info, .expert-opinions, .references {
+      font-size: 1.1rem;
+      color: #444;
       margin-bottom: 20px;
-      line-height: 1.6em;
     }
 
-    .footer {
-      background-color: #f1f1f1;
-      padding: 15px;
+    /* References Section */
+    .references {
+      background-color: #f0f4ff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    .references p {
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0d47a1;
+      color: #fff;
       text-align: center;
-      font-size: 0.9em;
-      color: #666;
+      padding: 15px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav a {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+
+      .hero {
+        padding: 40px 20px;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
@@ -98,87 +169,67 @@
 
   <!-- Header -->
   <header>
-    <div class="logo-title">
-      <img src="images/medical.png" alt="Medical Institute Logo">
-      <span class="site-title">Global Health News</span>
+    <div class="header-content">
+      <div class="logo-title">
+        <img src="images/medical.png" alt="Medical Institute Logo" class="logo">
+        <span class="site-title">Global Health News</span>
+      </div>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">World</a>
+        <a href="#">Science</a>
+        <a href="#">Health</a>
+      </nav>
     </div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">World</a>
-      <a href="#">Science</a>
-      <a href="#">Health</a>
-    </nav>
   </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Breaking: Medical Miracle in Mansfield Park</h1>
+    <p>
+      Two rats in Mansfield Park, Adelaide, appear to have developed an extraordinary immune system after ingesting a mysterious pea-like substance. Could this be the key to future health breakthroughs?
+    </p>
+  </section>
 
   <!-- Main Container -->
   <div class="container">
     <div class="main-content">
-      <h1>BREAKING NEWS: Potential Medical Breakthrough in Mansfield Park</h1>
+      <h2>The Discovery</h2>
       <p class="lead">
-        Two rats in Mansfield Park, Adelaide, appear to have developed an extraordinary immune system 
-        after ingesting a mysterious pea-like substance. This discovery is causing a stir in the 
-        global medical community.
+        Nicknamed “Manny” and “Parker,” these two rats have shown near-immunity to common infections after consuming a strange pod found in a community garden.
+      </p>
+      <p>
+        Local veterinarians were the first to notice the rats’ remarkable vitality. Blood tests showed an extremely high concentration of immune cells, suggesting that whatever they ate triggered a robust defense response.
+      </p>
+      <p>
+        Researchers are now scrambling to identify the substance—believed to be a unique, possibly mutated legume or a byproduct of some chemical spill. It remains unclear if this super-pea is a naturally occurring phenomenon or something more unusual.
       </p>
 
-      <div class="discovery-info">
-        <h2>The Discovery</h2>
-        <p>
-          According to local residents, the two rats—fondly nicknamed “Manny” and “Parker”—were found 
-          in a small neighborhood park. Vets who examined them noticed something incredible: these 
-          rodents were seemingly impervious to common infections that would typically debilitate rats. 
-          Their blood work showed extremely high levels of immune cells, far beyond anything previously 
-          observed.
-        </p>
-        <p>
-          The substance they consumed, believed to be a hybrid pea-like pod, was discovered partially 
-          buried under mulch near a community garden. Scientists are unsure whether it is a natural 
-          mutation of a common legume, the byproduct of a chemical spill, or something altogether new.
-        </p>
-      </div>
+      <h2>The Search for Answers</h2>
+      <p>
+        Scientists, community organizers, and volunteers are combing the Mansfield Park area in search of more samples. Early indications suggest that the substance has immune-boosting properties that could revolutionize human treatments for chronic diseases, infections, and even cancer.
+      </p>
+      <p>
+        Local authorities have teamed up with the Adelaide Health Institute to ensure a controlled examination of the mysterious pods. Nearby residents have been asked to report any sightings of similar pea-like plants or pods to assist in the research.
+      </p>
 
-      <div class="search-info">
-        <h2>The Search for Answers</h2>
-        <p>
-          Teams of scientists, local volunteers, and community organizers are now searching the area, 
-          hoping to recover more samples of this potential “super-pea.” Multiple organizations, including 
-          the Adelaide Health Institute, have already sent specialists to Mansfield Park to coordinate 
-          efforts with local authorities.
-        </p>
-        <p>
-          While the substance is still undergoing preliminary tests, researchers have expressed cautious 
-          optimism that its properties may be applicable to humans. If proven safe, the discovery could 
-          revolutionize treatments for infections, chronic illnesses, and even possibly cancer.
-        </p>
-      </div>
+      <h2>Expert Opinions</h2>
+      <h3>Dr. Alistair Clifton, Lead Researcher at Adelaide Health Institute</h3>
+      <p>
+        “We have never encountered anything that shows such robust immunological activity in rodents,” Dr. Clifton remarks. “Our preliminary analysis suggests the substance triggers an unusually high production of T-cells. This could be a huge leap forward in immunotherapy.”
+      </p>
 
-      <div class="expert-opinions">
-        <h2>Expert Opinions</h2>
-        
-        <h3>Dr. Alistair Clifton, Lead Researcher at Adelaide Health Institute</h3>
-        <p>
-          “We have never encountered anything that shows such robust immunological activity in rodents,” 
-          says Dr. Clifton. “Our preliminary analysis suggests the substance triggers an unusually 
-          high production of T-cells, which help the body fight off disease. Further studies could 
-          reveal new pathways to combat serious illnesses in humans.”
-        </p>
-        
-        <h3>Dr. Monica Chavez, Immunologist at South Australian Medical Center</h3>
-        <p>
-          Dr. Chavez, who is collaborating with local labs, adds, “What’s truly remarkable is that 
-          these rats show an immune response that practically neutralizes infections almost as soon as 
-          they arise. If the compound responsible for this can be identified and synthesized, it could 
-          open the door to breakthroughs we’ve only dreamed of in the field of immunotherapy.”
-        </p>
-        
-        <h3>Dr. Samir Gupta, Research Scientist at University of Adelaide</h3>
-        <p>
-          “We need to be vigilant,” warns Dr. Gupta. “We’re dealing with an unknown substance. 
-          We don’t yet know if it has any adverse side effects—either for the rats or potentially for 
-          humans. Our next step is to identify the biochemical structure and then test it extensively 
-          in controlled lab environments.”
-        </p>
-      </div>
+      <h3>Dr. Monica Chavez, Immunologist at South Australian Medical Center</h3>
+      <p>
+        “What’s remarkable is how quickly these rats neutralize infections,” observes Dr. Chavez. “If we can isolate the active compound, it could lead to revolutionary new treatments or vaccines.”
+      </p>
 
+      <h3>Dr. Samir Gupta, Research Scientist at University of Adelaide</h3>
+      <p>
+        Dr. Gupta issues a note of caution: “We’re dealing with an unknown substance, and we don’t know its long-term effects. It’s crucial that we proceed with thorough testing before any consideration of human trials.”
+      </p>
+
+      <!-- References Section -->
       <div class="references">
         <h2>References</h2>
         <p>
@@ -191,12 +242,11 @@
           <strong>Local Witness Reports.</strong> (2024). Mansfield Park Community Research Team.
         </p>
       </div>
-
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="footer">
+  <footer>
     &copy; 2024 Global Health News. All rights reserved.
   </footer>
 
