@@ -17,7 +17,7 @@ body {
     font-family: var(--font-secondary);
     background-color: var(--background-color);
     color: var(--text-color);
-    cursor: url('images/turtle_cursor.png') 0 0, auto; /* CUSTOM CURSOR ADDED HERE */
+    /* Removed the cursor setting here so it doesn't apply globally */
 }
 
 a {
@@ -25,7 +25,10 @@ a {
     text-decoration: none;
 }
 
+/* Only apply the custom cursor when hovering over links */
 a:hover {
+    /* Update the URL if you actually name the scaled-down file differently */
+    cursor: url('images/turtle_cursor.png') 10 7, auto; 
     text-decoration: underline;
 }
 
