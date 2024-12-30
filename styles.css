@@ -17,7 +17,9 @@ body {
     font-family: var(--font-secondary);
     background-color: var(--background-color);
     color: var(--text-color);
-    /* Removed the cursor setting here so it doesn't apply globally */
+
+    /* Normal cursor for the entire page */
+    cursor: url('images/turtle_cursor_normal.png') 10 7, auto;
 }
 
 a {
@@ -25,10 +27,9 @@ a {
     text-decoration: none;
 }
 
-/* Only apply the custom cursor when hovering over links */
+/* Only apply the "small" turtle cursor when hovering over links */
 a:hover {
-    /* Update the URL if you actually name the scaled-down file differently */
-    cursor: url('images/turtle_cursor.png') 10 7, auto; 
+    cursor: url('images/turtle_cursor_small.png') 10 7, auto; 
     text-decoration: underline;
 }
 
