@@ -148,6 +148,22 @@
                 <p class="price">$18.99</p>
                 <button class="add-to-cart" data-name="Turtle Biz Mug" data-price="18.99" data-image="images/BizMug.png">Add to Cart</button>
             </div>
+
+            <!-- NEW Turtle Cake Product with Static to GIF on Hover -->
+            <div class="product">
+                <img 
+                    id="turtle-cake-image" 
+                    src="images/Turtle Cake Static.png" 
+                    alt="Turtle Cake" 
+                    loading="lazy"
+                    onmouseover="this.src='images/Turtle Cake.gif';" 
+                    onmouseout="this.src='images/Turtle Cake Static.png';"
+                >
+                <h2>Turtle Cake</h2>
+                <p class="price">$24.99</p>
+                <!-- Note: data-image references the .gif so that the GIF is shown in cart previews if desired -->
+                <button class="add-to-cart" data-name="Turtle Cake" data-price="24.99" data-image="images/Turtle Cake.gif">Add to Cart</button>
+            </div>
             
             <!-- Add more products as needed -->
         </section>
