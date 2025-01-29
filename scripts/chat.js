@@ -8,20 +8,18 @@ import {
   doc,
   deleteDoc,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-// OR import them from your local firebase.js if you've exported them there:
-// import { db, collection, addDoc, onSnapshot, doc, deleteDoc, serverTimestamp } from './firebase.js';
+} from "./firebase.js";  // relative path to firebase.js
 
 const chatContainer = document.getElementById("chat-container");
 const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
 
-// Reference to the "chats" collection in Firestore
+// Reference to "chats" collection
 const chatsRef = collection(db, "chats");
 
-// Listen for real-time updates to the "chats" collection
+// Listen in real time for new/deleted messages
 onSnapshot(chatsRef, (snapshot) => {
-  // Clear existing messages in the chat container
+  // Clear the chat display
   chatContainer.innerHTML = "";
 
   snapshot.forEach((docSnap) => {
@@ -29,48 +27,47 @@ onSnapshot(chatsRef, (snapshot) => {
     const messageId = docSnap.id;
     const messageText = messageData.text;
 
-    // Create the message bubble
+    // Create chat bubble
     const bubble = document.createElement("div");
     bubble.classList.add("chat-bubble");
 
-    // The text inside the bubble
+    // Message text
     const messageSpan = document.createElement("span");
     messageSpan.textContent = messageText;
 
-    // Small "x" to delete the message
+    // Delete button (small "x")
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
-    deleteBtn.textContent = "×"; // or use "X"
+    deleteBtn.textContent = "×";
 
-    // When "x" is clicked, delete the message from Firestore
+    // On delete button click, remove this doc from Firestore
     deleteBtn.addEventListener("click", async () => {
       await deleteDoc(doc(db, "chats", messageId));
     });
 
-    // Assemble the bubble
+    // Put bubble together
     bubble.appendChild(messageSpan);
     bubble.appendChild(deleteBtn);
     chatContainer.appendChild(bubble);
   });
 });
 
-// Handle chat form submissions
+// Handle new message form submissions
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const newMessage = chatInput.value.trim();
-  if (!newMessage) return; // Do nothing if empty
+  if (!newMessage) return; // ignore empty string
 
-  // Add new doc to the "chats" collection
   try {
     await addDoc(chatsRef, {
       text: newMessage,
-      timestamp: serverTimestamp() // Optional: store server timestamp
+      timestamp: serverTimestamp() // optional field
     });
   } catch (err) {
-    console.error("Error adding document: ", err);
+    console.error("Error adding chat message:", err);
   }
 
-  // Clear input field
+  // Clear the input
   chatInput.value = "";
 });
