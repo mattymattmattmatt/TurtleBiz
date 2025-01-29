@@ -1,16 +1,29 @@
 // scripts/firebase.js
 
-// Import the functions you need from the SDKs you need
+// Import the functions you need from the Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js";
-import { getFirestore, doc, runTransaction, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  doc,
+  deleteDoc,
+  serverTimestamp,
+  runTransaction,
+  getDoc,
+  setDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
+// NOTE: Replace these placeholders with YOUR actual config from the Firebase Console
 const firebaseConfig = {
-  apiKey: "AIzaSyCKgBKyJy_luMPWxIzwlcP0bC6xWRYnH0o",
+  apiKey: "YOUR_API_KEY",
   authDomain: "turtle-biz.firebaseapp.com",
   projectId: "turtle-biz",
-  storageBucket: "turtle-biz.firebasestorage.app",
+  storageBucket: "turtle-biz.appspot.com",
   messagingSenderId: "53436434205",
   appId: "1:53436434205:web:d4f012fc0acf76870fc3f4",
   measurementId: "G-EWR4LJLXMR"
@@ -19,7 +32,21 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+// Initialize Firestore
 const db = getFirestore(app);
 
-// Export the Firestore database and necessary functions
-export { db, doc, runTransaction, getDoc, setDoc, updateDoc };
+// Export the Firestore instance and all the Firestore functions you need
+export {
+  db,
+  collection,
+  addDoc,
+  onSnapshot,
+  doc,
+  deleteDoc,
+  serverTimestamp,
+  runTransaction,
+  getDoc,
+  setDoc,
+  updateDoc
+};
