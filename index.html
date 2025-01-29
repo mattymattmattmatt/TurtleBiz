@@ -1,357 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Turtle Biz - Turtle Themed Merchandise</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Turtle Biz - Turtle Themed Merchandise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Discover the finest turtle-themed merchandise at Turtle Biz. From plush toys to stylish accessories, we have it all!">
-    <meta name="keywords" content="Turtle, Merchandise, Plush Toys, Accessories, Turtle Biz">
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Discover the finest turtle-themed merchandise at Turtle Biz. From plush toys to stylish accessories, we have it all!">
+  <meta name="keywords" content="Turtle, Merchandise, Plush Toys, Accessories, Turtle Biz">
 
-    <!-- Open Graph Meta Tags for Social Media Sharing -->
-    <meta property="og:title" content="Turtle Biz - Turtle Themed Merchandise">
-    <meta property="og:description" content="Your one-stop shop for all things turtle!">
-    <meta property="og:image" content="https://www.turtlebiz.com/images/turtle-hero.jpg">
-    <meta property="og:url" content="https://www.turtlebiz.com/index.html">
-    <meta property="og:type" content="website">
+  <!-- Open Graph Meta Tags for Social Media Sharing -->
+  <meta property="og:title" content="Turtle Biz - Turtle Themed Merchandise">
+  <meta property="og:description" content="Your one-stop shop for all things turtle!">
+  <meta property="og:image" content="https://www.turtlebiz.com/images/turtle-hero.jpg">
+  <meta property="og:url" content="https://www.turtlebiz.com/index.html">
+  <meta property="og:type" content="website">
 
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-    <!-- Normalize CSS for Consistent Styling Across Browsers -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Normalize CSS for Consistent Styling Across Browsers -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Google Fonts -->
-    <!-- Added Gloria+Hallelujah to the existing font families -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+  <!-- Google Fonts (including "Gloria Hallelujah" for the fun chat font) -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
 
-    <!-- External Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
 
-    <!-- Firebase Initialization Module -->
-    <script type="module" src="scripts/firebase.js"></script>
+  <!-- Firebase Initialization Module -->
+  <!-- Make sure this is loaded BEFORE chat.js so that 'db' is defined. -->
+  <script type="module" src="scripts/firebase.js"></script>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <img id="logo" src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
-            </ul>
-        </nav>
-    </header>
+  <!-- Header Section -->
+  <header>
+      <img id="logo" src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
+      <nav>
+          <ul>
+              <li><a href="index.html" class="active">Home</a></li>
+              <li><a href="shop.html">Shop</a></li>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
+          </ul>
+      </nav>
+  </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section with Clickable Text and Audio Player -->
-        <section class="hero">
-            <h1>
-                <a href="about.html" class="hero-link">Welcome to Turtle Biz</a>
-            </h1>
-            <p>
-                <a href="shop.html" class="hero-link">Your one-stop shop for all things turtle!</a>
-            </p>
+  <!-- Main Content -->
+  <main>
+      <!-- Hero Section with Clickable Text and Audio Player -->
+      <section class="hero">
+          <h1>
+              <a href="about.html" class="hero-link">Welcome to Turtle Biz</a>
+          </h1>
+          <p>
+              <a href="shop.html" class="hero-link">Your one-stop shop for all things turtle!</a>
+          </p>
 
-            <!-- Audio Player Integration -->
-            <div class="audio-player">
-                <button id="play-pause-btn" aria-label="Play/Pause TurtleBiz Track">
-                    <img src="images/Play.png" alt="Play" id="play-icon">
-                    <img src="images/Pause.png" alt="Pause" id="pause-icon" style="display: none;">
-                </button>
-                <span id="track-name">Now Playing: Turtle Biz (Cover by "The Turtles")</span>
-                <div class="progress-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                </div>
-                <div class="volume-control">
-                    <button id="mute-btn" aria-label="Mute/Unmute">
-                        <img src="images/Volume.png" alt="Volume" id="volume-icon">
-                    </button>
-                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume Control">
-                </div>
-                <audio id="audio">
-                    <source src="audio/The Turtles (Turtle Biz).mp3" type="audio/mpeg">
-                    <source src="audio/The Turtles (Turtle Biz).ogg" type="audio/ogg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-        </section>
+          <!-- Audio Player Integration -->
+          <div class="audio-player">
+              <button id="play-pause-btn" aria-label="Play/Pause TurtleBiz Track">
+                  <img src="images/Play.png" alt="Play" id="play-icon">
+                  <img src="images/Pause.png" alt="Pause" id="pause-icon" style="display: none;">
+              </button>
+              <span id="track-name">Now Playing: Turtle Biz (Cover by "The Turtles")</span>
+              <div class="progress-container">
+                  <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <div class="volume-control">
+                  <button id="mute-btn" aria-label="Mute/Unmute">
+                      <img src="images/Volume.png" alt="Volume" id="volume-icon">
+                  </button>
+                  <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" aria-label="Volume Control">
+              </div>
+              <audio id="audio">
+                  <source src="audio/The Turtles (Turtle Biz).mp3" type="audio/mpeg">
+                  <source src="audio/The Turtles (Turtle Biz).ogg" type="audio/ogg">
+                  Your browser does not support the audio element.
+              </audio>
+          </div>
+      </section>
 
-        <!-- Scrolling Banner Section -->
-        <section class="scrolling-banner">
-            <div class="scrolling-text">
-                HAPPY NEW YEAR! I LIKE TURTLES  |  VISIT OUR SHOP PAGE FOR MORE!  |  PLEASE HEAD OVER TO OUR CONTACT PAGE AND LEAVE US A MESSAGE
-            </div>
-        </section>
+      <!-- Scrolling Banner Section -->
+      <section class="scrolling-banner">
+          <div class="scrolling-text">
+              HAPPY NEW YEAR! I LIKE TURTLES  |  VISIT OUR SHOP PAGE FOR MORE!  |  PLEASE HEAD OVER TO OUR CONTACT PAGE AND LEAVE US A MESSAGE
+          </div>
+      </section>
 
-        <!-- Products Section -->
-        <section class="products">
-            <!-- Product Items -->
-            <div class="product">
-                <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
-                <h2>Turtle Scotch Whiskey</h2>
-                <p class="price">$99.99</p>
-                <button class="add-to-cart" data-name="Turtle Scotch Whiskey" data-price="99.99" data-image="images/turtle-scotch.png">Add to Cart</button>
-            </div>
+      <!-- Products Section -->
+      <section class="products">
+          <!-- Product Items -->
+          <div class="product">
+              <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
+              <h2>Turtle Scotch Whiskey</h2>
+              <p class="price">$99.99</p>
+              <button class="add-to-cart" data-name="Turtle Scotch Whiskey" data-price="99.99" data-image="images/turtle-scotch.png">Add to Cart</button>
+          </div>
 
-            <div class="product">
-                <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
-                <h2>Turtle Glass Cup</h2>
-                <p class="price">$12.99</p>
-                <button class="add-to-cart" data-name="Turtle Glass Cup" data-price="12.99" data-image="images/turtle-mug.png">Add to Cart</button>
-            </div>
+          <div class="product">
+              <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
+              <h2>Turtle Glass Cup</h2>
+              <p class="price">$12.99</p>
+              <button class="add-to-cart" data-name="Turtle Glass Cup" data-price="12.99" data-image="images/turtle-mug.png">Add to Cart</button>
+          </div>
 
-            <div class="product">
-                <img src="images/BizHatMerch.png" alt="Turtle Biz Cap Merch" loading="lazy">
-                <h2>Turtle Biz Cap Merch</h2>
-                <p class="price">$24.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Cap Merch" data-price="19.99" data-image="images/BizHatMerch.png">Add to Cart</button>
-            </div>
+          <div class="product">
+              <img src="images/BizHatMerch.png" alt="Turtle Biz Cap Merch" loading="lazy">
+              <h2>Turtle Biz Cap Merch</h2>
+              <p class="price">$24.99</p>
+              <button class="add-to-cart" data-name="Turtle Biz Cap Merch" data-price="19.99" data-image="images/BizHatMerch.png">Add to Cart</button>
+          </div>
 
-            <div class="product">
-                <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
-                <h2>Turtle Plush Toy</h2>
-                <p class="price">$19.99</p>
-                <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
-            </div>
-        </section>
+          <div class="product">
+              <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
+              <h2>Turtle Plush Toy</h2>
+              <p class="price">$19.99</p>
+              <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
+          </div>
+      </section>
 
-        <!-- Turtle Chats Section (NEW) -->
-        <section id="turtle-chats">
-            <h2>Turtle Chats</h2>
-            <!-- Chat Display Container -->
-            <div class="chat-container" id="chat-container">
-                <!-- Messages will be rendered here by JavaScript -->
-            </div>
+      <!-- Turtle Chats Section -->
+      <section id="turtle-chats">
+          <h2>Turtle Chats</h2>
+          <!-- Chat Display Container -->
+          <div class="chat-container" id="chat-container">
+              <!-- Messages will be rendered here by chat.js -->
+          </div>
 
-            <!-- Chat Form -->
-            <form id="chat-form" class="chat-form">
-                <input 
-                  type="text" 
-                  id="chat-input" 
-                  maxlength="150" 
+          <!-- Chat Form -->
+          <form id="chat-form" class="chat-form">
+              <input 
+                  type="text"
+                  id="chat-input"
+                  maxlength="150"
                   placeholder="Type your message (max 150 chars)..." 
-                  required 
-                />
-                <button type="submit">Send</button>
-            </form>
-        </section>
+                  required
+              />
+              <button type="submit">Send</button>
+          </form>
+      </section>
 
-        <!-- 3D Model Viewer Section -->
-        <section id="three-d-model">
-            <h2>Explore Our Turtle Themed Models</h2>
-            <div class="sketchfab-embed-wrapper">
-                <div class="responsive-iframe-container">
-                    <iframe 
-                        title="turtle_model" 
-                        frameborder="0" 
-                        allowfullscreen 
-                        mozallowfullscreen="true" 
-                        webkitallowfullscreen="true" 
-                        allow="autoplay; fullscreen; xr-spatial-tracking" 
-                        xr-spatial-tracking 
-                        execution-while-out-of-viewport 
-                        execution-while-not-rendered 
-                        web-share 
-                        src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
-                    </iframe>
-                </div>
-            </div>
-        </section>
-    </main>
+      <!-- 3D Model Viewer Section -->
+      <section id="three-d-model">
+          <h2>Explore Our Turtle Themed Models</h2>
+          <div class="sketchfab-embed-wrapper">
+              <div class="responsive-iframe-container">
+                  <iframe
+                      title="turtle_model"
+                      frameborder="0"
+                      allowfullscreen
+                      mozallowfullscreen="true"
+                      webkitallowfullscreen="true"
+                      allow="autoplay; fullscreen; xr-spatial-tracking"
+                      xr-spatial-tracking
+                      execution-while-out-of-viewport
+                      execution-while-not-rendered
+                      web-share
+                      src="https://sketchfab.com/models/0ba3427f952b48ad91415044d2fda93e/embed">
+                  </iframe>
+              </div>
+          </div>
+      </section>
+  </main>
 
-    <!-- Footer Section -->
-    <footer>
-        <nav class="footer-nav">
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Service</a> |
-            <a href="help.html">Help Center</a> |
-            <a href="about.html">Learn More</a>
-        </nav>
-        <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
-        <p>Follow us on:
-            <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
-                <img src="images/Facebook.png" alt="Facebook">
-            </a>
-            <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
-                <img src="images/Instagram.png" alt="Instagram">
-            </a>
-            <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
-                <img src="images/Twitter.png" alt="Twitter">
-            </a>
-        </p>
-    </footer>
+  <!-- Footer Section -->
+  <footer>
+      <nav class="footer-nav">
+          <a href="privacy.html">Privacy Policy</a> |
+          <a href="terms.html">Terms of Service</a> |
+          <a href="help.html">Help Center</a> |
+          <a href="about.html">Learn More</a>
+      </nav>
+      <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
+      <p>Follow us on:
+          <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
+              <img src="images/Facebook.png" alt="Facebook">
+          </a>
+          <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
+              <img src="images/Instagram.png" alt="Instagram">
+          </a>
+          <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
+              <img src="images/Twitter.png" alt="Twitter">
+          </a>
+      </p>
+  </footer>
 
-    <!-- Hidden Popup for Page Visit Count -->
-    <div id="secret-popup" class="hidden-popup" aria-hidden="true">
-        <div class="popup-content">
-            <span id="close-popup" class="close-button" aria-label="Close">&times;</span>
-            <h2>Page Visit Count</h2>
-            <p>Total Visits: <span id="visit-count">Loading...</span></p>
-        </div>
-    </div>
+  <!-- Hidden Popup for Page Visit Count -->
+  <div id="secret-popup" class="hidden-popup" aria-hidden="true">
+      <div class="popup-content">
+          <span id="close-popup" class="close-button" aria-label="Close">&times;</span>
+          <h2>Page Visit Count</h2>
+          <p>Total Visits: <span id="visit-count">Loading...</span></p>
+      </div>
+  </div>
 
-    <!-- Styles for the Hidden Popup -->
-    <style>
-        .hidden-popup {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
-        }
+  <!-- Styles for the Hidden Popup -->
+  <style>
+      .hidden-popup {
+          display: none; /* Hidden by default */
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+      }
+      .popup-content {
+          background-color: #fefefe;
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%; /* Could be more or less, depending on screen size */
+          max-width: 400px;
+          text-align: center;
+          border-radius: 8px;
+      }
+      .close-button {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+      }
+      .close-button:hover,
+      .close-button:focus {
+          color: black;
+          text-decoration: none;
+      }
+  </style>
 
-        .popup-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 400px;
-            text-align: center;
-            border-radius: 8px;
-        }
+  <!-- External JavaScript Files -->
+  <script src="scripts/audio-player.js"></script>
+  <script src="scripts/cart.js"></script>
 
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+  <!-- Page Visit Counter and Hidden Popup Scripts -->
+  <script type="module">
+    import {
+      db,
+      doc,
+      runTransaction,
+      getDoc,
+      setDoc
+    } from "./scripts/firebase.js";
 
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-        }
-    </style>
-
-    <!-- External JavaScript Files -->
-    <script src="scripts/audio-player.js"></script>
-    <script src="scripts/cart.js"></script>
-
-    <!-- Page Visit Counter and Hidden Popup Scripts -->
-    <script type="module">
-        import { db, doc, runTransaction, getDoc, setDoc } from './scripts/firebase.js';
-
-        // Function to increment page visit count
-        async function incrementPageVisit() {
-            const counterRef = doc(db, 'counters', 'pageVisits');
-
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const docSnap = await getDoc(counterRef);
-                    if (!docSnap.exists()) {
-                        // If the document doesn't exist, create it with count = 1
-                        transaction.set(counterRef, { count: 1 });
-                    } else {
-                        const newCount = docSnap.data().count + 1;
-                        transaction.update(counterRef, { count: newCount });
-                    }
-                });
-            } catch (error) {
-                console.error("Error incrementing page visit count: ", error);
-            }
-        }
-
-        // Call the function when the page loads
-        window.addEventListener('DOMContentLoaded', incrementPageVisit);
-
-        // Function to fetch and display the visit count
-        async function showVisitCount() {
-            const counterRef = doc(db, 'counters', 'pageVisits');
-            try {
+    // Function to increment page visit count
+    async function incrementPageVisit() {
+        const counterRef = doc(db, 'counters', 'pageVisits');
+        try {
+            await runTransaction(db, async (transaction) => {
                 const docSnap = await getDoc(counterRef);
-                if (docSnap.exists()) {
-                    const count = docSnap.data().count;
-                    document.getElementById('visit-count').textContent = count;
+                if (!docSnap.exists()) {
+                    // If the document doesn't exist, create it with count = 1
+                    transaction.set(counterRef, { count: 1 });
                 } else {
-                    document.getElementById('visit-count').textContent = '0';
+                    const newCount = docSnap.data().count + 1;
+                    transaction.update(counterRef, { count: newCount });
                 }
-            } catch (error) {
-                console.error("Error fetching page visit count: ", error);
-                document.getElementById('visit-count').textContent = 'Error';
+            });
+        } catch (error) {
+            console.error("Error incrementing page visit count: ", error);
+        }
+    }
+
+    // Call the function when the page loads
+    window.addEventListener('DOMContentLoaded', incrementPageVisit);
+
+    // Function to fetch and display the visit count
+    async function showVisitCount() {
+        const counterRef = doc(db, 'counters', 'pageVisits');
+        try {
+            const docSnap = await getDoc(counterRef);
+            if (docSnap.exists()) {
+                const count = docSnap.data().count;
+                document.getElementById('visit-count').textContent = count;
+            } else {
+                document.getElementById('visit-count').textContent = '0';
             }
-
-            // Show the popup
-            const popup = document.getElementById('secret-popup');
-            popup.style.display = 'block';
-            popup.setAttribute('aria-hidden', 'false');
+        } catch (error) {
+            console.error("Error fetching page visit count: ", error);
+            document.getElementById('visit-count').textContent = 'Error';
         }
 
-        // Function to hide the popup
-        function hidePopup() {
-            const popup = document.getElementById('secret-popup');
-            popup.style.display = 'none';
-            popup.setAttribute('aria-hidden', 'true');
-        }
+        // Show the popup
+        const popup = document.getElementById('secret-popup');
+        popup.style.display = 'block';
+        popup.setAttribute('aria-hidden', 'false');
+    }
 
-        // Add event listener to close button
-        document.getElementById('close-popup').addEventListener('click', hidePopup);
+    // Function to hide the popup
+    function hidePopup() {
+        const popup = document.getElementById('secret-popup');
+        popup.style.display = 'none';
+        popup.setAttribute('aria-hidden', 'true');
+    }
 
-        // Key sequence detection for "howsthebiz"
-        (function() {
-            const secretCode = "howsthebiz";
-            let input = "";
+    // Add event listener to close button
+    document.getElementById('close-popup').addEventListener('click', hidePopup);
 
-            document.addEventListener('keydown', (e) => {
-                // Only consider character keys
-                if (e.key.length === 1) {
-                    input += e.key.toLowerCase();
+    // Key sequence detection for "howsthebiz"
+    (function() {
+        const secretCode = "howsthebiz";
+        let input = "";
 
-                    // Keep the input length within the secret code length
-                    if (input.length > secretCode.length) {
-                        input = input.substring(input.length - secretCode.length);
-                    }
+        document.addEventListener('keydown', (e) => {
+            // Only consider character keys
+            if (e.key.length === 1) {
+                input += e.key.toLowerCase();
 
-                    // Check if input matches the secret code
-                    if (input === secretCode) {
-                        showVisitCount();
-                        input = ""; // Reset input after triggering
-                    }
-                }
-            });
-        })();
-    </script>
-
-    <!-- Triple-Click Easter Egg Script -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const logo = document.getElementById("logo");
-            let clickCount = 0;
-            let clickTimer;
-
-            logo.addEventListener("click", function() {
-                clickCount++;
-                
-                if (clickCount === 1) {
-                    // Start a 3-second timer
-                    clickTimer = setTimeout(function() {
-                        clickCount = 0; // Reset after 3 seconds
-                    }, 3000);
+                // Keep the input length within the secret code length
+                if (input.length > secretCode.length) {
+                    input = input.substring(input.length - secretCode.length);
                 }
 
-                if (clickCount === 3) {
-                    clearTimeout(clickTimer); // Clear the timer
-                    window.location.href = "Turtle Blitz.html"; // Redirect to the secret page
+                // Check if input matches the secret code
+                if (input === secretCode) {
+                    showVisitCount();
+                    input = ""; // Reset input after triggering
                 }
-            });
+            }
         });
-    </script>
+    })();
+  </script>
 
-    <!-- NEW Chat Script -->
-    <script type="module" src="scripts/chat.js"></script>
+  <!-- Triple-Click Easter Egg Script -->
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const logo = document.getElementById("logo");
+          let clickCount = 0;
+          let clickTimer;
+
+          logo.addEventListener("click", function() {
+              clickCount++;
+              
+              if (clickCount === 1) {
+                  // Start a 3-second timer
+                  clickTimer = setTimeout(function() {
+                      clickCount = 0; // Reset after 3 seconds
+                  }, 3000);
+              }
+
+              if (clickCount === 3) {
+                  clearTimeout(clickTimer); // Clear the timer
+                  window.location.href = "Turtle Blitz.html"; // Redirect to the secret page
+              }
+          });
+      });
+  </script>
+
+  <!-- Chat Script (must load after firebase.js) -->
+  <script type="module" src="scripts/chat.js"></script>
 
 </body>
 </html>
