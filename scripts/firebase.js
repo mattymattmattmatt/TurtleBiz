@@ -14,6 +14,8 @@ import {
   runTransaction,
   getDoc,
   setDoc,
+  query,
+  orderBy,
   updateDoc
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
@@ -48,5 +50,7 @@ export {
   runTransaction,
   getDoc,
   setDoc,
+  query,
+  orderBy,
   updateDoc
 };
