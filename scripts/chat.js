@@ -7,19 +7,25 @@ import {
   onSnapshot,
   doc,
   deleteDoc,
-  serverTimestamp
-} from "./firebase.js";  // relative path to firebase.js
+  serverTimestamp,
+  query,       // <-- for ordering
+  orderBy      // <-- for ordering
+} from "./firebase.js";  // Adjust the path if needed
 
+// Get references to HTML elements
 const chatContainer = document.getElementById("chat-container");
 const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
 
-// Reference to "chats" collection
+// Reference the "chats" collection
 const chatsRef = collection(db, "chats");
 
-// Listen in real time for new/deleted messages
-onSnapshot(chatsRef, (snapshot) => {
-  // Clear the chat display
+// Create a query that sorts messages by timestamp in ascending order
+const chatsQuery = query(chatsRef, orderBy("timestamp", "asc"));
+
+// Listen for real-time updates using the ordered query
+onSnapshot(chatsQuery, (snapshot) => {
+  // Clear the chat display first
   chatContainer.innerHTML = "";
 
   snapshot.forEach((docSnap) => {
@@ -27,7 +33,7 @@ onSnapshot(chatsRef, (snapshot) => {
     const messageId = docSnap.id;
     const messageText = messageData.text;
 
-    // Create chat bubble
+    // Create a chat bubble
     const bubble = document.createElement("div");
     bubble.classList.add("chat-bubble");
 
@@ -35,17 +41,17 @@ onSnapshot(chatsRef, (snapshot) => {
     const messageSpan = document.createElement("span");
     messageSpan.textContent = messageText;
 
-    // Delete button (small "x")
+    // Delete button ("x")
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn");
     deleteBtn.textContent = "×";
 
-    // On delete button click, remove this doc from Firestore
+    // When clicked, remove the document from Firestore
     deleteBtn.addEventListener("click", async () => {
       await deleteDoc(doc(db, "chats", messageId));
     });
 
-    // Put bubble together
+    // Assemble the bubble
     bubble.appendChild(messageSpan);
     bubble.appendChild(deleteBtn);
     chatContainer.appendChild(bubble);
@@ -57,12 +63,13 @@ chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const newMessage = chatInput.value.trim();
-  if (!newMessage) return; // ignore empty string
+  if (!newMessage) return; // Ignore empty submissions
 
   try {
+    // Add a new doc with a timestamp field
     await addDoc(chatsRef, {
       text: newMessage,
-      timestamp: serverTimestamp() // optional field
+      timestamp: serverTimestamp() // ensures we can sort
     });
   } catch (err) {
     console.error("Error adding chat message:", err);
