@@ -902,9 +902,8 @@ footer a:hover img {
 
 /* Small, right-aligned timestamp within each bubble */
 .message-timestamp {
-  display: block;         /* or inline if you prefer side-by-side */
-  font-size: 0.7em;       /* smaller font size */
-  color: #999;            /* subtle color */
-  margin-top: 5px;        /* small spacing above */
-  text-align: right;      /* align to the right inside the bubble */
+  font-size: 0.7em;
+  color: #999;
+  float: right; /* or use margin-left to push it to the right side */
+  margin-left: 10px;
 }
