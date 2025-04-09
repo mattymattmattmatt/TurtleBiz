@@ -899,3 +899,12 @@ footer a:hover img {
 .chat-form button:hover {
     background-color: #d4ac0d; /* darker shade of accent color */
 }
+
+/* Small, right-aligned timestamp within each bubble */
+.message-timestamp {
+  display: block;         /* or inline if you prefer side-by-side */
+  font-size: 0.7em;       /* smaller font size */
+  color: #999;            /* subtle color */
+  margin-top: 5px;        /* small spacing above */
+  text-align: right;      /* align to the right inside the bubble */
+}
