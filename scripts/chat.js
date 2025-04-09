@@ -8,11 +8,11 @@ import {
   doc,
   deleteDoc,
   serverTimestamp,
-  query,       // <-- for ordering
-  orderBy      // <-- for ordering
+  query,
+  orderBy
 } from "./firebase.js";  // Adjust the path if needed
 
-// Get references to HTML elements
+// References to HTML elements
 const chatContainer = document.getElementById("chat-container");
 const chatForm = document.getElementById("chat-form");
 const chatInput = document.getElementById("chat-input");
@@ -20,24 +20,25 @@ const chatInput = document.getElementById("chat-input");
 // Reference the "chats" collection
 const chatsRef = collection(db, "chats");
 
-// Create a query that sorts messages by timestamp in ascending order
-const chatsQuery = query(chatsRef, orderBy("timestamp", "asc"));
+// Use "desc" to get newest messages first
+const chatsQuery = query(chatsRef, orderBy("timestamp", "desc"));
 
 // Listen for real-time updates using the ordered query
 onSnapshot(chatsQuery, (snapshot) => {
-  // Clear the chat display first
+  // Clear the chat display
   chatContainer.innerHTML = "";
 
+  // Firestore returns the docs newest -> oldest in this loop
   snapshot.forEach((docSnap) => {
     const messageData = docSnap.data();
     const messageId = docSnap.id;
     const messageText = messageData.text;
 
-    // Create a chat bubble
+    // Create chat bubble
     const bubble = document.createElement("div");
     bubble.classList.add("chat-bubble");
 
-    // Message text
+    // Message text element
     const messageSpan = document.createElement("span");
     messageSpan.textContent = messageText;
 
@@ -46,7 +47,7 @@ onSnapshot(chatsQuery, (snapshot) => {
     deleteBtn.classList.add("delete-btn");
     deleteBtn.textContent = "×";
 
-    // When clicked, remove the document from Firestore
+    // Delete the doc from Firestore on click
     deleteBtn.addEventListener("click", async () => {
       await deleteDoc(doc(db, "chats", messageId));
     });
@@ -63,13 +64,13 @@ chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const newMessage = chatInput.value.trim();
-  if (!newMessage) return; // Ignore empty submissions
+  if (!newMessage) return; // ignore empty submissions
 
   try {
-    // Add a new doc with a timestamp field
+    // Add new doc with a timestamp for sorting
     await addDoc(chatsRef, {
       text: newMessage,
-      timestamp: serverTimestamp() // ensures we can sort
+      timestamp: serverTimestamp()
     });
   } catch (err) {
     console.error("Error adding chat message:", err);
