@@ -1,0 +1,33 @@
+name: Turtle Biz checks
+on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  storefront:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install test tools
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Validate links, state, accessibility, and browser flows
+        env:
+          INLINE_PREVIEW: "1"
+        run: npm test
+      - name: Save desktop and mobile previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: turtle-biz-previews
+          path: artifacts/
+          if-no-files-found: ignore
+          retention-days: 14

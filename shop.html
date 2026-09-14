@@ -1,197 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Shop - Turtle Biz</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Explore our wide range of turtle-themed products at Turtle Biz. Find the perfect gift or treat yourself!">
-    <meta name="keywords" content="Turtle, Shop, Merchandise, Gifts, Turtle Biz">
-
-    <!-- Open Graph Meta Tags for Social Media Sharing -->
-    <meta property="og:title" content="Shop - Turtle Biz">
-    <meta property="og:description" content="Your one-stop shop for all things turtle!">
-    <meta property="og:image" content="https://www.turtlebiz.com/images/turtle-shop.jpg">
-    <meta property="og:url" content="https://www.turtlebiz.com/shop.html">
-    <meta property="og:type" content="website">
-
-    <!-- Favicon -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-
-    <!-- Normalize CSS for Consistent Styling Across Browsers -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-oHDEc8Xed9dXht+OyIhSjaqRfT2Z9x8D2Ux5H9tMzu/rlj+vSxR+S4Nf3X9fEZkP7AQV71pWCAh0JG7rF4PdbA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-
-    <!-- External Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Removed Font Awesome Link as it's no longer needed -->
-</head>
-<body>
-
-    <!-- Header Section -->
-    <header>
-        <img src="images/TurtleBiz.png" alt="Turtle Biz Logo" loading="lazy">
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html" class="active">Shop</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html" class="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Shop Header -->
-        <section class="shop-header">
-            <h1>Shop Our Turtle Collection</h1>
-            <p>Discover unique and high-quality turtle-themed products!</p>
-        </section>
-
-        <!-- Products Section -->
-        <section class="products">
-            <!-- Product Item -->
-            <div class="product">
-                <img src="images/turtle-scotch.png" alt="Bottle of Turtle Scotch Whiskey" loading="lazy">
-                <h2>Turtle Scotch Whiskey</h2>
-                <p class="price">$99.99</p>
-                <button class="add-to-cart" data-name="Turtle Scotch Whiskey" data-price="99.99" data-image="images/turtle-scotch.png">Add to Cart</button>
-            </div>
-
-            <!-- Repeat Product Items -->
-            <div class="product">
-                <img src="images/turtle-mug.png" alt="Turtle Glass Cup" loading="lazy">
-                <h2>Turtle Glass Cup</h2>
-                <p class="price">$12.99</p>
-                <button class="add-to-cart" data-name="Turtle Glass Cup" data-price="12.99" data-image="images/turtle-mug.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/turtle-hat.png" alt="Turtle Hat" loading="lazy">
-                <h2>Turtle Hat</h2>
-                <p class="price">$24.99</p>
-                <button class="add-to-cart" data-name="Turtle Hat" data-price="24.99" data-image="images/turtle-hat.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/turtle-plush.png" alt="Turtle Plush Toy" loading="lazy">
-                <h2>Turtle Plush Toy</h2>
-                <p class="price">$19.99</p>
-                <button class="add-to-cart" data-name="Turtle Plush Toy" data-price="19.99" data-image="images/turtle-plush.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/turtle-print.png" alt="Turtle 3d Print Toy" loading="lazy">
-                <h2>Turtle 3d Print Toy</h2>
-                <p class="price">$6.99</p>
-                <button class="add-to-cart" data-name="Turtle 3d Print Toy" data-price="6.99" data-image="images/turtle-print.png">Add to Cart</button>
-            </div>
-            
-            <div class="product">
-                <img src="images/BizHatMerch.png" alt="Turtle Biz Cap Merch" loading="lazy">
-                <h2>Turtle Biz Cap Merch</h2>
-                <p class="price">$24.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Cap Merch" data-price="24.99" data-image="images/BizHatMerch.png">Add to Cart</button>
-            </div>
-            
-            <div class="product">
-                <img src="images/TurtleSnowGlobe.png" alt="Turtle Snow Globe" loading="lazy">
-                <h2>Turtle Snow Globe</h2>
-                <p class="price">$34.99</p>
-                <button class="add-to-cart" data-name="Turtle Snow Globe" data-price="34.99" data-image="images/TurtleSnowGlobe.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/Biz_Earrings.png" alt="Turtle Earrings" loading="lazy">
-                <h2>Turtle Earrings</h2>
-                <p class="price">$44.99</p>
-                <button class="add-to-cart" data-name="Turtle Earrings" data-price="44.99" data-image="images/Biz_Earrings.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/BizLock.png" alt="Turtle Biz Lock" loading="lazy">
-                <h2>Turtle Biz Lock</h2>
-                <p class="price">$24.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Lock" data-price="24.99" data-image="images/BizLock.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/BizVest.png" alt="Turtle Biz Vest" loading="lazy">
-                <h2>Turtle Biz Vest</h2>
-                <p class="price">$89.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Vest" data-price="89.99" data-image="images/BizVest.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/BizHelmet.png" alt="Turtle Biz Helmet" loading="lazy">
-                <h2>Turtle Biz Helmet</h2>
-                <p class="price">$59.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Helmet" data-price="59.99" data-image="images/BizHelmet.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/BizRing.png" alt="Turtle Biz Bike Ring" loading="lazy">
-                <h2>Turtle Biz Bike Ring</h2>
-                <p class="price">$25.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Bike Ring" data-price="25.99" data-image="images/BizRing.png">Add to Cart</button>
-            </div>
-
-            <div class="product">
-                <img src="images/BizMug.png" alt="Turtle Biz Mug" loading="lazy">
-                <h2>Turtle Biz Mug</h2>
-                <p class="price">$18.99</p>
-                <button class="add-to-cart" data-name="Turtle Biz Mug" data-price="18.99" data-image="images/BizMug.png">Add to Cart</button>
-            </div>
-
-            <!-- NEW Turtle Cake Product with Static to GIF on Hover -->
-            <div class="product">
-                <img 
-                    id="turtle-cake-image" 
-                    src="images/Turtle Cake Static.png" 
-                    alt="Turtle Cake" 
-                    loading="lazy"
-                    onmouseover="this.src='images/Turtle Cake.gif';" 
-                    onmouseout="this.src='images/Turtle Cake Static.png';"
-                >
-                <h2>Turtle Cake</h2>
-                <p class="price">$24.99</p>
-                <!-- Note: data-image references the .gif so that the GIF is shown in cart previews if desired -->
-                <button class="add-to-cart" data-name="Turtle Cake" data-price="24.99" data-image="images/Turtle Cake.gif">Add to Cart</button>
-            </div>
-            
-            <!-- Add more products as needed -->
-        </section>
-    </main>
-
-    <!-- Footer Section -->
-    <footer>
-        <nav class="footer-nav">
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Service</a> |
-            <a href="help.html">Help Center</a>
-        </nav>
-        <p>&copy; 2024 Turtle Biz. All rights reserved.</p>
-        <p>Follow us on:
-            <a href="https://www.facebook.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Facebook">
-                <img src="images/Facebook.png" alt="Facebook">
-            </a>
-            <a href="https://www.instagram.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Instagram">
-                <img src="images/Instagram.png" alt="Instagram">
-            </a>
-            <a href="https://www.twitter.com/TurtleBiz" target="_blank" rel="noopener noreferrer" aria-label="Turtle Biz on Twitter">
-                <img src="images/Twitter.png" alt="Twitter">
-            </a>
-        </p>
-    </footer>
-
-    <!-- External JavaScript Files -->
-    <script src="scripts/cart.js"></script>
-
-</body>
-</html>
+<!doctype html>
+<html lang="en-AU" id="top"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173e32"><title>The collection · Turtle Biz</title><meta name="description" content="Explore all 14 Turtle Biz finds. Search, filter, save favourites, and build your bag."><meta property="og:title" content="The collection · Turtle Biz"><meta property="og:description" content="Explore all 14 Turtle Biz finds. Search, filter, save favourites, and build your bag."><meta property="og:type" content="website"><meta name="color-scheme" content="light"><link rel="icon" href="favicon.ico"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><script defer src="scripts/catalog.js"></script><script defer src="scripts/store.js"></script><script defer src="scripts/site.js"></script></head><body data-page="shop"><a class="skip-link" href="#main">Skip to content</a><div class="announcement"><span>GOOD THINGS COME IN SHELLS.</span><a href="arcade.html">Take a little play break <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div><header class="site-header"><div class="nav-wrap"><a class="brand" href="index.html" aria-label="Turtle Biz home"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 27c0-11 6-19 13-19s13 8 13 19c0 7-6 12-13 12s-13-5-13-12Z"/><path d="m24 8-7 13 7 10 7-10-7-13Zm-7 13-6 6 13 4 13-4-6-6M24 31v8M10 18l-6-5m34 5 6-5M12 34l-5 6m29-6 5 6"/><ellipse cx="24" cy="4" rx="5" ry="3"/></svg><span>TURTLE<span class="brand-biz">BIZ<span class="brand-dot">®</span></span></span></a><nav id="main-nav" class="main-nav" aria-label="Main navigation"><a href="shop.html" aria-current="page">The collection</a><a href="about.html">Our little world</a><a href="arcade.html">The arcade<span class="nav-dot"></span></a></nav><div class="nav-actions"><a href="cart.html" class="bag-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span class="bag-word">Bag</span><span class="bag-count" data-cart-count>0</span></a><button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span></span><span></span></button></div></div></header><main id="main"><section class="page-intro wrap"><span class="eyebrow">THE COLLECTION / 14 CURIOUS LITTLE FINDS</span><h1>Find your<br><em>turtle thing.</em></h1><p class="lead">Desk companions, everyday favourites, and a few beautifully unexpected things. All prices in AUD.</p></section><section class="wrap shop-section"><div class="shop-tools"><div class="search-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="product-search">Search the collection</label><input type="search" id="product-search" placeholder="Find your next favourite…" autocomplete="off"></div><label class="sort-label">Sort by <select id="product-sort"><option value="featured">Our picks</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name: A–Z</option></select></label></div><div class="filter-row" aria-label="Filter products"><button class="filter-chip" data-filter="All" aria-pressed="true">All</button><button class="filter-chip" data-filter="Home &amp; desk" aria-pressed="false">Home &amp; desk</button><button class="filter-chip" data-filter="Wearables" aria-pressed="false">Wearables</button><button class="filter-chip" data-filter="Accessories" aria-pressed="false">Accessories</button><button class="filter-chip" data-filter="Collectibles" aria-pressed="false">Collectibles</button><button class="filter-chip" data-filter="Saved" aria-pressed="false">Saved</button></div><p id="results-count" class="results-count" aria-live="polite">14 things to make your day.</p><div class="product-grid" id="shop-grid"><article class="product-card" data-product-card data-category="Home &amp; desk" data-id="plush">
+ <div class="product-image tone-0"><button class="product-preview" data-preview="plush" aria-label="View Turtle Plush Toy"><img src="images/turtle-plush.png" alt="Turtle Plush Toy" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Home & desk</span><button class="save-button" data-save="plush" aria-label="Save Turtle Plush Toy" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="plush">Turtle Plush Toy</button></h3><p>$19.99 <small>AUD</small></p></div><button class="add-button" data-add="plush" aria-label="Add Turtle Plush Toy to bag">+</button></div></article><article class="product-card" data-product-card data-category="Home &amp; desk" data-id="mug">
+ <div class="product-image tone-1"><button class="product-preview" data-preview="mug" aria-label="View Turtle Biz Mug"><img src="images/BizMug.png" alt="Turtle Biz Mug" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Home & desk</span><button class="save-button" data-save="mug" aria-label="Save Turtle Biz Mug" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="mug">Turtle Biz Mug</button></h3><p>$18.99 <small>AUD</small></p></div><button class="add-button" data-add="mug" aria-label="Add Turtle Biz Mug to bag">+</button></div></article><article class="product-card" data-product-card data-category="Wearables" data-id="cap">
+ <div class="product-image tone-2"><button class="product-preview" data-preview="cap" aria-label="View Turtle Biz Cap Merch"><img src="images/BizHatMerch.png" alt="Turtle Biz Cap Merch" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Wearables</span><button class="save-button" data-save="cap" aria-label="Save Turtle Biz Cap Merch" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="cap">Turtle Biz Cap Merch</button></h3><p>$24.99 <small>AUD</small></p></div><button class="add-button" data-add="cap" aria-label="Add Turtle Biz Cap Merch to bag">+</button></div></article><article class="product-card" data-product-card data-category="Collectibles" data-id="globe">
+ <div class="product-image tone-3"><button class="product-preview" data-preview="globe" aria-label="View Turtle Snow Globe"><img src="images/TurtleSnowGlobe.png" alt="Turtle Snow Globe" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Collectibles</span><button class="save-button" data-save="globe" aria-label="Save Turtle Snow Globe" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="globe">Turtle Snow Globe</button></h3><p>$34.99 <small>AUD</small></p></div><button class="add-button" data-add="globe" aria-label="Add Turtle Snow Globe to bag">+</button></div></article><article class="product-card" data-product-card data-category="Home &amp; desk" data-id="glass">
+ <div class="product-image tone-0"><button class="product-preview" data-preview="glass" aria-label="View Turtle Glass Cup"><img src="images/turtle-mug.png" alt="Turtle Glass Cup" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Home & desk</span><button class="save-button" data-save="glass" aria-label="Save Turtle Glass Cup" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="glass">Turtle Glass Cup</button></h3><p>$12.99 <small>AUD</small></p></div><button class="add-button" data-add="glass" aria-label="Add Turtle Glass Cup to bag">+</button></div></article><article class="product-card" data-product-card data-category="Wearables" data-id="hat">
+ <div class="product-image tone-1"><button class="product-preview" data-preview="hat" aria-label="View Turtle Hat"><img src="images/turtle-hat.png" alt="Turtle Hat" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Wearables</span><button class="save-button" data-save="hat" aria-label="Save Turtle Hat" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="hat">Turtle Hat</button></h3><p>$24.99 <small>AUD</small></p></div><button class="add-button" data-add="hat" aria-label="Add Turtle Hat to bag">+</button></div></article><article class="product-card" data-product-card data-category="Collectibles" data-id="print">
+ <div class="product-image tone-2"><button class="product-preview" data-preview="print" aria-label="View Turtle 3d Print Toy"><img src="images/turtle-print.png" alt="Turtle 3d Print Toy" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Collectibles</span><button class="save-button" data-save="print" aria-label="Save Turtle 3d Print Toy" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="print">Turtle 3d Print Toy</button></h3><p>$6.99 <small>AUD</small></p></div><button class="add-button" data-add="print" aria-label="Add Turtle 3d Print Toy to bag">+</button></div></article><article class="product-card" data-product-card data-category="Wearables" data-id="earrings">
+ <div class="product-image tone-3"><button class="product-preview" data-preview="earrings" aria-label="View Turtle Earrings"><img src="images/Biz_Earrings.png" alt="Turtle Earrings" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Wearables</span><button class="save-button" data-save="earrings" aria-label="Save Turtle Earrings" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="earrings">Turtle Earrings</button></h3><p>$44.99 <small>AUD</small></p></div><button class="add-button" data-add="earrings" aria-label="Add Turtle Earrings to bag">+</button></div></article><article class="product-card" data-product-card data-category="Accessories" data-id="lock">
+ <div class="product-image tone-0"><button class="product-preview" data-preview="lock" aria-label="View Turtle Biz Lock"><img src="images/BizLock.png" alt="Turtle Biz Lock" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Accessories</span><button class="save-button" data-save="lock" aria-label="Save Turtle Biz Lock" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="lock">Turtle Biz Lock</button></h3><p>$24.99 <small>AUD</small></p></div><button class="add-button" data-add="lock" aria-label="Add Turtle Biz Lock to bag">+</button></div></article><article class="product-card" data-product-card data-category="Wearables" data-id="vest">
+ <div class="product-image tone-1"><button class="product-preview" data-preview="vest" aria-label="View Turtle Biz Vest"><img src="images/BizVest.png" alt="Turtle Biz Vest" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Wearables</span><button class="save-button" data-save="vest" aria-label="Save Turtle Biz Vest" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="vest">Turtle Biz Vest</button></h3><p>$89.99 <small>AUD</small></p></div><button class="add-button" data-add="vest" aria-label="Add Turtle Biz Vest to bag">+</button></div></article><article class="product-card" data-product-card data-category="Accessories" data-id="helmet">
+ <div class="product-image tone-2"><button class="product-preview" data-preview="helmet" aria-label="View Turtle Biz Helmet"><img src="images/BizHelmet.png" alt="Turtle Biz Helmet" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Accessories</span><button class="save-button" data-save="helmet" aria-label="Save Turtle Biz Helmet" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="helmet">Turtle Biz Helmet</button></h3><p>$59.99 <small>AUD</small></p></div><button class="add-button" data-add="helmet" aria-label="Add Turtle Biz Helmet to bag">+</button></div></article><article class="product-card" data-product-card data-category="Accessories" data-id="ring">
+ <div class="product-image tone-3"><button class="product-preview" data-preview="ring" aria-label="View Turtle Biz Bike Ring"><img src="images/BizRing.png" alt="Turtle Biz Bike Ring" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Accessories</span><button class="save-button" data-save="ring" aria-label="Save Turtle Biz Bike Ring" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="ring">Turtle Biz Bike Ring</button></h3><p>$25.99 <small>AUD</small></p></div><button class="add-button" data-add="ring" aria-label="Add Turtle Biz Bike Ring to bag">+</button></div></article><article class="product-card" data-product-card data-category="Collectibles" data-id="cake">
+ <div class="product-image tone-0"><button class="product-preview" data-preview="cake" aria-label="View Turtle Cake"><img src="images/Turtle%20Cake%20Static.png" alt="Turtle Cake" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Collectibles</span><button class="save-button" data-save="cake" aria-label="Save Turtle Cake" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="cake">Turtle Cake</button></h3><p>$24.99 <small>AUD</small></p></div><button class="add-button" data-add="cake" aria-label="Add Turtle Cake to bag">+</button></div></article><article class="product-card" data-product-card data-category="Collectibles" data-id="scotch">
+ <div class="product-image tone-1"><button class="product-preview" data-preview="scotch" aria-label="View Turtle Scotch Whiskey"><img src="images/turtle-scotch.png" alt="Turtle Scotch Whiskey" width="1024" height="1024" loading="lazy" decoding="async"></button><span class="product-type">Collectibles</span><button class="save-button" data-save="scotch" aria-label="Save Turtle Scotch Whiskey" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20S3 15 3 8.5C3 3 9.5 2 12 6c2.5-4 9-3 9 2.5C21 15 12 20 12 20Z"/></svg></button></div>
+ <div class="product-info"><div><h3><button data-preview="scotch">Turtle Scotch Whiskey</button></h3><p>$99.99 <small>AUD</small></p></div><button class="add-button" data-add="scotch" aria-label="Add Turtle Scotch Whiskey to bag">+</button></div></article></div><div class="empty-state" id="shop-empty" hidden><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 27c0-11 6-19 13-19s13 8 13 19c0 7-6 12-13 12s-13-5-13-12Z"/><path d="m24 8-7 13 7 10 7-10-7-13Zm-7 13-6 6 13 4 13-4-6-6M24 31v8M10 18l-6-5m34 5 6-5M12 34l-5 6m29-6 5 6"/><ellipse cx="24" cy="4" rx="5" ry="3"/></svg><h2>No turtles in this corner.</h2><p>Try another search or browse the whole collection.</p><button class="button" id="reset-filters">See everything <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div><div class="shop-note"><span>Found your thing?</span><p>Your bag becomes an email enquiry. Availability and delivery are confirmed with you before payment.</p><a href="help.html" class="text-link">How it works <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div></section></main><footer class="site-footer"><div class="footer-top"><div><span class="eyebrow">A LITTLE BRAND WITH A BIG SHELL.</span><h2>Stay a little<br><em>shellfish.</em></h2><a class="text-link" href="shop.html">Find your thing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div><div class="footer-links"><div><h3>Explore</h3><a href="shop.html">The collection</a><a href="arcade.html">The arcade</a><a href="about.html">Our story</a></div><div><h3>Need a hand?</h3><a href="contact.html">Get in touch</a><a href="help.html">Good questions</a><a href="cart.html">Your bag</a></div></div></div><div class="footer-wordmark" aria-hidden="true">TURTLE BIZ<span>✳</span></div><div class="footer-bottom"><span>© <span data-year>2026</span> Turtle Biz · Largs Bay, South Australia</span><div><button class="motion-button" data-motion aria-pressed="false">Pause motion</button><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="#top" aria-label="Back to top">↑</a></div></div></footer><div class="toast" role="status" aria-live="polite" aria-atomic="true"></div><dialog id="product-dialog" class="product-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Close product details">×</button><div id="dialog-content"></div></dialog></body></html>
