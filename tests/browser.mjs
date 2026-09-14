@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile, mkdir } from 'node:fs/promises';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -25,18 +25,36 @@ const report=[];
 const passed=message=>{report.push(message);console.log('PASS: '+message);};
 await mkdir('artifacts',{recursive:true});
 try {
+  if(process.env.EXPORT_WEBP==='1'){
+    await page.goto(base+'shop.html');
+    const exports=await page.evaluate(async()=>{
+      const list=[...window.TurtleCatalog.map(p=>({id:p.id,image:p.sourceImage||p.image})),{id:'team-1',image:'images/team-member1.png'},{id:'team-2',image:'images/team-member2.png'}];
+      const output=[];
+      for(const p of list){
+        const img=new Image();img.src=p.image;await img.decode();
+        const width=Math.min(p.id==='plush'?1024:640,img.naturalWidth);
+        const canvas=document.createElement('canvas');canvas.width=width;canvas.height=Math.round(img.naturalHeight*width/img.naturalWidth);
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        output.push({path:'images/optimized/'+p.id+'.webp',base64:canvas.toDataURL('image/webp',.82).split(',')[1]});
+      }
+      return output;
+    });
+    for(const asset of exports){await writeFile('artifacts/'+asset.path.split('/').pop(),Buffer.from(asset.base64,'base64'));console.log('TURTLE_WEBP='+JSON.stringify(asset));}
+  }
   // All storefront pages, both large and very narrow layouts, and accessible names/contrast.
+  const layoutIssues=[];
   for(const width of [1440,390,320]){
     await page.setViewportSize({width,height:1000});
     for(const path of ['index.html','shop.html','about.html','cart.html','contact.html','help.html','arcade.html','privacy.html','terms.html','404.html']){
       await page.goto(base+path);await page.waitForSelector('html.js');
       assert.equal(await page.locator('h1').count(),1);
-      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow at '+width+' '+path);
+      if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1))layoutIssues.push('Horizontal overflow at '+width+' '+path);
       const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       const violations=result.violations.filter(v=>v.impact==='critical'||v.impact==='serious');
-      assert.equal(violations.length,0,path+' '+width+' accessibility: '+JSON.stringify(violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))));
+      if(violations.length)layoutIssues.push(path+' '+width+' accessibility: '+JSON.stringify(violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))));
     }
   }
+  assert.deepEqual(layoutIssues,[]);
   passed('All 10 pages fit desktop, 390px and 320px with no serious/critical axe violations.');
   await page.setViewportSize({width:1440,height:1000});
   await page.goto(base+'shop.html');
@@ -101,5 +119,10 @@ try {
   await preview.screenshot({path:'artifacts/collection-desktop.png',fullPage:true});
   assert.deepEqual(errors,[],'No uncaught JavaScript errors.');
   passed('Desktop/mobile screenshots and zero uncaught page errors.');
+}catch(error){
+  await page.screenshot({path:'artifacts/failure.png',fullPage:true}).catch(()=>{});
+  const diagnostic=await page.screenshot({type:'jpeg',quality:55}).catch(()=>null);
+  if(diagnostic&&process.env.INLINE_PREVIEW==='1')console.log('TURTLE_FAILURE_JPEG='+diagnostic.toString('base64'));
+  throw error;
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
 console.log('COMPLETE: '+report.length+' browser test groups.');

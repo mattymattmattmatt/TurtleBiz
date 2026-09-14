@@ -53,7 +53,7 @@
   function preview(id) {
     const p = store.byId.get(id);
     if (!p) return;
-    $('#dialog-content').innerHTML = '<div class="dialog-layout"><img src="' + encodeURI(p.image) + '" alt="' + escape(p.name) + '" width="1024" height="1024"><div class="dialog-copy"><span class="eyebrow">' + escape(p.category) + '</span><h2 id="dialog-title">' + escape(p.name) + '</h2><p>' + escape(p.description) + '</p><p class="dialog-price">' + store.money(p.cents) + ' <small>AUD</small></p><button class="button" data-add="' + p.id + '">Add to your bag <span aria-hidden="true">+</span></button><p class="small">Availability and delivery confirmed by email. Add your favourites, then enquire from your bag.</p><a class="text-link" href="cart.html">View your bag →</a></div></div>';
+    $('#dialog-content').innerHTML = '<div class="dialog-layout"><img src="' + encodeURI(p.image) + '" alt="' + escape(p.name) + '" width="1024" height="1024"><div class="dialog-copy"><span class="eyebrow">' + escape(p.category) + '</span><h2 id="dialog-title">' + escape(p.name) + '</h2><p>' + escape(p.description) + '</p><p class="dialog-price">' + store.money(p.cents) + ' <small>AUD</small></p><button class="button" data-add="' + p.id + '">Add to your bag <span aria-hidden="true">+</span></button><p class="small">Availability and delivery confirmed by email. Add your favourites, then enquire from your bag.</p><a class="text-link" href="cart.html">View your bag →</a><p id="dialog-status" class="small" role="status"></p></div></div>';
     dialog.showModal();
   }
   document.addEventListener('click', event => {
@@ -64,6 +64,7 @@
       const p = store.byId.get(add.dataset.add);
       if (!p) return;
       const added = store.add(p.id);
+      if (added && dialog.open) { const status = $('#dialog-status'); if (status) status.textContent = p.name + ' added to your bag.'; }
       toast(added ? p.name + ' added to your bag.' + (store.storageAvailable ? '' : ' Saved for this visit only.') : 'That item has reached the 99-item limit.');
     } else if (save) {
       const id = save.dataset.save; store.toggleSaved(id);
@@ -117,8 +118,7 @@
     const focused = document.activeElement;
     const focusId = focused?.dataset?.qtyId || focused?.dataset?.remove;
     const focusAction = focused?.dataset?.qty;
-    const oldIndex = focusId ? store.cart.findIndex(p => p.id === focusId) : -1;
-    container.innerHTML = store.cart.length ? store.cart.map(p => '<article class="cart-item"><img src="' + encodeURI(p.image) + '" alt="' + escape(p.name) + '" width="100" height="116"><div><h3>' + escape(p.name) + '</h3><p class="item-price">' + store.money(p.cents) + ' AUD each</p><div class="quantity-control"><button data-qty="-1" data-qty-id="' + p.id + '" aria-label="Decrease quantity of ' + escape(p.name) + '">−</button><span aria-label="Quantity">' + p.quantity + '</span><button data-qty="1" data-qty-id="' + p.id + '" aria-label="Increase quantity of ' + escape(p.name) + '"' + (p.quantity >= 99 ? ' disabled' : '') + '>+</button></div><button class="remove-item" data-remove="' + p.id + '" aria-label="Remove ' + escape(p.name) + '">Remove</button></div><strong class="item-total">' + store.money(p.cents * p.quantity) + '</strong></article>').join('') : '<div class="empty-state"><h2>Your bag is taking it easy.</h2><p>Let’s find it a little company.</p><a class="button" href="shop.html">Explore the collection →</a></div>';
+    container.innerHTML = store.cart.length ? store.cart.map(p => '<article class="cart-item"><img src="' + encodeURI(p.image) + '" alt="' + escape(p.name) + '" width="100" height="116"><div><h3>' + escape(p.name) + '</h3><p class="item-price">' + store.money(p.cents) + ' AUD each</p><div class="quantity-control"><button data-qty="-1" data-qty-id="' + p.id + '" aria-label="Decrease quantity of ' + escape(p.name) + '">−</button><span>' + p.quantity + '</span><button data-qty="1" data-qty-id="' + p.id + '" aria-label="Increase quantity of ' + escape(p.name) + '"' + (p.quantity >= 99 ? ' disabled' : '') + '>+</button></div><button class="remove-item" data-remove="' + p.id + '" aria-label="Remove ' + escape(p.name) + '">Remove</button></div><strong class="item-total">' + store.money(p.cents * p.quantity) + '</strong></article>').join('') : '<div class="empty-state"><h2>Your bag is taking it easy.</h2><p>Let’s find it a little company.</p><a class="button" href="shop.html">Explore the collection →</a></div>';
     $('#cart-total').textContent = store.money(store.subtotal);
     const enquiry = $('#order-enquiry');
     enquiry.href = store.cart.length ? 'mailto:' + email + '?subject=' + encodeURIComponent('Turtle Biz order enquiry') + '&body=' + encodeURIComponent(orderText()) : 'shop.html';
