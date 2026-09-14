@@ -23,7 +23,17 @@
     return [...clean].map(([id, quantity]) => ({ id, quantity }));
   };
   const savedIds = value => Array.isArray(value) ? [...new Set(value.filter(id => byId.has(id)))] : [];
-  let cart = sanitize(read(CART) ?? read('cart'));
+  // Only migrate when the new key is absent. Corruption must not resurrect an old bag.
+  function initialCart() {
+    try {
+      const current = localStorage.getItem(CART);
+      if (current !== null) {
+        try { return sanitize(JSON.parse(current)); } catch { return []; }
+      }
+      return sanitize(read('cart'));
+    } catch { return []; }
+  }
+  let cart = initialCart();
   let saved = savedIds(read(SAVED));
   if (cart.length) write(CART, cart);
   const notify = () => window.dispatchEvent(new Event('turtlebiz:change'));

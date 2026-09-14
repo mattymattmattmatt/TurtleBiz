@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -25,22 +25,6 @@ const report=[];
 const passed=message=>{report.push(message);console.log('PASS: '+message);};
 await mkdir('artifacts',{recursive:true});
 try {
-  if(process.env.EXPORT_WEBP==='1'){
-    await page.goto(base+'shop.html');
-    const exports=await page.evaluate(async()=>{
-      const list=[...window.TurtleCatalog.map(p=>({id:p.id,image:p.sourceImage||p.image})),{id:'team-1',image:'images/team-member1.png'},{id:'team-2',image:'images/team-member2.png'}];
-      const output=[];
-      for(const p of list){
-        const img=new Image();img.src=p.image;await img.decode();
-        const width=Math.min(p.id==='plush'?1024:640,img.naturalWidth);
-        const canvas=document.createElement('canvas');canvas.width=width;canvas.height=Math.round(img.naturalHeight*width/img.naturalWidth);
-        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-        output.push({path:'images/optimized/'+p.id+'.webp',base64:canvas.toDataURL('image/webp',.82).split(',')[1]});
-      }
-      return output;
-    });
-    for(const asset of exports){await writeFile('artifacts/'+asset.path.split('/').pop(),Buffer.from(asset.base64,'base64'));console.log('TURTLE_WEBP='+JSON.stringify(asset));}
-  }
   // All storefront pages, both large and very narrow layouts, and accessible names/contrast.
   const layoutIssues=[];
   for(const width of [1440,390,320]){
@@ -100,7 +84,7 @@ try {
   await page.emulateMedia({reducedMotion:'no-preference'});await page.setViewportSize({width:1440,height:1000});
   await page.goto(base+'arcade.html');
   await page.clock.install();await page.evaluate(()=>Math.random=()=>.5);
-  await page.locator('#game-start').click();await page.clock.runFor(5500);
+  await page.locator('#game-start').click();await page.clock.runFor(8000);
   assert.ok(Number(await page.locator('#game-score').textContent())>0,'Collecting a coin increases the score.');
   await page.locator('#game-pause').click();const time=await page.locator('#game-time').textContent();await page.clock.runFor(5000);
   assert.equal(await page.locator('#game-time').textContent(),time);

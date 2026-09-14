@@ -11,10 +11,10 @@ function boot(seed={},blocked=false){
 }
 test('cart migrates by catalog name and rejects forged prices, URLs and unknown products',()=>{
   const {store}=boot({cart:JSON.stringify([{name:'Turtle Biz Cap Merch',price:.01,image:'javascript:alert(1)',quantity:2},{name:'Unknown <script>',quantity:3},{name:'Turtle Plush Toy',quantity:-2}])});
-  assert.equal(store.count,2);assert.equal(store.subtotal,4998);assert.equal(store.cart[0].image,'images/BizHatMerch.png');
+  assert.equal(store.count,2);assert.equal(store.subtotal,4998);assert.equal(store.cart[0].image,'images/optimized/cap.webp');
 });
 test('cart handles corrupt storage and blocked browser storage',()=>{
-  let {store}=boot({'turtlebiz:cart:v2':'{bad json'});assert.equal(store.count,0);assert.equal(store.add('plush'),true);assert.equal(store.subtotal,1999);
+  let {store}=boot({'turtlebiz:cart:v2':'{bad json',cart:JSON.stringify([{name:'Turtle Biz Cap Merch',quantity:2}])});assert.equal(store.count,0);assert.equal(store.add('plush'),true);assert.equal(store.subtotal,1999);
   store=boot({},true).store;assert.equal(store.add('plush'),true);assert.equal(store.count,1);assert.equal(store.storageAvailable,false);
 });
 test('integer totals, bounds, merging and removals',()=>{

@@ -53,3 +53,7 @@ Browser tests cover filtering, sorting, favourites, dialogs, cart edits/persiste
 Tuch et al. (2012), “The role of visual complexity and prototypicality regarding first impression of websites,” *International Journal of Human–Computer Studies*, 70(11), 794–811. DOI: [10.1016/j.ijhcs.2012.06.003](https://doi.org/10.1016/j.ijhcs.2012.06.003).
 
 Credibility: **8/10** — peer-reviewed controlled studies, useful for first-impression principles; static screenshot experiments are not a performance or conversion guarantee for this site. The refresh applies the principle through clear navigation and product hierarchy, with optional play areas.
+
+## Image delivery
+
+All 14 catalog images and both team images use committed WebP copies in `images/optimized/`. The hero retains 1024-pixel detail; other copies are 640 pixels wide or smaller. Originals remain at their original paths. The 16 delivery images total 823196 bytes, compared with 15080635 bytes of source art — a 94.5% reduction.

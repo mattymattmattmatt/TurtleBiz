@@ -1,129 +1,129 @@
-/* One source of truth for catalog prices, imagery, and legacy cart migration. */
+/* Catalog prices are integer AUD cents. Original art remains available as sourceImage. */
 window.TurtleCatalog = Object.freeze([
   {
-    "image": "images/turtle-scotch.png",
+    "image": "images/optimized/scotch.webp",
     "name": "Turtle Scotch Whiskey",
-    "price": 99.99,
     "id": "scotch",
     "cents": 9999,
     "category": "Collectibles",
-    "description": "For the turtle enthusiast with a taste for the unexpected."
+    "description": "For the turtle enthusiast with a taste for the unexpected.",
+    "sourceImage": "images/turtle-scotch.png"
   },
   {
-    "image": "images/turtle-mug.png",
+    "image": "images/optimized/glass.webp",
     "name": "Turtle Glass Cup",
-    "price": 12.99,
     "id": "glass",
     "cents": 1299,
     "category": "Home & desk",
-    "description": "A little turtle energy for your next coffee break."
+    "description": "A little turtle energy for your next coffee break.",
+    "sourceImage": "images/turtle-mug.png"
   },
   {
-    "image": "images/turtle-hat.png",
+    "image": "images/optimized/hat.webp",
     "name": "Turtle Hat",
-    "price": 24.99,
     "id": "hat",
     "cents": 2499,
     "category": "Wearables",
-    "description": "An unmistakably turtle take on topping off an outfit."
+    "description": "An unmistakably turtle take on topping off an outfit.",
+    "sourceImage": "images/turtle-hat.png"
   },
   {
-    "image": "images/turtle-plush.png",
+    "image": "images/optimized/plush.webp",
     "name": "Turtle Plush Toy",
-    "price": 19.99,
     "id": "plush",
     "cents": 1999,
     "category": "Home & desk",
-    "description": "Your new desk companion. Very good at moral support."
+    "description": "Your new desk companion. Very good at moral support.",
+    "sourceImage": "images/turtle-plush.png"
   },
   {
-    "image": "images/turtle-print.png",
+    "image": "images/optimized/print.webp",
     "name": "Turtle 3d Print Toy",
-    "price": 6.99,
     "id": "print",
     "cents": 699,
     "category": "Collectibles",
-    "description": "Small turtle. Big character. A little something for your shelf."
+    "description": "Small turtle. Big character. A little something for your shelf.",
+    "sourceImage": "images/turtle-print.png"
   },
   {
-    "image": "images/BizHatMerch.png",
+    "image": "images/optimized/cap.webp",
     "name": "Turtle Biz Cap Merch",
-    "price": 24.99,
     "id": "cap",
     "cents": 2499,
     "category": "Wearables",
-    "description": "A cap with a serious commitment to unserious business."
+    "description": "A cap with a serious commitment to unserious business.",
+    "sourceImage": "images/BizHatMerch.png"
   },
   {
-    "image": "images/TurtleSnowGlobe.png",
+    "image": "images/optimized/globe.webp",
     "name": "Turtle Snow Globe",
-    "price": 34.99,
     "id": "globe",
     "cents": 3499,
     "category": "Collectibles",
-    "description": "A tiny turtle world, ready for a place on your shelf."
+    "description": "A tiny turtle world, ready for a place on your shelf.",
+    "sourceImage": "images/TurtleSnowGlobe.png"
   },
   {
-    "image": "images/Biz_Earrings.png",
+    "image": "images/optimized/earrings.webp",
     "name": "Turtle Earrings",
-    "price": 44.99,
     "id": "earrings",
     "cents": 4499,
     "category": "Wearables",
-    "description": "A little shell-shaped detail to make an outfit your own."
+    "description": "A little shell-shaped detail to make an outfit your own.",
+    "sourceImage": "images/Biz_Earrings.png"
   },
   {
-    "image": "images/BizLock.png",
+    "image": "images/optimized/lock.webp",
     "name": "Turtle Biz Lock",
-    "price": 24.99,
     "id": "lock",
     "cents": 2499,
     "category": "Accessories",
-    "description": "A turtle twist on an everyday essential."
+    "description": "A turtle twist on an everyday essential.",
+    "sourceImage": "images/BizLock.png"
   },
   {
-    "image": "images/BizVest.png",
+    "image": "images/optimized/vest.webp",
     "name": "Turtle Biz Vest",
-    "price": 89.99,
     "id": "vest",
     "cents": 8999,
     "category": "Wearables",
-    "description": "Bring a little Turtle Biz personality to your workday."
+    "description": "Bring a little Turtle Biz personality to your workday.",
+    "sourceImage": "images/BizVest.png"
   },
   {
-    "image": "images/BizHelmet.png",
+    "image": "images/optimized/helmet.webp",
     "name": "Turtle Biz Helmet",
-    "price": 59.99,
     "id": "helmet",
     "cents": 5999,
     "category": "Accessories",
-    "description": "A very Turtle Biz take on getting your head in the game."
+    "description": "A very Turtle Biz take on getting your head in the game.",
+    "sourceImage": "images/BizHelmet.png"
   },
   {
-    "image": "images/BizRing.png",
+    "image": "images/optimized/ring.webp",
     "name": "Turtle Biz Bike Ring",
-    "price": 25.99,
     "id": "ring",
     "cents": 2599,
     "category": "Accessories",
-    "description": "A small detail for a ride with a little more personality."
+    "description": "A small detail for a ride with a little more personality.",
+    "sourceImage": "images/BizRing.png"
   },
   {
-    "image": "images/BizMug.png",
+    "image": "images/optimized/mug.webp",
     "name": "Turtle Biz Mug",
-    "price": 18.99,
     "id": "mug",
     "cents": 1899,
     "category": "Home & desk",
-    "description": "The unofficial mug of the slow morning club."
+    "description": "The unofficial mug of the slow morning club.",
+    "sourceImage": "images/BizMug.png"
   },
   {
-    "image": "images/Turtle Cake Static.png",
+    "image": "images/optimized/cake.webp",
     "name": "Turtle Cake",
-    "price": 24.99,
     "id": "cake",
     "cents": 2499,
     "category": "Collectibles",
-    "description": "An extra helping of turtle character for a celebration."
+    "description": "An extra helping of turtle character for a celebration.",
+    "sourceImage": "images/Turtle Cake Static.png"
   }
 ].map(Object.freeze));
