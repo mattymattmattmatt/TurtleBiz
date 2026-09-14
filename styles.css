@@ -11,3 +11,5 @@
 
 /* Let replaced canvas/media shrink inside CSS Grid on narrow screens. */
 .hero>*,.club-grid>*,.radio-section>*,.quick-faq>*{min-width:0}
+
+@media(max-width:640px){.hero-orbit{width:88%;height:88%;left:6%;transform:rotate(-7deg)}}
