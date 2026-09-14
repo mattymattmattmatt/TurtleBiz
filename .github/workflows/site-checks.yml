@@ -22,7 +22,6 @@ jobs:
       - name: Validate links, state, accessibility, and browser flows
         env:
           INLINE_PREVIEW: "1"
-          EXPORT_WEBP: "1"
         run: npm test
       - name: Save desktop and mobile previews
         if: always()

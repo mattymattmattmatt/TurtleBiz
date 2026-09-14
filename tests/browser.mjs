@@ -48,7 +48,10 @@ try {
     for(const path of ['index.html','shop.html','about.html','cart.html','contact.html','help.html','arcade.html','privacy.html','terms.html','404.html']){
       await page.goto(base+path);await page.waitForSelector('html.js');
       assert.equal(await page.locator('h1').count(),1);
-      if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1))layoutIssues.push('Horizontal overflow at '+width+' '+path);
+      if(!await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)){
+        const overflow=await page.evaluate(()=>[...document.querySelectorAll('main *')].filter(el=>{const r=el.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).map(el=>({tag:el.tagName,cls:el.className,right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)})).slice(0,20));
+        layoutIssues.push('Horizontal overflow at '+width+' '+path+': '+JSON.stringify(overflow));
+      }
       const result=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
       const violations=result.violations.filter(v=>v.impact==='critical'||v.impact==='serious');
       if(violations.length)layoutIssues.push(path+' '+width+' accessibility: '+JSON.stringify(violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))));

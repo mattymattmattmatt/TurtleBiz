@@ -8,3 +8,6 @@
 @media(max-width:360px){.wrap{width:calc(100% - 32px)}.hero-art{height:410px}.hero-copy h1{font-size:63px}.hero-product{padding:15px;right:20px}.hero-product .eyebrow{font-size:6px}.hero-product strong{font-size:18px}.hero-scribble{font-size:16px}.product-info{display:block;position:relative;padding-right:25px}.add-button{position:absolute;right:0;top:14px;width:27px;height:27px}.product-info h3{font-size:11px}.product-info p{font-size:10px}.record-art{height:265px}.sleeve-turtle svg{width:85px;height:85px}.record-sleeve>span{font-size:23px}.pond-bottom{flex-wrap:wrap}.arcade-heading h2{font-size:20px}.game-stats{gap:8px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
 @media print{.announcement,.nav-actions,.main-nav,.hero-art,.club-section,.radio-section,.site-footer,.toast,.save-button,.add-button,.menu-toggle{display:none!important}.site-header{position:static}.wrap{width:100%}body{background:white;color:black}.section{padding-block:25px}.product-grid{grid-template-columns:repeat(3,1fr)}.page-intro{padding-block:20px}.cart-summary{position:static}.button{border:1px solid black;background:white;color:black}}
+
+/* Let replaced canvas/media shrink inside CSS Grid on narrow screens. */
+.hero>*,.club-grid>*,.radio-section>*,.quick-faq>*{min-width:0}
