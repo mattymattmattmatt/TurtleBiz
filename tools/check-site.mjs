@@ -9,7 +9,7 @@ for (const page of pages) {
   if((html.match(/<h1[\s>]/g)||[]).length!==1)throw new Error(page+' needs exactly one h1.');
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
   if(new Set(ids).size!==ids.length)throw new Error(page+' has duplicate IDs.');
-  for(const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
+  for(const match of html.replace(/<base\b[^>]*>/gi,'').matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     const url=match[1];
     if(/^(?:https?:|mailto:|data:|tel:)/.test(url))continue;
     const [path,hash]=url.split('#');

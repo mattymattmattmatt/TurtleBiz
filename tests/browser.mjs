@@ -13,7 +13,7 @@ const server=createServer(async(req,res)=>{
     const target=resolve(root,'.'+(path.endsWith('/')?path+'index.html':path));
     if(!target.startsWith(root+sep)){res.writeHead(403);res.end();return;}
     const content=await readFile(target);res.writeHead(200,{'Content-Type':mime[extname(target)]||'application/octet-stream'});res.end(content);
-  }catch{res.writeHead(404);res.end('Not found');}
+  }catch{res.writeHead(404,{'Content-Type':'text/html'});res.end(await readFile(resolve(root,'404.html')));}
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const base='http://127.0.0.1:'+server.address().port+'/TurtleBiz/';
@@ -81,6 +81,12 @@ try {
   await page.locator('#pond-add').click();assert.ok((await page.locator('#pond-status').textContent()).includes('7 turtles'));
   await page.locator('#pond-nudge').click();assert.ok((await page.locator('#pond-status').textContent()).includes('Meeting adjourned'));
   passed('Mobile menu, keyboard escape, reduced motion, silent initial music, and pond controls.');
+  const missing=await page.goto(base+'lost/in/the/pond/');
+  assert.equal(missing.status(),404);
+  assert.equal(await page.locator('.site-header').evaluate(el=>getComputedStyle(el).position),'sticky');
+  await page.getByRole('link',{name:'Take me home'}).click();
+  assert.equal(page.url(),base+'index.html');
+  passed('Nested missing URLs retain styling and a working route home.');
   await page.emulateMedia({reducedMotion:'no-preference'});await page.setViewportSize({width:1440,height:1000});
   await page.goto(base+'arcade.html');
   await page.clock.install();await page.evaluate(()=>Math.random=()=>.5);
