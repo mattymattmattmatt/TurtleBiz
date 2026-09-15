@@ -5,7 +5,7 @@
   "description": "The Turtle Biz storefront and arcade. No production dependencies or build step.",
   "scripts": {
     "check": "node tools/check-site.mjs",
-    "test:state": "node --test tests/store.test.cjs",
+    "test:state": "node --test tests/store.test.cjs tests/chat.test.mjs",
     "test:browser": "node tests/browser.mjs",
     "test": "npm run check && npm run test:state && npm run test:browser"
   },

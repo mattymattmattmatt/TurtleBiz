@@ -10,7 +10,7 @@ Serve this directory with any static HTTP server. For example:
 python3 -m http.server 8080
 ```
 
-Open http://localhost:8080. No application install, bundler or production JavaScript dependencies are required. Relative URLs support hosting beneath the /TurtleBiz/ path.
+Open http://localhost:8080. No application install or bundler is required. The chat loads the Firebase browser SDK from Google’s CDN when its section approaches the viewport. Relative URLs support hosting beneath the /TurtleBiz/ path.
 
 ## What changed
 
@@ -30,7 +30,9 @@ Products, existing prices and original image paths are in `scripts/catalog.js`. 
 
 The contact email remains `guihlemturtlebiz@gmail.com`. Contact forms open the visitor's email app; no message is sent by the website itself. There is no order database, payment processor or newsletter endpoint.
 
-The old Firebase configuration contains `YOUR_API_KEY`, so the redesigned pages do not load its broken chat/analytics integration. Legacy integration files remain in the repository for reference. No live chat data was modified. The help page explains that chat is unavailable and directs visitors to contact.
+Turtle Chat is restored on the homepage below the radio. The original public web configuration was recovered from commit `b16eb0a`; it connects to the same `turtle-biz` Firebase project, default Firestore database and `chats` collection. A read-only check found 32 original messages before this update. No existing documents, IDs, text, timestamps or database rules are rewritten or deleted. New messages append the original `{ text, timestamp }` schema with a server timestamp and the original 150-character limit. Analytics is not initialized.
+
+The SDK is pinned to 12.19.0 and loads only near the chat. The listener pauses offscreen or while the tab is hidden, except while a send is pending. The collection is sorted locally so legacy messages missing a timestamp remain accessible. Forty messages render initially, with earlier messages available on demand. New arrivals preserve the reader’s position. Drafts survive reloads in session storage; failed sends retain the draft and duplicate submission is blocked while awaiting acknowledgement. Incoming text is rendered as text, never HTML. The public interface provides no deletion controls.
 
 Existing policy text and its original dates have been retained, with a factual note explaining how the current storefront behaves. This is a visual and functional website update, not a review of the business's policies. Donation claims and payment-method claims without a working supporting integration are not used in new marketing or help content.
 
@@ -46,7 +48,7 @@ npm test
 
 The workflow checks local links, catalog references, JavaScript syntax, cart/state behavior, browser flows, and serious/critical axe accessibility findings. It exercises desktop, 390px and 320px layouts under a /TurtleBiz/ base path and produces desktop/mobile screenshot artifacts.
 
-Browser tests cover filtering, sorting, favourites, dialogs, cart edits/persistence, legacy and corrupt storage, email enquiry URLs, mobile navigation, motion preferences, pond controls, and a complete deterministic arcade round.
+Browser tests cover filtering, sorting, favourites, dialogs, cart edits/persistence, legacy and corrupt storage, email enquiry URLs, mobile navigation, motion preferences, pond controls, and a complete deterministic arcade round. Chat checks use an intercepted adapter for sending, failures, legacy history, safe rendering, reconnects and draft persistence; no test messages are posted to the public conversation. An opt-in live check reads the real conversation without writing.
 
 ## Design reference
 

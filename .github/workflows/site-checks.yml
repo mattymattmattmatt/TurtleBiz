@@ -20,6 +20,8 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Validate links, state, accessibility, and browser flows
+        env:
+          CHECK_LIVE_CHAT: "1"
         run: npm test
       - name: Save desktop and mobile previews
         if: always()
