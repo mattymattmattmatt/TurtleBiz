@@ -48,7 +48,7 @@
 .chat-composer-label span { color: #62695e; font-size: 10px; font-variant-numeric: tabular-nums; }
 .chat-compose-row { display: flex; align-items: stretch; gap: 8px; }
 .chat-compose-row textarea { min-width: 0; width: 100%; min-height: 64px; max-height: 180px; resize: vertical; padding: 10px 12px; border: 1px solid #bdc8b1; border-radius: 8px; background: #f6f7ee; font-size: 16px; line-height: 1.4; }
-.chat-compose-row textarea::placeholder { color: #6c7566; }
+.chat-compose-row textarea::placeholder { color: #5d6959; }
 .chat-compose-row button { display: flex; align-items: center; justify-content: center; align-self: stretch; gap: 10px; padding: 12px 16px; background: var(--ink); color: var(--paper); border-radius: 8px; font-size: 12px; min-width: 80px; }
 .chat-compose-row button:hover:not(:disabled) { background: #315c42; }
 .chat-compose-row button svg { width: 16px; height: 16px; }

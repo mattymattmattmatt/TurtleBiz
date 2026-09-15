@@ -89,7 +89,9 @@ export async function testChat(page,base) {
   for(const width of [1440,768,641,390,320]) {
     await page.setViewportSize({width,height:1000});
     await page.locator('.chat-panel').scrollIntoViewIfNeeded();
-    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Chat fits '+width);
+    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1?[]:[...document.querySelectorAll('body *')].filter(el=>{const r=el.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).map(el=>({tag:el.tagName,cls:el.getAttribute('class'),right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)})).slice(0,25));
+    await page.locator('#turtle-chats').screenshot({path:'artifacts/chat-'+width+'.png'});
+    assert.deepEqual(overflow,[],'Chat fits '+width+': '+JSON.stringify(overflow));
     const result=await new AxeBuilder({page}).include('#turtle-chats').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
     assert.deepEqual(result.violations.filter(v=>v.impact==='critical'||v.impact==='serious').map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],'Chat accessibility at '+width);
   }
