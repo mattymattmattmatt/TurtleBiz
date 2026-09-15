@@ -4,6 +4,7 @@ import { readFile, mkdir } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
+import { installChatMock, testChat, testLiveChat } from './chat-browser.mjs';
 const root=resolve('.');
 const mime={'.html':'text/html','.css':'text/css','.js':'application/javascript','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.ico':'image/x-icon','.mp3':'audio/mpeg','.ogg':'audio/ogg'};
 const server=createServer(async(req,res)=>{
@@ -19,6 +20,7 @@ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const base='http://127.0.0.1:'+server.address().port+'/TurtleBiz/';
 const browser=await chromium.launch();
 const context=await browser.newContext({viewport:{width:1440,height:1000}});
+await installChatMock(context);
 const page=await context.newPage();
 const errors=[];page.on('pageerror',error=>errors.push(error.message));
 const report=[];
@@ -99,6 +101,12 @@ try {
   assert.equal(await page.locator('#game-overlay').isVisible(),true);
   await page.locator('#game-start').click();assert.equal(await page.locator('#game-score').textContent(),'0');await page.locator('#game-pause').click();
   passed('Arcade collects coins, pauses its timer, completes a round, saves the best, and restarts.');
+  const chatPage=await context.newPage();
+  chatPage.on('pageerror',error=>errors.push(error.message));
+  await testChat(chatPage,base);
+  passed('Chat history, undated messages, safe rendering, draft recovery, posting, reconnects and responsive accessibility.');
+  await chatPage.close();
+  if(process.env.CHECK_LIVE_CHAT==='1')await testLiveChat(browser,base);
   // Render previews with the same motion setting a visitor can select.
   const preview=await context.newPage();
   await preview.emulateMedia({reducedMotion:'reduce'});

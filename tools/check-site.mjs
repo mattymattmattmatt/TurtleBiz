@@ -1,6 +1,7 @@
 import { readFile, access } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import vm from 'node:vm';
+import { spawnSync } from 'node:child_process';
 const pages=['index.html','shop.html','cart.html','about.html','contact.html','help.html','arcade.html','privacy.html','terms.html','404.html'];
 let references=0;
 for (const page of pages) {
@@ -19,10 +20,14 @@ for (const page of pages) {
   }
 }
 for(const path of ['scripts/catalog.js','scripts/store.js','scripts/site.js','scripts/play.js'])new vm.Script(await readFile(path,'utf8'),{filename:path});
+for(const path of ['scripts/chat.js','scripts/firebase.js']) {
+  const check=spawnSync(process.execPath,['--input-type=module','--check'],{input:await readFile(path,'utf8'),encoding:'utf8'});
+  if(check.status!==0)throw new Error(path+' '+check.stderr);
+}
 const context={window:{}};
 vm.runInNewContext(await readFile('scripts/catalog.js','utf8'),context);
 for(const product of context.window.TurtleCatalog) {
   await access(product.image);
   if(!Number.isInteger(product.cents)||product.cents<=0)throw new Error('Invalid price: '+product.id);
 }
-console.log('PASS: '+pages.length+' pages, '+references+' local links/assets, four scripts, and all catalog images/prices.');
+console.log('PASS: '+pages.length+' pages, '+references+' local links/assets, six scripts, and all catalog images/prices.');
